@@ -84,7 +84,7 @@ export default function EventCard({ canEdit, isRegistered, isTrending }) {
             </div>
           </div>
           <p className="blue-text">Antibes | samedi 24 juin 2025 • 15h30 </p>
-          <ThemeTags theme={["Musique", "Sponsorisé", "Sport", "Learning"]} />
+          <ThemeTags theme={["Musique", "Sponsorisé"]} />
           <p className="line-clamp-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
             semper commodo velit ac facilisis. Nullam augue dui, bibendum vel

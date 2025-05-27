@@ -217,9 +217,7 @@ export default function CreatePage() {
           >
             <span>Continuer</span>
           </button>
-          <Link href="/" className="secondary-form-btn">
-            <span>Annuler</span>
-          </Link>
+
           {step > 1 && (
             <div className="w-full flex justify-center">
               <button

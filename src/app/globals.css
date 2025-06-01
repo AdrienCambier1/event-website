@@ -617,7 +617,7 @@ textarea,
 }
 
 .overflow-card {
-  @apply relative py-0 max-h-56 w-full overflow-y-auto scrollbar-hide;
+  @apply relative py-0 max-h-72 w-full overflow-y-auto scrollbar-hide;
 }
 
 .ticket-card {

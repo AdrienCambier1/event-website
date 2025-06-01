@@ -14,7 +14,7 @@ export default function CreditCard() {
         </div>
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col gap-2">
-            <label>Nom sur la carte</label>
+            <label>Nom</label>
             <input type="text" placeholder="Timothée Durand" />
           </div>
           <div className="flex flex-col gap-2">

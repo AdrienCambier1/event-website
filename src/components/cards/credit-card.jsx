@@ -18,7 +18,7 @@ export default function CreditCard() {
             <input type="text" placeholder="Timothée Durand" />
           </div>
           <div className="flex flex-col gap-2">
-            <label>Date d'expiration</label>
+            <label>Expiration</label>
             <input type="text" placeholder="jj/mm/aa" />
           </div>
         </div>

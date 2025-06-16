@@ -581,7 +581,7 @@ textarea,
 
 .city-card,
 .theme-card {
-  @apply rounded-2xl transition flex items-center justify-center;
+  @apply rounded-xl transition flex items-center justify-center;
 }
 
 .city-card {
@@ -621,7 +621,7 @@ textarea,
 }
 
 .ticket-card {
-  @apply bg-[var(--primary-blue)] relative rounded-2xl overflow-hidden w-full;
+  @apply bg-[var(--primary-blue)] relative rounded-xl overflow-hidden w-full;
 }
 
 .ticket-card h3,
@@ -638,7 +638,7 @@ textarea,
 }
 
 .credit-card {
-  @apply bg-[var(--primary-green)] relative rounded-2xl overflow-hidden w-full;
+  @apply bg-[var(--primary-green)] relative rounded-xl overflow-hidden w-full;
 }
 
 .credit-card label,

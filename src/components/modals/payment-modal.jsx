@@ -65,7 +65,7 @@ export default function PaymentModal({
           <div
             ref={scrollContainerRef}
             onScroll={checkScrollPosition}
-            className={`overflow-card rounded-t-2xl flex flex-col gap-8 ${
+            className={`overflow-card rounded-t-xl flex flex-col gap-8 ${
               !isAtBottom && "mask-bottom"
             }`}
           >

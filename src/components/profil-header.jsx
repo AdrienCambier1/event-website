@@ -16,8 +16,19 @@ export default function ProfilHeader() {
 
   return (
     <section className="profil-header">
-      <div className="flex flex-col-reverse md:flex-row gap-6 items-center justify-between w-full">
-        <div className="flex flex-wrap justify-center md:justify-start gap-6">
+      <div className="flex flex-col gap-6 justify-between w-full">
+        {isProfilRoute ? (
+          <Link href="/account/settings" className="primary-btn">
+            <span>Paramètres du compte</span>
+            <NavArrowRight />
+          </Link>
+        ) : (
+          <Link href="/account/profil/events" className="primary-btn">
+            <span>Mon activité</span>
+            <NavArrowRight />
+          </Link>
+        )}
+        <div className="flex flex-wrap gap-6">
           <div>
             <p>Abonnements</p>
             <p className="heavy">28</p>
@@ -35,17 +46,6 @@ export default function ProfilHeader() {
             <p className="heavy">3</p>
           </div>
         </div>
-        {isProfilRoute ? (
-          <Link href="/account/settings" className="primary-btn">
-            <span>Paramètres du compte</span>
-            <NavArrowRight />
-          </Link>
-        ) : (
-          <Link href="/account/profil/events" className="primary-btn">
-            <span>Mon activité</span>
-            <NavArrowRight />
-          </Link>
-        )}
       </div>
       {isProfilRoute && (
         <CustomNav navigation={navigation} disabledHome={true} />

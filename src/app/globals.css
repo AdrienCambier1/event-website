@@ -51,7 +51,7 @@ footer {
 }
 
 .logo {
-  @apply text-[var(--primary-blue)] text-2xl font-extrabold w-fit;
+  @apply text-[var(--primary-blue)] text-2xl font-extrabold w-fit tracking-tight;
 }
 
 .logo span {

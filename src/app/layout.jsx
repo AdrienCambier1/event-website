@@ -9,13 +9,13 @@ export const metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
   },
-  themeColor: "#fafafa",
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#fafafa",
 };
 
 export default function RootLayout({ children }) {

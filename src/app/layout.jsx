@@ -9,18 +9,18 @@ export const metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
   },
+  themeColor: "#fafafa",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <head>
-        <meta name="theme-color" content="#fafafa" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,viewport-fit=cover"
-        />
-      </head>
       <body>
         <AuthProvider>
           <CityProvider>

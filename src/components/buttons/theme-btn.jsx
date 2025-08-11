@@ -1,4 +1,4 @@
-import { Headset, Basketball, Book } from "iconoir-react";
+import { getThemeIcon } from "@/utils/theme-icons";
 
 export default function ThemeButton({
   theme = "musique",
@@ -6,26 +6,6 @@ export default function ThemeButton({
   isSelected,
 }) {
   const iconClasses = `${isSelected && "!text-white"} `;
-
-  const themeIcons = {
-    musique: Headset,
-    sport: Basketball,
-    learning: Book,
-  };
-
-  const getNormalizedKey = (themeName) => {
-    return themeName
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  };
-
-  const getThemeIcon = (themeName) => {
-    const normalizedName = getNormalizedKey(themeName);
-    const IconComponent = themeIcons[normalizedName];
-
-    return IconComponent ? <IconComponent className={iconClasses} /> : null;
-  };
 
   return (
     <button
@@ -49,7 +29,7 @@ export default function ThemeButton({
           {theme}
         </p>
       </div>
-      {getThemeIcon(theme)}
+      {getThemeIcon(theme, iconClasses)}
     </button>
   );
 }

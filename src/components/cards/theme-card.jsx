@@ -1,28 +1,8 @@
 import Link from "next/link";
-import { Headset, Basketball, Book } from "iconoir-react";
+import { getThemeIcon } from "@/utils/theme-icons";
 
-export default function ThemeCard({ theme = "musique" }) {
+export default function ThemeCard({ theme = "musique", title, description }) {
   const iconClasses = "group-hover:text-white";
-
-  const themeIcons = {
-    musique: Headset,
-    sport: Basketball,
-    learning: Book,
-  };
-
-  const getNormalizedKey = (themeName) => {
-    return themeName
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  };
-
-  const getThemeIcon = (themeName) => {
-    const normalizedName = getNormalizedKey(themeName);
-    const IconComponent = themeIcons[normalizedName];
-
-    return IconComponent ? <IconComponent className={iconClasses} /> : null;
-  };
 
   return (
     <Link
@@ -30,8 +10,8 @@ export default function ThemeCard({ theme = "musique" }) {
       className="theme-card group"
     >
       <div className="flex flex-col items-center justify-center gap-2">
-        {getThemeIcon(theme)}
-        <p className="group-hover:text-white transition">{theme}</p>
+        {getThemeIcon(theme, iconClasses)}
+        <p className="group-hover:text-white transition">{title || theme}</p>
       </div>
     </Link>
   );

@@ -90,6 +90,14 @@ form label {
   @apply text-[var(--dark-gray)] font-bold text-2xl;
 }
 
+.skeleton-bg {
+  @apply !bg-slate-200 !text-transparent !shadow-none animate-pulse;
+}
+
+.skeleton-bg * {
+  @apply !text-transparent !bg-transparent !border-none;
+}
+
 .mask-top {
   mask-image: linear-gradient(
     to bottom,
@@ -298,6 +306,10 @@ p {
   @apply text-[var(--primary-blue)] text-sm;
 }
 
+.red-text {
+  @apply text-[var(--primary-red)] text-sm;
+}
+
 .dropdown-text {
   @apply mx-3 box-border border-b border-[var(--secondary-border-col)];
 }
@@ -464,6 +476,10 @@ p {
   @apply text-[var(--primary-red)] hover:opacity-75 transition;
 }
 
+.skeleton-btn {
+  @apply bg-slate-200 animate-pulse py-1.5 px-4 rounded-full text-transparent;
+}
+
 /********/
 /* Tags */
 /********/
@@ -519,7 +535,38 @@ p {
 input,
 textarea,
 .input-btn {
-  @apply placeholder:text-[var(--light-gray)] text-[var(--dark-gray)] bg-white border-[var(--primary-border-col)] border rounded-xl p-3 focus:outline-none w-full flex items-center justify-start gap-4;
+  @apply focus:border-[var(--primary-blue)] placeholder:text-[var(--light-gray)] text-[var(--dark-gray)] bg-white border-[var(--primary-border-col)] border rounded-xl p-3 focus:outline-none w-full flex items-center justify-start gap-4 transition;
+}
+
+input:focus,
+textarea:focus,
+.input-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}
+
+textarea {
+  @apply resize-none min-h-20 overflow-hidden;
+  field-sizing: content;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: var(--dark-gray) !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  background-color: white !important;
+}
+
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus {
+  background-color: white !important;
+  color: var(--dark-gray) !important;
 }
 
 .input-icon {

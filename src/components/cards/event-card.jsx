@@ -18,7 +18,20 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import DialogModal from "../modals/dialog-modal";
 
-export default function EventCard({ canEdit, isRegistered, isTrending }) {
+export default function EventCard({
+  canEdit,
+  isRegistered,
+  isTrending,
+  date,
+  description,
+  name,
+  organizerName,
+  organizerImageUrl,
+  organizerNote,
+  imageUrl,
+  cityName,
+  categories,
+}) {
   const [editDropdown, setEditDropdown] = useState(false);
   const [registeredDropdown, setRegisteredDropdown] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -59,38 +72,54 @@ export default function EventCard({ canEdit, isRegistered, isTrending }) {
       <>
         <div className="relative">
           <Image
-            src={niceImage}
+            src={imageUrl || niceImage}
             alt="Event image"
+            width={400}
+            height={225}
             className="object-cover rounded-t-xl aspect-[16/9]"
           />
           {isTrending && <div className="trending-tag">Tendance</div>}
         </div>
         <div className="flex flex-col gap-4 p-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-[var(--secondary-blue)]">
-              Atelier fresque végétal
-            </h3>
+            <h3 className="text-[var(--secondary-blue)]">{name}</h3>
             <Bookmark className="text-[var(--primary-blue)] h-6 w-6 flex-shrink-0" />
           </div>
           <div className="flex items-center gap-4">
             <Image
-              src={profilPicture}
+              src={organizerImageUrl || profilPicture}
               alt="Profil picture"
+              width={48}
+              height={48}
               className="profil-pic-md"
             />
             <div className="flex flex-col">
-              <p className="dark-text">Jean Claude</p>
-              <RatingStar note={4} />
+              <p className="dark-text">{organizerName}</p>
+              <RatingStar note={organizerNote} />
             </div>
           </div>
-          <p className="blue-text">Antibes | samedi 24 juin 2025 • 15h30 </p>
-          <ThemeTags theme={["Musique", "Sponsorisé"]} />
-          <p className="line-clamp-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-            semper commodo velit ac facilisis. Nullam augue dui, bibendum vel
-            congue vitae, lacinia vel nunc. Cras tristique ac ipsum nec
-            consectetur. 
+          <p className="blue-text">
+            {cityName} |{" "}
+            {date
+              ? new Date(date).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }) +
+                " • " +
+                new Date(date).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "samedi 24 juin 2025 • 15h30"}
           </p>
+          <ThemeTags
+            theme={
+              categories?.map((cat) => cat.name) || ["Musique", "Sponsorisé"]
+            }
+          />
+          <p className="line-clamp-3">{description}</p>
           <div className="flex justify-between items-center">
             <ProfilImages totalCount={8} />
             {canEdit && (

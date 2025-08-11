@@ -3,11 +3,11 @@ import { LogOut } from "iconoir-react";
 import Image from "next/image";
 import Link from "next/link";
 import profilPicture from "@/assets/images/profil-pic.jpg";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import DialogModal from "../modals/dialog-modal";
 
 export default function ProfilBtn({ reverse, onClick }) {
-  const { user, logout } = useAuth();
+  const { user, logoutUser } = useAuth();
   const [profilDropdown, setProfilDropdown] = useState(false);
   const profilDropdownRef = useRef(null);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -44,8 +44,10 @@ export default function ProfilBtn({ reverse, onClick }) {
           onClick={() => setProfilDropdown(!profilDropdown)}
         >
           <Image
-            src={profilPicture}
+            src={user?.imageUrl || profilPicture}
             alt="Profil picture"
+            width={48}
+            height={48}
             className="profil-pic-md"
           />
         </button>
@@ -56,7 +58,7 @@ export default function ProfilBtn({ reverse, onClick }) {
           ${reverse ? "dropdown-parent-reverse" : "dropdown-parent"}
         `}
         >
-          <p className="dropdown-text">{user?.name || "Utilisateur"}</p>
+          <p className="dropdown-text">{user?.pseudo || "Utilisateur"}</p>
           <Link
             href="/account/profil/events"
             className="dropdown-child"
@@ -82,7 +84,7 @@ export default function ProfilBtn({ reverse, onClick }) {
         action="Se déconnecter"
         icon={LogOut}
         onClick={() => {
-          logout();
+          logoutUser();
         }}
       />
     </>

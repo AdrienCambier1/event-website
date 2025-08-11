@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { fetchUserProfile } from "@/services/auth";
 
 const AuthContext = createContext();
 
@@ -27,7 +28,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
         const storedToken = localStorage.getItem("token");
 
@@ -38,14 +39,46 @@ export function AuthProvider({ children }) {
           if (decodedToken.exp < currentTime) {
             handleLogout();
           } else {
-            setToken(storedToken);
-            setUser(decodedToken);
-            setIsAuthenticated(true);
-            setSecureCookie(
-              "auth_token",
-              storedToken,
-              decodedToken.exp - currentTime
-            );
+            try {
+              // Récupérer le profil utilisateur avec le token
+              const userProfile = await fetchUserProfile(storedToken);
+
+              // Créer l'objet utilisateur complet
+              const user = {
+                email: decodedToken.sub,
+                exp: decodedToken.exp,
+                iat: decodedToken.iat,
+                pseudo: userProfile.pseudo,
+                imageUrl: userProfile.imageUrl,
+                id: userProfile.id,
+                firstName: userProfile.firstName,
+                lastName: userProfile.lastName,
+                role: userProfile.role,
+              };
+
+              setToken(storedToken);
+              setUser(user);
+              setIsAuthenticated(true);
+              setSecureCookie(
+                "auth_token",
+                storedToken,
+                decodedToken.exp - currentTime
+              );
+            } catch (profileError) {
+              console.error(
+                "Erreur lors de la récupération du profil:",
+                profileError
+              );
+              // Si on ne peut pas récupérer le profil, on utilise juste les données du token
+              setToken(storedToken);
+              setUser(decodedToken);
+              setIsAuthenticated(true);
+              setSecureCookie(
+                "auth_token",
+                storedToken,
+                decodedToken.exp - currentTime
+              );
+            }
           }
         }
       } catch (error) {
@@ -59,44 +92,25 @@ export function AuthProvider({ children }) {
     checkAuth();
   }, []);
 
-  const login = async (credentials, redirectPath = "/") => {
+  const login = async (authData, redirectPath = "/") => {
     try {
-      // En production: Appel API pour s'authentifier et récupérer un JWT
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   body: JSON.stringify(credentials)
-      // });
-      // const data = await response.json();
-      // const receivedToken = data.token;
+      const { user, token } = authData;
 
-      const fakePayload = {
-        sub: "@jeanclaudedu06",
-        name: "Jean Claude",
-        email: "jeanclaudedu06@example.com",
-        exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-        iat: Math.floor(Date.now() / 1000),
-      };
-
-      const payloadBase64 = btoa(JSON.stringify(fakePayload))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
-
-      const fakeToken = `eyJhbGciOiJIUzI1NiJ9.${payloadBase64}.SIGNATURE`;
-
-      localStorage.setItem("token", fakeToken);
-
-      setToken(fakeToken);
-      setUser(fakePayload);
+      // Stocker le token
+      localStorage.setItem("token", token);
+      setToken(token);
+      setUser(user);
       setIsAuthenticated(true);
-      setSecureCookie("auth_token", fakeToken, 24 * 60 * 60);
-      window.location.href = redirectPath;
 
-      return true;
+      // Créer le cookie sécurisé
+      const expirationTime = user.exp - Math.floor(Date.now() / 1000);
+      setSecureCookie("auth_token", token, expirationTime);
+
+      // Retourner le chemin de redirection pour que le composant gère la navigation
+      return { success: true, redirectPath };
     } catch (error) {
       console.error("Erreur d'authentification:", error);
-
-      return false;
+      return { success: false, error };
     }
   };
 
@@ -120,9 +134,8 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     handleLogout();
-    window.location.href = "/";
-
-    return true;
+    // Retourner un indicateur pour que le composant gère la navigation
+    return { success: true, redirectPath: "/" };
   };
 
   const value = {

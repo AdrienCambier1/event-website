@@ -8,7 +8,7 @@ import ProfilBtn from "./buttons/profil-btn";
 import CityBtn from "./buttons/city-btn";
 
 export default function Header() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -62,7 +62,12 @@ export default function Header() {
             <Link href="/subscriptions/events">Abonnements</Link>
           </nav>
           <div className="hidden lg:flex items-center gap-4">
-            {!isAuthenticated ? (
+            {loading ? (
+              <>
+                <div className="skeleton-btn">primary</div>
+                <div className="skeleton-btn">secondary</div>
+              </>
+            ) : !isAuthenticated ? (
               <>
                 <Link href="/register" className="secondary-btn">
                   <span>S'inscrire</span>

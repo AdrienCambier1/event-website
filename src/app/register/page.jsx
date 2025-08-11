@@ -14,10 +14,20 @@ import StepIndicator from "@/components/step-indicator";
 import ThemeButton from "@/components/buttons/theme-btn";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeClosed } from "iconoir-react";
+import { useRegister } from "@/hooks/use-register";
+import { useAuth } from "@/hooks/use-auth";
+import { useCategories } from "@/hooks/use-categories";
 
 function RegisterPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const {
+    register,
+    loading: registerLoading,
+    error: registerError,
+  } = useRegister();
+  const { loginWithCredentials } = useAuth();
+  const { categories, isLoading: categoriesLoading } = useCategories();
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1);
 
@@ -27,7 +37,8 @@ function RegisterPageContent() {
     password: "",
     firstName: "",
     lastName: "",
-    birthDate: "",
+    description: "",
+    phone: "",
     interests: [],
   });
 
@@ -61,7 +72,7 @@ function RegisterPageContent() {
         return (
           formData.firstName !== "" &&
           formData.lastName !== "" &&
-          formData.birthDate !== ""
+          formData.phone !== ""
         );
       case 3:
         return formData.interests.length > 0;
@@ -114,7 +125,7 @@ function RegisterPageContent() {
     setStep(step - 1);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!isStepValid()) return;
@@ -122,22 +133,35 @@ function RegisterPageContent() {
     if (step < 3) {
       handleNextStep();
     } else {
-      const redirectPath = searchParams.get("redirect") || "/";
-      router.push(redirectPath);
+      // Étape 3 : inscription finale
+      try {
+        const response = await register(formData);
+
+        // Connexion automatique après inscription
+        const redirectPath = searchParams.get("redirect") || "/";
+        await loginWithCredentials(
+          formData.email,
+          formData.password,
+          redirectPath
+        );
+      } catch (error) {
+        console.error("Erreur lors de l'inscription:", error);
+        // L'erreur est déjà gérée par le hook useRegister
+      }
     }
   };
 
-  const handleThemeToggle = (theme) => {
+  const handleThemeToggle = (themeValue) => {
     setFormData((prev) => {
-      if (prev.interests.includes(theme)) {
+      if (prev.interests.includes(themeValue)) {
         return {
           ...prev,
-          interests: prev.interests.filter((item) => item !== theme),
+          interests: prev.interests.filter((item) => item !== themeValue),
         };
       } else {
         return {
           ...prev,
-          interests: [...prev.interests, theme],
+          interests: [...prev.interests, themeValue],
         };
       }
     });
@@ -149,7 +173,7 @@ function RegisterPageContent() {
         return (
           <>
             <div className="flex flex-col gap-2">
-              <label>Email</label>
+              <label>Email*</label>
               <input
                 type="text"
                 name="email"
@@ -164,7 +188,7 @@ function RegisterPageContent() {
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <label>Identifiant</label>
+              <label>Pseudo*</label>
               <input
                 type="text"
                 name="username"
@@ -174,7 +198,7 @@ function RegisterPageContent() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label>Mot de passe</label>
+              <label>Mot de passe*</label>
               <div className="relative">
                 <input
                   type={`${showPassword ? "text" : "password"}`}
@@ -212,7 +236,7 @@ function RegisterPageContent() {
           <>
             <div className="flex gap-4">
               <div className="flex flex-col gap-2 w-full">
-                <label>Nom</label>
+                <label>Nom*</label>
                 <input
                   type="text"
                   name="lastName"
@@ -222,7 +246,7 @@ function RegisterPageContent() {
                 />
               </div>
               <div className="flex flex-col gap-2 w-full">
-                <label>Prénom</label>
+                <label>Prénom*</label>
                 <input
                   type="text"
                   name="firstName"
@@ -231,30 +255,51 @@ function RegisterPageContent() {
                   placeholder="Gérard"
                 />
               </div>
+            </div>{" "}
+            <div className="flex flex-col gap-2">
+              <label>Numéro de téléphone*</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="06 12 34 56 78"
+              />
             </div>
             <div className="flex flex-col gap-2">
-              <label>Date de naissance</label>
-              <input
-                type="text"
-                name="birthDate"
-                value={formData.birthDate}
+              <label>Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
-                placeholder="jj/mm/aaaa"
+                placeholder="Quelques mots pour vous décrire"
               />
             </div>
           </>
         );
       case 3:
-        const availableThemes = ["Musique", "Sport", "Learning"];
+        // Utiliser les catégories dynamiques, avec fallback si elles ne sont pas encore chargées
+        const availableThemes = categoriesLoading
+          ? [
+              { label: "Musique", value: "music" },
+              { label: "Sport", value: "sport" },
+              { label: "Études", value: "learning" },
+              { label: "Culture", value: "culture" },
+              { label: "Technologie", value: "technology" },
+            ]
+          : categories.map((category) => ({
+              label: category.name,
+              value: category.key.toLowerCase(),
+            }));
 
         return (
           <>
             {availableThemes.map((theme) => (
               <ThemeButton
-                key={theme}
-                theme={theme}
-                isSelected={formData.interests.includes(theme)}
-                onClick={() => handleThemeToggle(theme)}
+                key={theme.value}
+                theme={theme.label}
+                isSelected={formData.interests.includes(theme.value)}
+                onClick={() => handleThemeToggle(theme.value)}
               />
             ))}
             <p className="text-center">
@@ -302,13 +347,24 @@ function RegisterPageContent() {
               </p>
             </div>
           ) : (
-            <button
-              type="submit"
-              disabled={!isStepValid()}
-              className="primary-form-btn"
-            >
-              <span>{step < 3 ? "Continuer" : "S'inscrire"}</span>
-            </button>
+            <>
+              <button
+                type="submit"
+                disabled={!isStepValid() || registerLoading}
+                className="primary-form-btn"
+              >
+                <span>
+                  {registerLoading
+                    ? "Inscription en cours..."
+                    : step < 3
+                    ? "Continuer"
+                    : "S'inscrire"}
+                </span>
+              </button>
+              {registerError && (
+                <p className="red-text text-center">{registerError}</p>
+              )}
+            </>
           )}
 
           {step > 1 && (

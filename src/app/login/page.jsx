@@ -11,12 +11,14 @@ import {
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeClosed } from "iconoir-react";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 
 function LoginPageContent() {
-  const { login } = useAuth();
+  const { loginWithCredentials } = useAuth();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -28,12 +30,25 @@ function LoginPageContent() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (formData.email && formData.password) {
-      const redirectPath = searchParams.get("redirect") || "/";
-      login(formData, redirectPath);
+      setIsLoading(true);
+      try {
+        const redirectPath = searchParams.get("redirect") || "/";
+        await loginWithCredentials(
+          formData.email,
+          formData.password,
+          redirectPath
+        );
+        // La redirection se fait automatiquement dans le hook
+      } catch (err) {
+        setError(err.message || "Erreur de connexion");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -70,6 +85,7 @@ function LoginPageContent() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="****"
+                className={`border ${error && "border-[var(--primary-red)]"}`}
               />
               <div className="input-icon">
                 {showPassword ? (
@@ -79,15 +95,20 @@ function LoginPageContent() {
                 )}
               </div>
             </div>
+            {error && (
+              <p className="red-text">
+                Mot de passe ou email incorrect. Essayez à nouveau.
+              </p>
+            )}
             <button className="blue-text w-fit">Mot de passe oublié ?</button>
           </div>
           <div className="flex flex-col gap-2">
             <button
               type="submit"
-              disabled={!isFormValid()}
+              disabled={!isFormValid() || isLoading}
               className="primary-form-btn"
             >
-              <span>Se connecter</span>
+              <span>{isLoading ? "Connexion..." : "Se connecter"}</span>
             </button>
             <p>
               Pas encore de compte ?{" "}

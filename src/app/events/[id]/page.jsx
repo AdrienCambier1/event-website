@@ -18,21 +18,39 @@ import DialogModal from "@/components/modals/dialog-modal";
 import Link from "next/link";
 import { useState } from "react";
 import PaymentModal from "@/components/modals/payment-modal";
+import { useAuth } from "@/hooks/use-auth";
+import { useEventDetails } from "@/hooks/use-event-details";
+import { formatEventDate } from "@/utils/date-formatter";
 
 export default function EventPage() {
   const { id } = useParams();
   const [paymentModal, setPaymentModal] = useState(false);
   const [paymentDialogModal, setPaymentDialogModal] = useState(false);
 
+  const {
+    event: eventData,
+    loading: eventLoading,
+    error: eventError,
+  } = useEventDetails(id);
+
   const eventInfos = [
-    { icon: Calendar, value: "samedi 24 juin 2025 • 15h30 " },
-    { icon: HomeAltSlim, value: "Los pollos hermanos" },
-    { icon: Group, value: "8 personnes", type: "users" },
+    {
+      icon: Calendar,
+      value: formatEventDate(eventData?.date, {
+        fallback: "samedi 24 juin 2025 • 15h30",
+      }),
+    },
+    { icon: HomeAltSlim, value: eventData?.placeName },
+    {
+      icon: Group,
+      value: `${eventData?.maxCustomers} personnes`,
+      type: "users",
+    },
   ];
 
   const placeInfos = [
-    { icon: MapPin, value: "Antibes, Juan los Pinos, 06160" },
-    { icon: HomeAltSlim, value: "Los pollos hermanos" },
+    { icon: MapPin, value: eventData?.cityName },
+    { icon: HomeAltSlim, value: eventData?.placeName },
   ];
 
   return (
@@ -41,12 +59,23 @@ export default function EventPage() {
         <section className="event-grid">
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-2">
-              <h1>Atelier fresque végétal</h1>
-              <p>
-                Organisé par <span className="dark-text">Jean Claude</span>
-              </p>
+              {eventLoading ? (
+                <h1 className="skeleton-bg">Nom de l'événement</h1>
+              ) : (
+                <h1>{eventData?.name}</h1>
+              )}
+              {eventLoading ? (
+                <p className="skeleton-bg">Organisé par quelqu'un</p>
+              ) : (
+                <p>
+                  Organisé par{" "}
+                  <span className="dark-text">
+                    {eventData?.organizer?.pseudo || "Organisateur inconnu"}
+                  </span>
+                </p>
+              )}
             </div>
-            <ItemList items={eventInfos} />
+            {eventLoading ? <></> : <ItemList items={eventInfos} />}
             <div className="flex flex-wrap gap-4 items-center justify-between">
               <button className="primary-btn">
                 <span>S'inscrire à l'événement</span>
@@ -57,68 +86,70 @@ export default function EventPage() {
               </button>
             </div>
           </div>
-          <Image src={niceImage} alt="Event image" className="banner" />
+          {eventLoading ? (
+            <div className="banner skeleton-bg"></div>
+          ) : (
+            <Image
+              src={eventData?.imageUrl || niceImage}
+              alt="Event image"
+              width={800}
+              height={450}
+              className="banner"
+            />
+          )}
         </section>
         <section className="page-grid">
           <div className="flex flex-col gap-12 lg:col-span-2">
             <div className="flex flex-col gap-6">
               <h2>Description de l'événement</h2>
-              <p>
-                Le Festival de la Fresque Végétale revient cette année pour une
-                édition encore plus spectaculaire ! Pendant quatre jours,
-                artistes botaniques, paysagistes et passionnés de nature uniront
-                leur créativité pour donner vie à des fresques monumentales
-                réalisées exclusivement à partir de plantes, mousses et fleurs
-                locales. 🖌️ Création en direct : Assistez à la conception d’une
-                fresque végétale de 20 mètres de long, illustrant l’harmonie
-                entre l’homme et la nature, façonnée à partir de lichen, de
-                fougères et de pétales soigneusement sélectionnés. 🌺 Ateliers
-                participatifs : Initiez-vous à l’art de la fresque verte en
-                apprenant à composer de petites œuvres murales avec du végétal
-                stabilisé et des substrats naturels. 🌿 Conférences & rencontres
-                : Experts en permaculture et en art écologique partageront leur
-                savoir lors de conférences sur l’impact positif des fresques
-                végétales en milieu urbain. 🎶 Ambiance immersive : Chaque soir,
-                des concerts acoustiques et des performances de danse
-                contemporaine viendront sublimer les créations végétales dans
-                une atmosphère féerique. 🥗 Espace gourmand : Découvrez des
-                saveurs locales et responsables avec nos stands de restauration
-                bio et zéro déchet. Que vous soyez artiste en herbe, amoureux de
-                la nature ou simple curieux, laissez-vous émerveiller par cette
-                célébration unique du vivant ! 🌱✨
-              </p>
+              {eventLoading ? (
+                <>
+                  <p className="skeleton-bg">
+                    Description complète de l'événement
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>{eventData?.description}</p>
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-6">
               <h2>Tags</h2>
-              <ThemeTags
-                theme={["Musique", "Sponsorisé", "Sport", "Learning"]}
-              />
+              {eventLoading ? (
+                <>
+                  <div className="flex flex-wrap gap-2 w-full">
+                    <button className="skeleton-btn">Catégorie</button>
+                    <button className="skeleton-btn">Catégorie</button>
+                  </div>
+                </>
+              ) : (
+                <ThemeTags theme={eventData.categories} />
+              )}
             </div>
             <div className="flex flex-col gap-6">
               <h2>Lieu</h2>
-              <ItemList items={placeInfos} />
+              {eventLoading ? <></> : <ItemList items={placeInfos} />}
             </div>
-            <ProfilCard
-              className="relative translate-y-0"
-              name="Jean Claude"
-              id="@jeanclaudedu06"
-              note={4}
-              isOrganiser={true}
-            />
+            {eventLoading ? (
+              <></>
+            ) : (
+              <ProfilCard
+                className="relative translate-y-0"
+                name={`${eventData?.organizer?.firstName} ${eventData?.organizer?.lastName}`}
+                id={eventData?.organizer?.pseudo}
+                note={eventData?.organizer?.note}
+                isOrganiser={true}
+              />
+            )}
           </div>
           <div className="flex flex-col gap-6">
-            <h2>Billets</h2>
+            <h2>Billet</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
               <TicketCard
                 title="Billet Eco+"
                 description="Billet pour les rats+, tu vas finir debout"
                 price={43}
-                onClick={() => setPaymentModal(true)}
-              />
-              <TicketCard
-                title="Billet bourgeoisie"
-                description="Les riches ont le droit à une chaise en bois"
-                price={44}
                 onClick={() => setPaymentModal(true)}
               />
             </div>

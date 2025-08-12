@@ -17,6 +17,7 @@ import ProfilImages from "../profil-images";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import DialogModal from "../modals/dialog-modal";
+import { formatEventDate } from "@/utils/date-formatter";
 
 export default function EventCard({
   canEdit,
@@ -100,19 +101,7 @@ export default function EventCard({
           </div>
           <p className="blue-text">
             {cityName} |{" "}
-            {date
-              ? new Date(date).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                }) +
-                " • " +
-                new Date(date).toLocaleTimeString("fr-FR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "samedi 24 juin 2025 • 15h30"}
+            {formatEventDate(date, { fallback: "samedi 24 juin 2025 • 15h30" })}
           </p>
           <ThemeTags
             theme={

@@ -7,7 +7,6 @@ import ThemeCard from "@/components/cards/theme-card";
 import EventCard from "@/components/cards/event-card";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
-import SearchBarModal from "@/components/modals/search-bar-modal";
 import { useState } from "react";
 import { useCities } from "@/hooks/use-cities";
 import { useEvents } from "@/hooks/use-events";
@@ -16,9 +15,10 @@ import { useCategories } from "@/hooks/use-categories";
 import CityCardSkeleton from "@/components/cards/city-card-skeleton";
 import EventCardSkeleton from "@/components/cards/event-card-skeleton";
 import ThemeCardSkeleton from "@/components/cards/theme-card-skeleton";
+import { useSearchModal } from "@/contexts/search-modal-context";
 
 export default function Home() {
-  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
+  const { toggleSearchModal } = useSearchModal();
 
   const { token } = useAuth();
 
@@ -50,9 +50,7 @@ export default function Home() {
             <br /> Un festival 🎪 à ne pas manquer. Tout est ici. Découvrez,
             réservez, profitez. 🗓️
           </p>
-          <SearchBarButton
-            onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
-          />
+          <SearchBarButton onClick={toggleSearchModal} />
         </section>
         <section className="container">
           <CustomTitle title="Les villes tendances" description="Villes" />
@@ -66,25 +64,19 @@ export default function Home() {
             )}
             {!citiesLoading &&
               (citiesData?._embedded?.cityResponses?.length === 0 ||
-                citiesError) && (
-                <div className="col-span-full">
-                  <p className="text-center">
-                    Aucune ville disponible pour le moment
-                  </p>
-                </div>
-              )}
+                citiesError) && <p>Aucune ville disponible pour le moment</p>}
             {!citiesLoading &&
               citiesData?._embedded?.cityResponses?.map((city) => (
                 <CityCard
+                  cityId={city.id}
                   key={city.id}
                   name={city.name}
                   eventsCount={city.eventsCount || 0}
                   bannerUrl={city.bannerUrl}
-                  /* changeCity={() => changeCity(city.name)} */
                 />
               ))}
           </div>
-          <Link href="/cities" className="blue-rounded-btn">
+          <Link href="/villes" className="blue-rounded-btn">
             <span>Voir plus</span>
             <NavArrowRight />
           </Link>
@@ -112,17 +104,12 @@ export default function Home() {
                   />
                 ))}
             {!categoriesLoading && categories.length === 0 && (
-              <>
-                <ThemeCard theme="sport" />
-                <ThemeCard theme="musique" />
-                <ThemeCard theme="learning" />
-                <ThemeCard />
-              </>
+              <p>Aucune catégorie disponible pour le moment</p>
             )}
           </div>
         </section>
         <section className="container">
-          <CustomTitle title="Recommandé pour vous" description="Evenements" />
+          <CustomTitle title="Recommandé pour vous" description="Événements" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventsLoading && (
               <>
@@ -134,15 +121,12 @@ export default function Home() {
             {!eventsLoading &&
               (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
                 eventsError) && (
-                <div className="col-span-full">
-                  <p className="text-center">
-                    Aucun événement disponible pour le moment
-                  </p>
-                </div>
+                <p>Aucun événement disponible pour le moment</p>
               )}
             {!eventsLoading &&
               eventsData?._embedded?.eventSummaryResponses?.map((event) => (
                 <EventCard
+                  eventId={event.id}
                   key={event.id}
                   date={event.date}
                   description={event.description}
@@ -157,13 +141,13 @@ export default function Home() {
                 />
               ))}
           </div>
-          <Link href="/subscriptions/events" className="blue-rounded-btn">
+          <Link href="/evenements" className="blue-rounded-btn">
             <span>Voir plus</span>
             <NavArrowRight />
           </Link>
         </section>
         <section className="container">
-          <CustomTitle title="Proche de chez vous" description="Evenements" />
+          <CustomTitle title="Proche de chez vous" description="Événements" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventsLoading && (
               <>
@@ -175,15 +159,12 @@ export default function Home() {
             {!eventsLoading &&
               (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
                 eventsError) && (
-                <div className="col-span-full">
-                  <p className="text-center">
-                    Aucun événement disponible pour le moment
-                  </p>
-                </div>
+                <p>Aucun événement disponible pour le moment</p>
               )}
             {!eventsLoading &&
               eventsData?._embedded?.eventSummaryResponses?.map((event) => (
                 <EventCard
+                  eventId={event.id}
                   key={event.id}
                   date={event.date}
                   description={event.description}
@@ -198,16 +179,12 @@ export default function Home() {
                 />
               ))}
           </div>
-          <Link href="/activities/events" className="blue-rounded-btn">
+          <Link href="/evenements" className="blue-rounded-btn">
             <span>Voir plus</span>
             <NavArrowRight />
           </Link>
         </section>
       </main>
-      <SearchBarModal
-        isOpen={isSearchBarOpen}
-        setIsOpen={() => setIsSearchBarOpen(!isSearchBarOpen)}
-      />
     </>
   );
 }

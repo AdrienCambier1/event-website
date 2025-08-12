@@ -40,7 +40,11 @@ export default function Footer() {
                   <X />
                 </Link>
               </nav>
-              <Link href="/events/create" className="primary-btn">
+              <Link
+                href="https://veevent-admin.vercel.app/"
+                className="primary-btn"
+                target="_blank"
+              >
                 <span>Publie ton événement</span>
                 <ArrowUpRight />
               </Link>

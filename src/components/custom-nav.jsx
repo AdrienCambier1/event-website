@@ -3,17 +3,19 @@ import { Home } from "iconoir-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function CustomNav({ navigation, disabledHome }) {
+export default function CustomNav({ navigation, disabledHome, homeLink }) {
   const pathname = usePathname();
 
   return (
     <div className="bg-white rounded-full blue-shadow p-2 flex items-center w-fit max-w-full">
       {!disabledHome && (
-        <Link href="/" className="px-4">
+        <Link href={homeLink || "/"} className="px-4">
           <Home className="h-6 w-6 text-[var(--primary-blue)] hover:opacity-75 transition" />
         </Link>
       )}
       {navigation.map((item, index) => {
+        if (!item.href) return null; // Ignore les éléments sans href
+
         const isActive = pathname.includes(item.href);
 
         return (

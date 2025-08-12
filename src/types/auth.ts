@@ -1,5 +1,3 @@
-// Types pour l'inscription utilisateur
-
 export interface RegisterFormData {
   email: string;
   username: string;

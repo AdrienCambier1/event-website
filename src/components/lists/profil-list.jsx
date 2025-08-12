@@ -1,10 +1,17 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
 import OrganiserCard from "@/components/cards/organiser-card";
+import OrganiserCardSkeleton from "@/components/cards/organiser-card-skeleton";
 import DropdownButton from "@/components/buttons/dropdown-button";
-import { useState, Suspense, useEffect, useRef } from "react";
+import { useState, Suspense, useEffect, useRef, useMemo } from "react";
+import { Erase } from "iconoir-react";
 
-function ProfilListContent({ title, description }) {
+function ProfilListContent({
+  title,
+  description,
+  organizers = [],
+  isLoading = false,
+}) {
   const { useSearchParams } = require("next/navigation");
   const searchParams = useSearchParams();
   const [sortOption, setSortOption] = useState("liked");
@@ -14,8 +21,46 @@ function ProfilListContent({ title, description }) {
   const sortOptions = [
     { label: "Mieux noté", value: "liked" },
     { label: "Plus d'événements", value: "events" },
-    { label: "Plus d'abonnés", value: "subscribers" },
+    { label: "Ordre A-Z", value: "asc" },
+    { label: "Ordre Z-A", value: "desc" },
   ];
+
+  const filteredAndSortedOrganizers = useMemo(() => {
+    if (!organizers || !Array.isArray(organizers)) return [];
+
+    let filteredOrganizers = [...organizers];
+
+    if (searchTerm.trim()) {
+      filteredOrganizers = filteredOrganizers.filter(
+        (organizer) =>
+          organizer.pseudo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          organizer.firstName
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          organizer.lastName
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          organizer.description
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filteredOrganizers.sort((a, b) => {
+      switch (sortOption) {
+        case "liked":
+          return (b.note || 0) - (a.note || 0);
+        case "events":
+          return (b.eventsCount || 0) - (a.eventsCount || 0);
+        case "asc":
+          return (a.pseudo || "").localeCompare(b.pseudo || "");
+        case "desc":
+          return (b.pseudo || "").localeCompare(a.pseudo || "");
+        default:
+          return 0;
+      }
+    });
+  }, [organizers, searchTerm, sortOption]);
 
   useEffect(() => {
     if (initializedRef.current) return;
@@ -50,34 +95,45 @@ function ProfilListContent({ title, description }) {
         </div>
       </div>
       <div className="cards-grid">
-        <OrganiserCard
-          name="Jean Claude"
-          id="@JeanClaudeDu06"
-          subscribers="8"
-          events="12"
-          note="4"
-        />
-        <OrganiserCard
-          name="Jean Claude"
-          id="@JeanClaudeDu06"
-          subscribers="8"
-          events="12"
-          note="4"
-        />
-        <OrganiserCard
-          name="Jean Claude"
-          id="@JeanClaudeDu06"
-          subscribers="8"
-          events="12"
-          note="4"
-        />
-        <OrganiserCard
-          name="Jean Claude"
-          id="@JeanClaudeDu06"
-          subscribers="8"
-          events="12"
-          note="4"
-        />
+        {isLoading && (
+          <>
+            <OrganiserCardSkeleton />
+            <OrganiserCardSkeleton />
+            <OrganiserCardSkeleton />
+            <OrganiserCardSkeleton />
+          </>
+        )}
+        {!isLoading && filteredAndSortedOrganizers.length === 0 && (
+          <div className="flex flex-col gap-4">
+            {searchTerm.trim() ? (
+              <>
+                <p>Aucun organisateur trouvé pour "{searchTerm}"</p>
+                <button
+                  className="primary-btn"
+                  onClick={() => setSearchTerm("")}
+                >
+                  <span>Effacer la recherche</span>
+                  <Erase />
+                </button>
+              </>
+            ) : (
+              <p>Aucun organisateur disponible pour le moment</p>
+            )}
+          </div>
+        )}
+        {!isLoading &&
+          filteredAndSortedOrganizers.map((organizer) => (
+            <OrganiserCard
+              organizerId={organizer.id}
+              key={organizer.id}
+              name={`${organizer.firstName} ${organizer.lastName}`}
+              pseudo={organizer.pseudo}
+              eventPastCount={organizer.eventPastCount || 0}
+              eventsCount={organizer.eventsCount || 0}
+              note={organizer.note?.toString() || "0"}
+              imageUrl={organizer.imageUrl}
+            />
+          ))}
       </div>
     </section>
   );

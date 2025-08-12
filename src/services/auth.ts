@@ -21,29 +21,6 @@ export async function authenticateUser(credentials) {
   return res.json(); // { token }
 }
 
-export async function fetchUserProfile(token) {
-  const res = await fetch(`${API_URL}/users/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    const statusErrors = {
-      401: "Token invalide ou expiré",
-      403: "Accès non autorisé",
-      500: "Erreur serveur, veuillez réessayer",
-    };
-    throw new Error(
-      statusErrors[res.status] || "Erreur lors de la récupération du profil"
-    );
-  }
-
-  return res.json();
-}
-
 export async function registerUser(userData) {
   const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",

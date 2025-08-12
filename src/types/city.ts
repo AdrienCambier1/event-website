@@ -1,4 +1,3 @@
-// Types pour les villes (front office - lecture seule)
 export interface City {
   id: number;
   name: string;
@@ -23,7 +22,7 @@ export interface CitiesApiResponse {
   _embedded: {
     cityResponses: City[];
   };
-  _links: any;
+  _links?: any;
   page: {
     size: number;
     totalElements: number;

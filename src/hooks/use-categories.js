@@ -17,7 +17,6 @@ export function useCategories() {
       } catch (err) {
         console.error("Erreur lors du chargement des catégories:", err);
         setError(err.message);
-        // Fallback sur les catégories statiques en cas d'erreur
         setCategories([
           { name: "Musique", key: "musique", description: "", trending: false },
           { name: "Sport", key: "sport", description: "", trending: false },
@@ -37,13 +36,11 @@ export function useCategories() {
     loadCategories();
   }, []);
 
-  // Formater les catégories pour les dropdowns
   const filterOptions = categories.map((category) => ({
     label: category.name,
     value: category.key.toLowerCase(),
   }));
 
-  // Séparer les catégories tendance
   const trendingCategories = categories.filter((category) => category.trending);
 
   return {

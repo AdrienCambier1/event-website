@@ -3,16 +3,22 @@ import ReactFocusLock from "react-focus-lock";
 import ModalBg from "./modal-bg";
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
-import { User, Calendar, Mail, Lock } from "iconoir-react";
+import { User, Phone, AtSign, Lock } from "iconoir-react";
 
-export default function SettingsModal({ isOpen, setIsOpen, type = "name" }) {
+export default function SettingsModal({
+  isOpen,
+  setIsOpen,
+  type = "name",
+  accountData,
+}) {
   const [mounted, setMounted] = useState(false);
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
-    email: "",
+    phone: "",
+    pseudo: "",
+    currentPassword: "",
     password: "",
-    birthdate: "",
   });
 
   const modalConfig = {
@@ -34,27 +40,27 @@ export default function SettingsModal({ isOpen, setIsOpen, type = "name" }) {
         },
       ],
     },
-    birthdate: {
-      icon: Calendar,
-      title: "Modification de la date de naissance",
+    phone: {
+      icon: Phone,
+      title: "Modification du numéro de téléphone",
       fields: [
         {
-          name: "birthdate",
-          label: "Date de naissance",
-          type: "text",
-          placeholder: "jj/mm/aaaa",
+          name: "phone",
+          label: "Numéro de téléphone",
+          type: "tel",
+          placeholder: "06 12 34 56 78",
         },
       ],
     },
-    email: {
-      icon: Mail,
-      title: "Modification de l'email",
+    pseudo: {
+      icon: AtSign,
+      title: "Modification du pseudo",
       fields: [
         {
-          name: "email",
-          label: "Adresse e-mail",
-          type: "email",
-          placeholder: "gerard@example.com",
+          name: "pseudo",
+          label: "Pseudo",
+          type: "text",
+          placeholder: "MonPseudo123",
         },
       ],
     },
@@ -63,16 +69,22 @@ export default function SettingsModal({ isOpen, setIsOpen, type = "name" }) {
       title: "Modification du mot de passe",
       fields: [
         {
+          name: "currentPassword",
+          label: "Mot de passe actuel",
+          type: "password",
+          placeholder: "Votre mot de passe actuel",
+        },
+        {
           name: "password",
           label: "Nouveau mot de passe",
           type: "password",
-          placeholder: "****",
+          placeholder: "Nouveau mot de passe",
         },
         {
           name: "confirmPassword",
           label: "Confirmer le mot de passe",
           type: "password",
-          placeholder: "****",
+          placeholder: "Confirmer le nouveau mot de passe",
         },
       ],
     },
@@ -94,10 +106,11 @@ export default function SettingsModal({ isOpen, setIsOpen, type = "name" }) {
     setFormValues({
       firstName: "",
       lastName: "",
-      email: "",
+      phone: "",
+      pseudo: "",
+      currentPassword: "",
       password: "",
       confirmPassword: "",
-      birthdate: "",
     });
     setIsOpen(false);
   };
@@ -105,6 +118,22 @@ export default function SettingsModal({ isOpen, setIsOpen, type = "name" }) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Préremplir les champs avec les données utilisateur quand le modal s'ouvre
+  useEffect(() => {
+    if (isOpen && accountData) {
+      setFormValues((prev) => ({
+        ...prev,
+        firstName: accountData.firstName || "",
+        lastName: accountData.lastName || "",
+        phone: accountData.phone || "",
+        pseudo: accountData.pseudo || "",
+        currentPassword: "",
+        password: "",
+        confirmPassword: "",
+      }));
+    }
+  }, [isOpen, accountData]);
 
   if (!mounted) return null;
 

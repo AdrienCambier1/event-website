@@ -3,13 +3,9 @@ import Image from "next/image";
 import niceImage from "@/assets/images/nice.jpg";
 import { ArrowUpRightCircleSolid } from "iconoir-react";
 
-export default function CityCard({ name, eventsCount, changeCity, bannerUrl }) {
+export default function CityCard({ cityId, name, eventsCount, bannerUrl }) {
   return (
-    <Link
-      href="/activities/events"
-      className="city-card group"
-      onClick={changeCity}
-    >
+    <Link href={`/villes/${cityId}/evenements`} className="city-card group">
       <Image
         src={bannerUrl || niceImage}
         alt="City image"

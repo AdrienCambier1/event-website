@@ -1,4 +1,3 @@
-// Types pour les catégories (front office - lecture seule)
 export interface Category {
   name: string;
   description: string;
@@ -11,5 +10,5 @@ export interface CategoriesApiResponse {
   _embedded: {
     categories: Category[];
   };
-  _links: any;
+  _links?: any;
 }

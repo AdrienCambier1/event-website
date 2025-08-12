@@ -3,6 +3,8 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/contexts/auth-context";
 import { CityProvider } from "@/contexts/city-context";
+import { SearchModalProvider } from "@/contexts/search-modal-context";
+import SearchBarModal from "@/components/modals/search-bar-modal";
 
 export const metadata = {
   title: "VeEvent - Plateforme d'événements",
@@ -51,9 +53,12 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
           <CityProvider>
-            <Header />
-            {children}
-            <Footer />
+            <SearchModalProvider>
+              <Header />
+              {children}
+              <Footer />
+              <SearchBarModal />
+            </SearchModalProvider>
           </CityProvider>
         </AuthProvider>
       </body>

@@ -2,7 +2,7 @@ export interface Event {
   id: number;
   name: string;
   description: string;
-  date: string; // Date et heure combinées
+  date: string;
   address: string;
   maxCustomers: number;
   currentParticipants: number;
@@ -32,7 +32,7 @@ export interface EventsApiResponse {
   _embedded: {
     eventSummaryResponses: Event[];
   };
-  _links: any;
+  _links?: any;
   page: {
     size: number;
     totalElements: number;
@@ -95,23 +95,12 @@ export interface EventParticipant {
   id: number;
   pseudo: string;
   imageUrl?: string | null;
-  _links?: {
-    self: {
-      href: string;
-    };
-  };
+  _links?: any;
 }
 
 export interface EventParticipantsApiResponse {
   _embedded: {
     userSummaries: EventParticipant[];
   };
-  _links: {
-    self: {
-      href: string;
-    };
-    event: {
-      href: string;
-    };
-  };
+  _links?: any;
 }

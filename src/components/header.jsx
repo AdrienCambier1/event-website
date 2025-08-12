@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
-import { NavArrowRight, MenuScale, LogOut } from "iconoir-react";
+import { NavArrowRight, MenuScale, LogOut, Search } from "iconoir-react";
 import MenuModal from "./modals/menu-modal";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import ProfilBtn from "./buttons/profil-btn";
 import CityBtn from "./buttons/city-btn";
+import { useSearchModal } from "@/contexts/search-modal-context";
 
 export default function Header() {
   const { isAuthenticated, loading } = useAuth();
+  const { toggleSearchModal } = useSearchModal();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -56,12 +58,19 @@ export default function Header() {
             <MenuScale className="hamburger-menu" />
           </button>
           <nav>
-            <Link href="/activities/events">Activités</Link>
-            <Link href="/cities">Villes</Link>
-            <Link href="/saved/inscriptions">Enregistrés</Link>
-            <Link href="/subscriptions/events">Abonnements</Link>
+            <Link href="/evenements">Evenements</Link>
+            <Link href="/villes">Les villes</Link>
+            <Link href="/lieux">Les lieux</Link>
           </nav>
           <div className="hidden lg:flex items-center gap-4">
+            <button
+              onClick={toggleSearchModal}
+              className="blue-rounded-btn"
+              aria-label="Rechercher"
+            >
+              <span>Rechercher</span>
+              <Search />
+            </button>
             {loading ? (
               <>
                 <div className="skeleton-btn">primary</div>
@@ -69,11 +78,11 @@ export default function Header() {
               </>
             ) : !isAuthenticated ? (
               <>
-                <Link href="/register" className="secondary-btn">
+                <Link href="/inscription" className="secondary-btn">
                   <span>S'inscrire</span>
                   <NavArrowRight />
                 </Link>
-                <Link href="/login" className="primary-btn">
+                <Link href="/connexion" className="primary-btn">
                   <span>Se connecter</span>
                   <NavArrowRight />
                 </Link>

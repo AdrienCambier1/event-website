@@ -91,7 +91,7 @@ form label {
 }
 
 .skeleton-bg {
-  @apply !bg-slate-200 !text-transparent !shadow-none animate-pulse w-fit;
+  @apply !bg-slate-200 !text-transparent !shadow-none animate-pulse w-fit rounded-lg pointer-events-none;
 }
 
 .skeleton-bg * {

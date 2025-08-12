@@ -4,46 +4,51 @@ import { NavArrowRight } from "iconoir-react";
 import CustomNav from "@/components/custom-nav";
 import { usePathname } from "next/navigation";
 
-export default function ProfilHeader() {
+export default function ProfilHeader({
+  isLoading,
+  eventPastCount,
+  eventsCount,
+}) {
   const pathname = usePathname();
-  const isProfilRoute = pathname?.includes("/account/profil/");
+  const isProfilRoute = pathname?.includes("/compte/profil/");
 
   const navigation = [
-    { name: "Evenements", href: "/account/profil/events" },
-    { name: "Participations", href: "/account/profil/participations" },
-    { name: "Avis", href: "/account/profil/reviews" },
+    { name: "Tickets", href: "/compte/profil/tickets" },
+    { name: "Evenements", href: "/compte/profil/evenements" },
+    { name: "Participations", href: "/compte/profil/participations" },
+    { name: "Avis", href: "/compte/profil/avis" },
   ];
 
   return (
     <section className="profil-header">
       <div className="flex flex-col gap-6 justify-between w-full">
         {isProfilRoute ? (
-          <Link href="/account/settings" className="primary-btn">
+          <Link href="/compte/parametres" className="primary-btn">
             <span>Paramètres du compte</span>
             <NavArrowRight />
           </Link>
         ) : (
-          <Link href="/account/profil/events" className="primary-btn">
+          <Link href="/compte/profil/tickets" className="primary-btn">
             <span>Mon activité</span>
             <NavArrowRight />
           </Link>
         )}
         <div className="flex flex-wrap gap-6">
           <div>
-            <p>Abonnements</p>
-            <p className="heavy">28</p>
+            <p>Evenements passés</p>
+            {isLoading ? (
+              <p className="heavy skeleton-bg">00</p>
+            ) : (
+              <p className="heavy">{eventPastCount}</p>
+            )}
           </div>
           <div>
-            <p>Abonnés</p>
-            <p className="heavy">12</p>
-          </div>
-          <div>
-            <p>Veevent organisés</p>
-            <p className="heavy">3</p>
-          </div>
-          <div>
-            <p className="truncate">Veevent participés</p>
-            <p className="heavy">3</p>
+            <p className="truncate">Evenements en cours</p>
+            {isLoading ? (
+              <p className="heavy skeleton-bg">00</p>
+            ) : (
+              <p className="heavy">{eventsCount}</p>
+            )}
           </div>
         </div>
       </div>

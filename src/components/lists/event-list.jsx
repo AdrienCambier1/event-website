@@ -116,7 +116,11 @@ function EventListContent({
             />
           )}
           {showCreateButton && (
-            <Link href="/events/create" className="primary-btn">
+            <Link
+              href="https://veevent-admin.vercel.app/"
+              className="primary-btn"
+              target="_blank"
+            >
               <span>Créer un événement</span>
               <Plus />
             </Link>
@@ -156,6 +160,7 @@ function EventListContent({
         {!isLoading &&
           filteredAndSortedEvents.map((event) => (
             <EventCard
+              eventId={event.id}
               key={event.id}
               date={event.date}
               description={event.description}

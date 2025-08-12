@@ -3,14 +3,23 @@ import RatingStar from "@/components/rating-stars";
 import Image from "next/image";
 import { UserStar } from "iconoir-react";
 
-export default function ProfilCard({ name, id, note, className, isOrganiser }) {
+export default function ProfilCard({
+  name,
+  pseudo,
+  note,
+  className,
+  isOrganiser,
+  imageUrl,
+}) {
   return (
     <div
       className={`bg-white dark-shadow w-full max-w-[600px] absolute -translate-y-1/2 rounded-full h-fit p-4 flex gap-4 items-center ${className}`}
     >
       <Image
-        src={profilPicture}
+        src={imageUrl || profilPicture}
         alt="Profil picture"
+        width={80}
+        height={80}
         className="profil-pic-xl"
       />
       <div className="flex flex-col gap-2 overflow-hidden">
@@ -23,7 +32,7 @@ export default function ProfilCard({ name, id, note, className, isOrganiser }) {
             </div>
           )}
           <div className="flex flex-col">
-            <p className="blue-text">{id}</p>
+            <p className="blue-text">{pseudo}</p>
             <RatingStar note={note} />
           </div>
         </div>

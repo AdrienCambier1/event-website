@@ -13,10 +13,10 @@ export function useCities(page = 0, size = 20) {
         setLoading(true);
         setError(null);
         const cities = await fetchCities(page, size);
-        console.log("Cities API Response:", cities); // Debug
+        console.log("Cities API Response:", cities);
         setData(cities);
       } catch (err) {
-        console.error("Cities API Error:", err); // Debug
+        console.error("Cities API Error:", err);
         setError(err instanceof Error ? err.message : "Erreur inconnue");
       } finally {
         setLoading(false);

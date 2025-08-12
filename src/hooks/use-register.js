@@ -11,16 +11,15 @@ export function useRegister() {
       setLoading(true);
       setError(null);
 
-      // Mapper les données du formulaire vers le format API
       const apiData = {
         firstName: userData.firstName,
         lastName: userData.lastName,
-        pseudo: userData.username, // username -> pseudo
+        pseudo: userData.username,
         email: userData.email,
         password: userData.password,
         phone: userData.phone,
         description: userData.description,
-        categoryKeys: userData.interests, // Les valeurs sont déjà en format correct
+        categoryKeys: userData.interests,
       };
 
       console.log("Données envoyées à l'API:", apiData);

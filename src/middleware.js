@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 
-const protectedRoutes = [
-  "/account",
-  "/saved",
-  "/subscriptions",
-  "/events/create",
-];
+const protectedRoutes = ["/compte", "/evenements/create"];
 
 export default function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -23,7 +18,7 @@ export default function middleware(request) {
   if (!authCookie) {
     const encodedRedirectPath = encodeURIComponent(path);
     return NextResponse.redirect(
-      new URL(`/login?redirect=${encodedRedirectPath}`, request.url)
+      new URL(`/connexion?redirect=${encodedRedirectPath}`, request.url)
     );
   }
 

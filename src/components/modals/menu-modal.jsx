@@ -1,13 +1,15 @@
-import { Xmark, User } from "iconoir-react";
+import { Xmark, User, Search } from "iconoir-react";
 import Link from "next/link";
 import ModalBg from "./modal-bg";
 import ReactFocusLock from "react-focus-lock";
 import { useAuth } from "@/contexts/auth-context";
 import ProfilBtn from "../buttons/profil-btn";
 import CityBtn from "../buttons/city-btn";
+import { useSearchModal } from "@/contexts/search-modal-context";
 
 export default function MenuModal({ isOpen, setIsOpen }) {
   const { isAuthenticated } = useAuth();
+  const { toggleSearchModal } = useSearchModal();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -47,46 +49,53 @@ export default function MenuModal({ isOpen, setIsOpen }) {
           </div>
           <nav>
             <h4>Pages</h4>
-            <Link href="/activities" onClick={setIsOpen}>
-              Activités
+            <Link href="/evenements" onClick={setIsOpen}>
+              Evenements
+            </Link>
+            <Link href="/villes" onClick={setIsOpen}>
+              Les villes
             </Link>
             <div>
-              <Link href="/activities/events" onClick={setIsOpen}>
+              <Link href="/villes/events" onClick={setIsOpen}>
                 Evenements
               </Link>
-              <Link href="/activities/organisers" onClick={setIsOpen}>
+              <Link href="/villes/organisateurs" onClick={setIsOpen}>
+                Lieux
+              </Link>
+              <Link href="/villes/organisateurs" onClick={setIsOpen}>
                 Organisateurs
               </Link>
             </div>
-            <Link href="/cities" onClick={setIsOpen}>
-              Les villes
-            </Link>
-            <Link href="/saved" onClick={setIsOpen}>
-              Enregistrés
+            <Link href="/lieux" onClick={setIsOpen}>
+              Les lieux
             </Link>
             <div>
-              <Link href="/saved/inscriptions" onClick={setIsOpen}>
-                Inscriptions
+              <Link href="/lieux/evenements" onClick={setIsOpen}>
+                Evenements
               </Link>
-              <Link href="/saved/marked" onClick={setIsOpen}>
-                Mes favoris
-              </Link>
-            </div>
-            <Link href="/subscriptions" onClick={setIsOpen}>
-              Abonnements
-            </Link>
-            <div>
-              <Link href="/subscriptions/events" onClick={setIsOpen}>
-                Evennements des abonnements
-              </Link>
-              <Link href="/subscriptions/profils" onClick={setIsOpen}>
-                Profils des abonnements
+              <Link href="/lieux/organisateurs" onClick={setIsOpen}>
+                Organisateurs
               </Link>
             </div>
+            <button
+              onClick={() => {
+                toggleSearchModal();
+                setIsOpen(false);
+              }}
+              className="blue-rounded-btn"
+              aria-label="Rechercher"
+            >
+              <span>Rechercher</span>
+              <Search />
+            </button>
           </nav>
         </div>
         {!isAuthenticated ? (
-          <Link href="/login" className="primary-form-btn" onClick={setIsOpen}>
+          <Link
+            href="/connexion"
+            className="primary-form-btn"
+            onClick={setIsOpen}
+          >
             <span>Se connecter</span>
             <User />
           </Link>

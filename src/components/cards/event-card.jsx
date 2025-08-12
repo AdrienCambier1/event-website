@@ -20,6 +20,7 @@ import DialogModal from "../modals/dialog-modal";
 import { formatEventDate } from "@/utils/date-formatter";
 
 export default function EventCard({
+  eventId,
   canEdit,
   isRegistered,
   isTrending,
@@ -125,28 +126,20 @@ export default function EventCard({
                   } dropdown-parent right-0`}
                 >
                   <Link
-                    href="/events/1"
+                    href={`/evenements/${eventId}`}
                     className="dropdown-child"
                     onClick={() => setEditDropdown(false)}
                   >
                     Voir l'événement
                   </Link>
-                  <button
+                  <Link
+                    href="https://veevent-admin.vercel.app/"
                     className="dropdown-child"
                     onClick={() => setEditDropdown(false)}
+                    target="_blank"
                   >
-                    Modifier
-                  </button>
-                  <button
-                    className="dropdown-dangerous"
-                    onClick={() => {
-                      setEditDropdown(false);
-                      setDeleteModal(true);
-                    }}
-                  >
-                    <span>Supprimer</span>
-                    <Trash />
-                  </button>
+                    Paramétrer l'événement
+                  </Link>
                 </div>
               </div>
             )}
@@ -166,7 +159,7 @@ export default function EventCard({
                   } dropdown-parent right-0`}
                 >
                   <Link
-                    href="/events/1"
+                    href={`/evenements/${eventId}`}
                     className="dropdown-child"
                     onClick={() => setRegisteredDropdown(false)}
                   >
@@ -202,26 +195,10 @@ export default function EventCard({
       {canEdit || isRegistered ? (
         <div className="white-card">{eventCardContent()}</div>
       ) : (
-        <Link href="/events/1" className="white-card">
+        <Link href={`/evenements/${eventId}`} className="white-card">
           {eventCardContent()}
         </Link>
       )}
-      <DialogModal
-        icon={Trash}
-        isOpen={deleteModal}
-        setIsOpen={() => setDeleteModal(false)}
-        title="Supprimer l'événement"
-        action="Supprimer"
-        description={
-          <>
-            Cette action entraînera la suppression définitive de l’événement{" "}
-            <span className="dark-text">Atelier fresque végétal</span>, les
-            inscrits seront remboursés.
-          </>
-        }
-        onClick={() => setDeleteModal(false)}
-        isDangerous={true}
-      />
       <DialogModal
         icon={UserXmark}
         isOpen={unsubscribeModal}

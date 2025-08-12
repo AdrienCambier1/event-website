@@ -7,7 +7,6 @@ export function useUrlFilters() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialiser les filtres depuis l'URL (lecture seule)
   const initializeFromURL = useCallback(
     (filterOptions) => {
       if (isInitialized || !filterOptions.length) return;
@@ -33,7 +32,6 @@ export function useUrlFilters() {
     [searchParams, isInitialized]
   );
 
-  // Fonctions pour gérer les filtres (sans mise à jour URL)
   const addFilter = useCallback((filterValue) => {
     setSelectedFilters((prev) => [...prev, filterValue]);
   }, []);

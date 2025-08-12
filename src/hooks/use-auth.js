@@ -1,6 +1,7 @@
 "use client";
 import { useAuth as useAuthContext } from "@/contexts/auth-context";
-import { authenticateUser, fetchUserProfile } from "@/services/auth";
+import { authenticateUser } from "@/services/auth";
+import { fetchCurrentUser } from "@/services/fetch-user";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 
@@ -10,35 +11,27 @@ export function useAuth() {
 
   const loginWithCredentials = async (email, password, redirectPath = "/") => {
     try {
-      // Appel à l'API backend pour l'authentification
       const response = await authenticateUser({ email, password });
       const token = response.token;
 
-      // Décoder le token pour extraire les infos de base
       const decodedToken = jwtDecode(token);
 
-      // Récupérer le profil utilisateur complet
-      const userProfile = await fetchUserProfile(token);
+      const userProfile = await fetchCurrentUser(token);
 
-      // Créer un objet utilisateur complet
       const user = {
-        email: decodedToken.sub, // Le 'sub' contient l'email
+        email: decodedToken.sub,
         exp: decodedToken.exp,
         iat: decodedToken.iat,
-        // Ajouter les informations du profil
         pseudo: userProfile.pseudo,
         imageUrl: userProfile.imageUrl,
-        // Optionnel: conserver les autres données si nécessaire
         id: userProfile.id,
         firstName: userProfile.firstName,
         lastName: userProfile.lastName,
         role: userProfile.role,
       };
 
-      // Utiliser la fonction login du context
       const result = await context.login({ user, token }, redirectPath);
 
-      // Si la connexion réussit, naviguer avec le router
       if (result.success) {
         router.push(result.redirectPath);
         return true;
@@ -54,7 +47,6 @@ export function useAuth() {
   const logoutUser = async () => {
     const result = context.logout();
 
-    // Si la déconnexion réussit, naviguer avec le router
     if (result.success) {
       router.push(result.redirectPath);
       return true;

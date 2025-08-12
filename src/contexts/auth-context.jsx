@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { fetchUserProfile } from "@/services/auth";
+import { fetchCurrentUser } from "@/services/fetch-user";
 
 const AuthContext = createContext();
 
@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
           } else {
             try {
               // Récupérer le profil utilisateur avec le token
-              const userProfile = await fetchUserProfile(storedToken);
+              const userProfile = await fetchCurrentUser(storedToken);
 
               // Créer l'objet utilisateur complet
               const user = {

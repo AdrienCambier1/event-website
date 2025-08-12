@@ -4,8 +4,10 @@ import { Check, NavArrowRight, Search } from "iconoir-react";
 import { useRouter } from "next/navigation";
 import ModalBg from "./modal-bg";
 import ReactFocusLock from "react-focus-lock";
+import { useSearchModal } from "@/contexts/search-modal-context";
 
-export default function SearchBarModal({ isOpen, setIsOpen }) {
+export default function SearchBarModal() {
+  const { isSearchModalOpen, closeSearchModal } = useSearchModal();
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("events");
@@ -22,20 +24,20 @@ export default function SearchBarModal({ isOpen, setIsOpen }) {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Enter" && isOpen && searchTerm.trim()) {
+      if (e.key === "Enter" && isSearchModalOpen && searchTerm.trim()) {
         e.preventDefault();
         handleSearch(e);
       }
     };
 
-    if (isOpen) {
+    if (isSearchModalOpen) {
       document.addEventListener("keydown", handleKeyDown);
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, searchTerm, searchType]);
+  }, [isSearchModalOpen, searchTerm, searchType]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -71,7 +73,7 @@ export default function SearchBarModal({ isOpen, setIsOpen }) {
       );
     }
 
-    setIsOpen();
+    closeSearchModal();
   };
 
   const handleTypeChange = (type) => {
@@ -84,12 +86,12 @@ export default function SearchBarModal({ isOpen, setIsOpen }) {
   );
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isSearchModalOpen && inputRef.current) {
       setTimeout(() => {
         inputRef.current.focus();
       }, 100);
     }
-  }, [isOpen]);
+  }, [isSearchModalOpen]);
 
   useEffect(() => {
     setMounted(true);
@@ -102,12 +104,12 @@ export default function SearchBarModal({ isOpen, setIsOpen }) {
       <ReactFocusLock
         ref={modalRef}
         className={`${
-          isOpen ? "visible" : "invisible"
+          isSearchModalOpen ? "visible" : "invisible"
         } modal-container !items-start`}
       >
         <div
           className={`${
-            isOpen ? "opacity-100" : "opacity-0"
+            isSearchModalOpen ? "opacity-100" : "opacity-0"
           } search-bar-btn pointer-events-auto`}
         >
           <Search />
@@ -162,7 +164,7 @@ export default function SearchBarModal({ isOpen, setIsOpen }) {
           </div>
         </div>
       </ReactFocusLock>
-      <ModalBg isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalBg isOpen={isSearchModalOpen} setIsOpen={closeSearchModal} />
     </>
   );
 }

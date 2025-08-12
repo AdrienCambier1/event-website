@@ -5,31 +5,37 @@ import Link from "next/link";
 import { NavArrowRight } from "iconoir-react";
 
 export default function OrganiserCard({
+  organizerId,
   name,
-  id,
+  pseudo,
   note,
-  subscribers,
-  events,
-  href = "",
+  eventPastCount,
+  eventsCount,
+  imageUrl,
 }) {
   return (
     <div className="white-card p-4 flex gap-4">
       <Image
-        src={profilPicture}
+        src={imageUrl || profilPicture}
         alt="Profil picture"
+        width={80}
+        height={80}
         className="profil-pic-xl"
       />
       <div className="flex flex-col gap-4 w-full">
         <h3 className="text-[var(--secondary-blue)]">{name}</h3>
         <div className="flex flex-col">
-          <p className="blue-text">{id}</p>
+          <p className="blue-text">{pseudo}</p>
           <RatingStar note={note} />
         </div>
         <p>
-          {subscribers} abonnés | {events} événements
+          {eventPastCount} événements passés | {eventsCount} événements en cours
         </p>
         <div className="w-full flex justify-end">
-          <Link href={href} className="secondary-btn">
+          <Link
+            href={`/organisateurs/${organizerId}`}
+            className="secondary-btn"
+          >
             <span>Voir le profil</span>
             <NavArrowRight />
           </Link>

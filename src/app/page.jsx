@@ -65,7 +65,8 @@ export default function Home() {
               </>
             )}
             {!citiesLoading &&
-              citiesData?._embedded?.cityResponses?.length === 0 && (
+              (citiesData?._embedded?.cityResponses?.length === 0 ||
+                citiesError) && (
                 <div className="col-span-full">
                   <p className="text-center">
                     Aucune ville disponible pour le moment
@@ -131,7 +132,8 @@ export default function Home() {
               </>
             )}
             {!eventsLoading &&
-              eventsData?._embedded?.eventSummaryResponses?.length === 0 && (
+              (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
+                eventsError) && (
                 <div className="col-span-full">
                   <p className="text-center">
                     Aucun événement disponible pour le moment
@@ -171,7 +173,8 @@ export default function Home() {
               </>
             )}
             {!eventsLoading &&
-              eventsData?._embedded?.eventSummaryResponses?.length === 0 && (
+              (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
+                eventsError) && (
                 <div className="col-span-full">
                   <p className="text-center">
                     Aucun événement disponible pour le moment

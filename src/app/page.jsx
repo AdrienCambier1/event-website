@@ -54,139 +54,152 @@ export default function Home() {
             onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
           />
         </section>
-        {!citiesError && (
-          <section className="container">
-            <CustomTitle title="Les villes tendances" description="Villes" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {citiesLoading && (
-                <>
-                  <CityCardSkeleton />
-                  <CityCardSkeleton />
-                  <CityCardSkeleton />
-                </>
+        <section className="container">
+          <CustomTitle title="Les villes tendances" description="Villes" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {citiesLoading && (
+              <>
+                <CityCardSkeleton />
+                <CityCardSkeleton />
+                <CityCardSkeleton />
+              </>
+            )}
+            {!citiesLoading &&
+              citiesData?._embedded?.cityResponses?.length === 0 && (
+                <div className="col-span-full">
+                  <p className="text-center">
+                    Aucune ville disponible pour le moment
+                  </p>
+                </div>
               )}
-              {!citiesLoading &&
-                citiesData?._embedded?.cityResponses?.map((city) => (
-                  <CityCard
-                    key={city.id}
-                    name={city.name}
-                    eventsCount={city.eventsCount || 0}
-                    bannerUrl={city.bannerUrl}
-                    /* changeCity={() => changeCity(city.name)} */
+            {!citiesLoading &&
+              citiesData?._embedded?.cityResponses?.map((city) => (
+                <CityCard
+                  key={city.id}
+                  name={city.name}
+                  eventsCount={city.eventsCount || 0}
+                  bannerUrl={city.bannerUrl}
+                  /* changeCity={() => changeCity(city.name)} */
+                />
+              ))}
+          </div>
+          <Link href="/cities" className="blue-rounded-btn">
+            <span>Voir plus</span>
+            <NavArrowRight />
+          </Link>
+        </section>
+        <section className="container">
+          <CustomTitle title="Envie d'une sortie" description="Thèmes" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {categoriesLoading && (
+              <>
+                <ThemeCardSkeleton />
+                <ThemeCardSkeleton />
+                <ThemeCardSkeleton />
+                <ThemeCardSkeleton />
+              </>
+            )}
+            {!categoriesLoading &&
+              categories
+                .slice(0, 4)
+                .map((category) => (
+                  <ThemeCard
+                    key={category.key}
+                    theme={category.key}
+                    title={category.name}
+                    description={category.description}
                   />
                 ))}
-            </div>
-            <Link href="/cities" className="blue-rounded-btn">
-              <span>Voir plus</span>
-              <NavArrowRight />
-            </Link>
-          </section>
-        )}
-        {!categoriesError && (
-          <section className="container">
-            <CustomTitle title="Envie d'une sortie" description="Thèmes" />
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {categoriesLoading && (
-                <>
-                  <ThemeCardSkeleton />
-                  <ThemeCardSkeleton />
-                  <ThemeCardSkeleton />
-                  <ThemeCardSkeleton />
-                </>
+            {!categoriesLoading && categories.length === 0 && (
+              <>
+                <ThemeCard theme="sport" />
+                <ThemeCard theme="musique" />
+                <ThemeCard theme="learning" />
+                <ThemeCard />
+              </>
+            )}
+          </div>
+        </section>
+        <section className="container">
+          <CustomTitle title="Recommandé pour vous" description="Evenements" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {eventsLoading && (
+              <>
+                <EventCardSkeleton />
+                <EventCardSkeleton />
+                <EventCardSkeleton />
+              </>
+            )}
+            {!eventsLoading &&
+              eventsData?._embedded?.eventSummaryResponses?.length === 0 && (
+                <div className="col-span-full">
+                  <p className="text-center">
+                    Aucun événement disponible pour le moment
+                  </p>
+                </div>
               )}
-              {!categoriesLoading &&
-                categories
-                  .slice(0, 4)
-                  .map((category) => (
-                    <ThemeCard
-                      key={category.key}
-                      theme={category.key}
-                      title={category.name}
-                      description={category.description}
-                    />
-                  ))}
-              {!categoriesLoading && categories.length === 0 && (
-                <>
-                  <ThemeCard theme="sport" />
-                  <ThemeCard theme="musique" />
-                  <ThemeCard theme="learning" />
-                  <ThemeCard />
-                </>
+            {!eventsLoading &&
+              eventsData?._embedded?.eventSummaryResponses?.map((event) => (
+                <EventCard
+                  key={event.id}
+                  date={event.date}
+                  description={event.description}
+                  name={event.name}
+                  organizerName={event.organizer?.pseudo}
+                  organizerImageUrl={event.organizer?.imageUrl}
+                  organizerNote={event.organizer?.note}
+                  imageUrl={event.imageUrl}
+                  cityName={event.cityName}
+                  isTrending={event.isTrending}
+                  categories={event.categories}
+                />
+              ))}
+          </div>
+          <Link href="/subscriptions/events" className="blue-rounded-btn">
+            <span>Voir plus</span>
+            <NavArrowRight />
+          </Link>
+        </section>
+        <section className="container">
+          <CustomTitle title="Proche de chez vous" description="Evenements" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {eventsLoading && (
+              <>
+                <EventCardSkeleton />
+                <EventCardSkeleton />
+                <EventCardSkeleton />
+              </>
+            )}
+            {!eventsLoading &&
+              eventsData?._embedded?.eventSummaryResponses?.length === 0 && (
+                <div className="col-span-full">
+                  <p className="text-center">
+                    Aucun événement disponible pour le moment
+                  </p>
+                </div>
               )}
-            </div>
-          </section>
-        )}
-        {!eventsError && (
-          <section className="container">
-            <CustomTitle
-              title="Recommandé pour vous"
-              description="Evenements"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {eventsLoading && (
-                <>
-                  <EventCardSkeleton />
-                  <EventCardSkeleton />
-                  <EventCardSkeleton />
-                </>
-              )}
-              {!eventsLoading &&
-                eventsData?._embedded?.eventSummaryResponses?.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    date={event.date}
-                    description={event.description}
-                    name={event.name}
-                    organizerName={event.organizer?.pseudo}
-                    organizerImageUrl={event.organizer?.imageUrl}
-                    organizerNote={event.organizer?.note}
-                    imageUrl={event.imageUrl}
-                    cityName={event.cityName}
-                    isTrending={event.isTrending}
-                    categories={event.categories}
-                  />
-                ))}
-            </div>
-            <Link href="/subscriptions/events" className="blue-rounded-btn">
-              <span>Voir plus</span>
-              <NavArrowRight />
-            </Link>
-          </section>
-        )}
-        {!eventsError && (
-          <section className="container">
-            <CustomTitle title="Proche de chez vous" description="Evenements" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {eventsLoading && (
-                <>
-                  <EventCardSkeleton />
-                  <EventCardSkeleton />
-                  <EventCardSkeleton />
-                </>
-              )}
-              {!eventsLoading &&
-                eventsData?._embedded?.eventSummaryResponses?.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    date={event.date}
-                    description={event.description}
-                    name={event.name}
-                    organizerName={event.organizer?.pseudo}
-                    organizerImageUrl={event.organizer?.imageUrl}
-                    organizerNote={event.organizer?.note}
-                    imageUrl={event.imageUrl}
-                    cityName={event.cityName}
-                    isTrending={event.isTrending}
-                    categories={event.categories}
-                  />
-                ))}
-            </div>
-            <Link href="/activities/events" className="blue-rounded-btn">
-              <span>Voir plus</span>
-              <NavArrowRight />
-            </Link>
-          </section>
-        )}
+            {!eventsLoading &&
+              eventsData?._embedded?.eventSummaryResponses?.map((event) => (
+                <EventCard
+                  key={event.id}
+                  date={event.date}
+                  description={event.description}
+                  name={event.name}
+                  organizerName={event.organizer?.pseudo}
+                  organizerImageUrl={event.organizer?.imageUrl}
+                  organizerNote={event.organizer?.note}
+                  imageUrl={event.imageUrl}
+                  cityName={event.cityName}
+                  isTrending={event.isTrending}
+                  categories={event.categories}
+                />
+              ))}
+          </div>
+          <Link href="/activities/events" className="blue-rounded-btn">
+            <span>Voir plus</span>
+            <NavArrowRight />
+          </Link>
+        </section>
       </main>
       <SearchBarModal
         isOpen={isSearchBarOpen}

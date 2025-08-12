@@ -95,20 +95,24 @@ export default function CitiesPage() {
               <CityCardSkeleton />
             </>
           )}
-          {!citiesLoading &&
-            filteredCities.length === 0 &&
-            searchKeyword.trim() && (
-              <div className="flex flex-col gap-4">
-                <p>Aucune ville trouvée pour "{searchKeyword}"</p>
-                <button
-                  className="primary-btn"
-                  onClick={() => setSearchKeyword("")}
-                >
-                  <span>Effacer la recherche</span>
-                  <Erase />
-                </button>
-              </div>
-            )}
+          {!citiesLoading && filteredCities.length === 0 && (
+            <div className="flex flex-col gap-4">
+              {searchKeyword.trim() ? (
+                <>
+                  <p>Aucune ville trouvée pour "{searchKeyword}"</p>
+                  <button
+                    className="primary-btn"
+                    onClick={() => setSearchKeyword("")}
+                  >
+                    <span>Effacer la recherche</span>
+                    <Erase />
+                  </button>
+                </>
+              ) : (
+                <p>Aucune ville disponible pour le moment</p>
+              )}
+            </div>
+          )}
           {!citiesLoading &&
             filteredCities.map((city) => (
               <CityCard

@@ -63,14 +63,16 @@ export default function Header() {
             <Link href="/lieux">Les lieux</Link>
           </nav>
           <div className="hidden lg:flex items-center gap-4">
-            <button
-              onClick={toggleSearchModal}
-              className="blue-rounded-btn"
-              aria-label="Rechercher"
-            >
-              <span>Rechercher</span>
-              <Search />
-            </button>
+            {!loading && (
+              <button
+                onClick={toggleSearchModal}
+                className="blue-rounded-btn"
+                aria-label="Rechercher"
+              >
+                <span>Rechercher</span>
+                <Search />
+              </button>
+            )}
             {loading ? (
               <>
                 <div className="skeleton-btn">primary</div>

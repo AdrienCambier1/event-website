@@ -2,7 +2,6 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/contexts/auth-context";
-import { CityProvider } from "@/contexts/city-context";
 import { SearchModalProvider } from "@/contexts/search-modal-context";
 import SearchBarModal from "@/components/modals/search-bar-modal";
 
@@ -52,14 +51,12 @@ export default function RootLayout({ children }) {
     <html lang="fr">
       <body>
         <AuthProvider>
-          <CityProvider>
-            <SearchModalProvider>
-              <Header />
-              {children}
-              <Footer />
-              <SearchBarModal />
-            </SearchModalProvider>
-          </CityProvider>
+          <SearchModalProvider>
+            <Header />
+            {children}
+            <Footer />
+            <SearchBarModal />
+          </SearchModalProvider>
         </AuthProvider>
       </body>
     </html>

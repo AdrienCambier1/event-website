@@ -1,14 +1,19 @@
 import { useState, useEffect, useRef } from "react";
-import { NavArrowRight, Check } from "iconoir-react";
+import { NavArrowRight } from "iconoir-react";
 import Link from "next/link";
-import { useCity } from "@/contexts/city-context";
+import { useCities } from "@/hooks/use-cities";
 
 export default function CityBtn({ reverse, onClick }) {
   const [cityDropdown, setCityDropdown] = useState(false);
   const cityDropdownRef = useRef(null);
-  const { selectedCity, changeCity, cities } = useCity();
 
-  const displayCities = cities.slice(0, 4);
+  const {
+    data: citiesData,
+    loading: citiesLoading,
+    error: citiesError,
+  } = useCities(0, 3);
+
+  const cities = citiesData?._embedded?.cityResponses || [];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -29,12 +34,7 @@ export default function CityBtn({ reverse, onClick }) {
     };
   }, [cityDropdown]);
 
-  const handleCityChange = (city) => {
-    changeCity(city);
-    setCityDropdown(false);
-  };
-
-  const handleClose = () => {
+  const handleLinkClick = () => {
     setCityDropdown(false);
     onClick && onClick();
   };
@@ -45,7 +45,7 @@ export default function CityBtn({ reverse, onClick }) {
         className="primary-btn"
         onClick={() => setCityDropdown(!cityDropdown)}
       >
-        <span>{selectedCity.name}</span>
+        <span>Choisir une ville</span>
         <NavArrowRight />
       </button>
       <div
@@ -55,22 +55,22 @@ export default function CityBtn({ reverse, onClick }) {
           ${reverse ? "dropdown-parent-reverse" : "dropdown-parent"}
         `}
       >
-        {displayCities.map((city, index) => (
-          <button
-            key={index}
-            className={`dropdown-child ${
-              selectedCity.value === city.value && "!text-[var(--primary-blue)]"
-            }`}
-            onClick={() => handleCityChange(city)}
-          >
-            <span>{city.name}</span>
-            {selectedCity.value === city.value && <Check />}
-          </button>
-        ))}
+        {!citiesLoading &&
+          !citiesError &&
+          cities.map((city) => (
+            <Link
+              key={city.id}
+              href={`/villes/${city.id}/evenements`}
+              className="dropdown-child"
+              onClick={handleLinkClick}
+            >
+              <span>{city.name}</span>
+            </Link>
+          ))}
         <Link
-          href="/cities"
+          href="/villes"
           className="secondary-btn ml-3"
-          onClick={handleClose}
+          onClick={handleLinkClick}
         >
           <span>Afficher plus</span>
           <NavArrowRight />

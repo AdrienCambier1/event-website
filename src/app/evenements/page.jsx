@@ -1,9 +1,5 @@
 "use client";
 import MainTitle from "@/components/titles/main-title";
-import Image from "next/image";
-import nice4k from "@/assets/images/nice4k.jpg";
-import CustomNav from "@/components/custom-nav";
-import { useCity } from "@/contexts/city-context";
 import { useAuth } from "@/hooks/use-auth";
 import { useEvents } from "@/hooks/use-events";
 import EventList from "@/components/lists/event-list";

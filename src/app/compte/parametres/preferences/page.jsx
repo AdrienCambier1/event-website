@@ -1,10 +1,10 @@
 "use client";
-import ThemeButton from "@/components/buttons/theme-btn";
+import ThemeButton from "@/components/buttons/theme-btn/theme-btn";
 import { EditPencil } from "iconoir-react";
 import { useState } from "react";
-import { useCategories } from "@/hooks/use-categories";
+import { useCategories } from "@/hooks/use-category";
 import { useParametres } from "@/contexts/parametres-context";
-import ThemeBtnSkeleton from "@/components/buttons/theme-btn-skeleton";
+import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton";
 
 export default function PreferencesPage() {
   const [selectedThemes, setSelectedThemes] = useState([]);

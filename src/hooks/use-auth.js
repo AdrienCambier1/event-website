@@ -1,7 +1,7 @@
 "use client";
 import { useAuth as useAuthContext } from "@/contexts/auth-context";
-import { authenticateUser } from "@/services/auth";
-import { fetchCurrentUser } from "@/services/fetch-user";
+import { authenticateUser } from "@/services/auth-service";
+import { fetchCurrentUser } from "@/services/user-service";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 

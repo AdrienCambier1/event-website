@@ -1,8 +1,8 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
-import CityCard from "@/components/cards/city-card";
+import CityCard from "@/components/cards/city-card/city-card";
 import DropdownButton from "@/components/buttons/dropdown-button";
-import CityCardSkeleton from "../cards/city-card-skeleton";
+import CityCardSkeleton from "../cards/city-card/city-card-skeleton";
 import { useState, Suspense, useMemo } from "react";
 import { Erase } from "iconoir-react";
 

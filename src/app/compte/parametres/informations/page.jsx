@@ -1,10 +1,10 @@
 "use client";
-import InformationsCard from "@/components/cards/informations-card";
+import InformationsCard from "@/components/cards/informations-card/informations-card";
 import { User, Phone, AtSign, Lock } from "iconoir-react";
 import SettingsModal from "@/components/modals/settings-modal";
 import { useState } from "react";
 import { useParametres } from "@/contexts/parametres-context";
-import InformationsCardSkeleton from "@/components/cards/informations-card-skeleton";
+import InformationsCardSkeleton from "@/components/cards/informations-card/informations-card-skeleton";
 
 export default function InformationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { registerUser } from "@/services/auth.ts";
+import { registerUser } from "@/services/auth-service";
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);

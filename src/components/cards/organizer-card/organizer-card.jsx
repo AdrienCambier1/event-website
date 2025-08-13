@@ -1,10 +1,10 @@
 import profilPicture from "@/assets/images/profil-pic.jpg";
 import Image from "next/image";
-import RatingStar from "../rating-stars";
+import RatingStar from "../../commons/rating-stars";
 import Link from "next/link";
 import { NavArrowRight } from "iconoir-react";
 
-export default function OrganiserCard({
+export default function OrganizerCard({
   organizerId,
   name,
   pseudo,

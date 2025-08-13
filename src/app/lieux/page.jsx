@@ -1,7 +1,7 @@
 "use client";
 import PlaceList from "@/components/lists/place-list";
 import MainTitle from "@/components/titles/main-title";
-import { usePlaces } from "@/hooks/use-places";
+import { usePlaces } from "@/hooks/use-place";
 
 export default function LieuxPage() {
   const {

@@ -3,8 +3,8 @@ import CustomTitle from "@/components/titles/custom-title";
 import DropdownButton from "@/components/buttons/dropdown-button";
 import { useState, Suspense, useMemo } from "react";
 import { Erase } from "iconoir-react";
-import PlaceCard from "../cards/place-card";
-import PlaceCardSkeleton from "../cards/place-card-skeleton";
+import PlaceCard from "../cards/place-card/place-card";
+import PlaceCardSkeleton from "../cards/place-card/place-card-skeleton";
 
 function PlaceListContent({ title, description, isLoading, places }) {
   const [sortOption, setSortOption] = useState("events");

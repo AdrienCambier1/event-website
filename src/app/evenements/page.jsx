@@ -1,7 +1,7 @@
 "use client";
 import MainTitle from "@/components/titles/main-title";
 import { useAuth } from "@/hooks/use-auth";
-import { useEvents } from "@/hooks/use-events";
+import { useEvents } from "@/hooks/use-event";
 import EventList from "@/components/lists/event-list";
 
 export default function EventsPage() {

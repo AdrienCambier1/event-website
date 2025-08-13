@@ -10,17 +10,17 @@ import {
   HomeAltSlim,
   MapPin,
 } from "iconoir-react";
-import ThemeTags from "@/components/theme-tags";
+import ThemeTags from "@/components/commons/theme-tags";
 import ProfilCard from "@/components/cards/profil-card";
 import ItemList from "@/components/lists/item-list";
-import TicketCard from "@/components/cards/ticket-card";
+import TicketCard from "@/components/cards/ticket-card/ticket-card";
 import DialogModal from "@/components/modals/dialog-modal";
 import Link from "next/link";
 import { useState } from "react";
 import PaymentModal from "@/components/modals/payment-modal";
-import { useEventDetails } from "@/hooks/use-event-details";
+import { useEventDetails } from "@/hooks/use-event";
 import { formatEventDate } from "@/utils/date-formatter";
-import TicketCardSkeleton from "@/components/cards/ticket-card-skeleton";
+import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
 
 export default function EventPage() {
   const { id } = useParams();

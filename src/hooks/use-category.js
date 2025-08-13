@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchCategories } from "@/services/fetch-categories";
+import { fetchCategories } from "@/services/category-service";
 
 export function useCategories() {
   const [categories, setCategories] = useState([]);

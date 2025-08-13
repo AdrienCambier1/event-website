@@ -1,7 +1,7 @@
 "use client";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
-import OrSplitter from "@/components/or-splitter";
+import OrSplitter from "@/components/commons/or-splitter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faApple,

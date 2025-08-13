@@ -1,7 +1,7 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
-import OrganiserCard from "@/components/cards/organiser-card";
-import OrganiserCardSkeleton from "@/components/cards/organiser-card-skeleton";
+import OrganiserCard from "@/components/cards/organizer-card/organizer-card";
+import OrganiserCardSkeleton from "@/components/cards/organizer-card/organizer-card-skeleton";
 import DropdownButton from "@/components/buttons/dropdown-button";
 import { useState, Suspense, useEffect, useRef, useMemo } from "react";
 import { Erase } from "iconoir-react";

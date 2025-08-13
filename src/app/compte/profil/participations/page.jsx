@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/hooks/use-auth";
-import { useUserParticipatingEvents } from "@/hooks/use-user-events";
+import { useUserParticipatingEvents } from "@/hooks/use-user";
 import EventList from "@/components/lists/event-list";
 
 export default function ParticipationsPage() {

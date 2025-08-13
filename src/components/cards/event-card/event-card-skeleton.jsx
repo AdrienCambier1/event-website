@@ -1,8 +1,8 @@
 import { Bookmark } from "iconoir-react";
-import RatingStar from "../rating-stars";
-import ThemeTags from "../theme-tags";
-import ProfilImages from "../profil-images";
-import ProfilImagesSkeleton from "../profil-images-skeleton";
+import RatingStar from "../../commons/rating-stars";
+import ThemeTags from "../../commons/theme-tags";
+import ProfilImages from "../../commons/profil-images/profil-images";
+import ProfilImagesSkeleton from "../../commons/profil-images/profil-images-skeleton";
 
 export default function EventCardSkeleton() {
   return (

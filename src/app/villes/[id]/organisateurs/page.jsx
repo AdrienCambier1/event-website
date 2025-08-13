@@ -1,7 +1,7 @@
 "use client";
 import ProfilList from "@/components/lists/profil-list";
 import { useParams } from "next/navigation";
-import { useCityOrganizers } from "@/hooks/use-city-organizers";
+import { useCityOrganizers } from "@/hooks/use-city";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function OrganisateursPage() {

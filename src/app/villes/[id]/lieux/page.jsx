@@ -1,7 +1,7 @@
 "use client";
 import PlaceList from "@/components/lists/place-list";
 import { useParams } from "next/navigation";
-import { useCityPlaces } from "@/hooks/use-places";
+import { useCityPlaces } from "@/hooks/use-city";
 
 export default function LieuxPage() {
   const { id } = useParams();

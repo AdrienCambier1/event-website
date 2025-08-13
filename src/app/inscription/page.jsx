@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
-import OrSplitter from "@/components/or-splitter";
+import OrSplitter from "@/components/commons/or-splitter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faApple,
@@ -10,13 +10,13 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import { ArrowLeft } from "iconoir-react";
-import StepIndicator from "@/components/step-indicator";
-import ThemeButton from "@/components/buttons/theme-btn";
+import StepIndicator from "@/components/commons/step-indicator";
+import ThemeButton from "@/components/buttons/theme-btn/theme-btn";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeClosed } from "iconoir-react";
 import { useRegister } from "@/hooks/use-register";
 import { useAuth } from "@/hooks/use-auth";
-import { useCategories } from "@/hooks/use-categories";
+import { useCategories } from "@/hooks/use-category";
 
 function InscriptionPageContent() {
   const router = useRouter();

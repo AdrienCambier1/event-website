@@ -1,14 +1,14 @@
 "use client";
 import { Bookmark, MoreHoriz, UserXmark } from "iconoir-react";
 import profilPicture from "@/assets/images/profil-pic.jpg";
-import RatingStar from "../rating-stars";
-import ThemeTags from "../theme-tags";
+import RatingStar from "../../commons/rating-stars";
+import ThemeTags from "../../commons/theme-tags";
 import Image from "next/image";
 import niceImage from "@/assets/images/nice.jpg";
-import ProfilImages from "../profil-images";
+import ProfilImages from "../../commons/profil-images/profil-images";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import DialogModal from "../modals/dialog-modal";
+import DialogModal from "../../modals/dialog-modal";
 import { formatEventDate } from "@/utils/date-formatter";
 
 export default function EventCard({

@@ -1,7 +1,7 @@
 "use client";
 import ProfilList from "@/components/lists/profil-list";
 import MainTitle from "@/components/titles/main-title";
-import { useOrganizers } from "@/hooks/use-organizers";
+import { useOrganizers } from "@/hooks/use-organizer";
 
 export default function OrganisateursPage() {
   const {

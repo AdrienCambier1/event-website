@@ -1,14 +1,14 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
-import EventCard from "@/components/cards/event-card";
+import EventCard from "@/components/cards/event-card/event-card";
 import DropdownButton from "@/components/buttons/dropdown-button";
 import MultiDropdownButton from "@/components/buttons/multi-dropdown-button";
-import EventCardSkeleton from "../cards/event-card-skeleton";
+import EventCardSkeleton from "../cards/event-card/event-card-skeleton";
 import { useState, useEffect, Suspense, useMemo } from "react";
 import { Erase, Plus } from "iconoir-react";
 import Link from "next/link";
-import { useCategories } from "@/hooks/use-categories";
 import { useUrlFilters } from "@/hooks/use-url-filters";
+import { useCategories } from "@/hooks/use-category";
 
 function EventListContent({
   title,

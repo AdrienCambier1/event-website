@@ -1,8 +1,8 @@
 "use client";
 import ProfilList from "@/components/lists/profil-list";
 import { useParams } from "next/navigation";
-import { usePlaceOrganizers } from "@/hooks/use-place-organizers";
 import { useAuth } from "@/hooks/use-auth";
+import { usePlaceOrganizers } from "@/hooks/use-place";
 
 export default function OrganisateursPage() {
   const { id } = useParams();

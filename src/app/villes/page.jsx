@@ -1,7 +1,7 @@
 "use client";
 import MainTitle from "@/components/titles/main-title";
 import CityList from "@/components/lists/city-list";
-import { useCities } from "@/hooks/use-cities";
+import { useCities } from "@/hooks/use-city";
 
 export default function VillesPage() {
   const {

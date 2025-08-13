@@ -1,6 +1,6 @@
-import RatingStar from "../rating-stars";
+import RatingStar from "../../commons/rating-stars";
 
-export default function OrganiserCardSkeleton() {
+export default function OrganizerCardSkeleton() {
   return (
     <div className="white-card p-4 flex gap-4 skeleton-bg">
       <div className="flex flex-col gap-4 w-full">

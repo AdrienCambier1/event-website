@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { NavArrowRight } from "iconoir-react";
 import Link from "next/link";
-import { useCities } from "@/hooks/use-cities";
+import { useCities } from "@/hooks/use-city";
 
 export default function CityBtn({ reverse, onClick }) {
   const [cityDropdown, setCityDropdown] = useState(false);

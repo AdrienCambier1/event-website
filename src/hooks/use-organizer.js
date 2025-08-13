@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { fetchOrganizers } from "@/services/fetch-organizers";
+import { fetchOrganizers } from "@/services/oganizer-service";
 
 export function useOrganizers(size = 10) {
   const [organizers, setOrganizers] = useState([]);

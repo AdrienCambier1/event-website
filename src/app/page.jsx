@@ -1,20 +1,19 @@
 "use client";
 import SearchBarButton from "@/components/buttons/search-bar-button";
 import CustomTitle from "@/components/titles/custom-title";
-import CityCard from "@/components/cards/city-card";
+import CityCard from "@/components/cards/city-card/city-card";
 import { NavArrowRight } from "iconoir-react";
-import ThemeCard from "@/components/cards/theme-card";
-import EventCard from "@/components/cards/event-card";
+import ThemeCard from "@/components/cards/theme-card/theme-card";
+import EventCard from "@/components/cards/event-card/event-card";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
-import { useState } from "react";
-import { useCities } from "@/hooks/use-cities";
-import { useEvents } from "@/hooks/use-events";
+import { useCities } from "@/hooks/use-city";
+import { useEvents } from "@/hooks/use-event";
 import { useAuth } from "@/hooks/use-auth";
-import { useCategories } from "@/hooks/use-categories";
-import CityCardSkeleton from "@/components/cards/city-card-skeleton";
-import EventCardSkeleton from "@/components/cards/event-card-skeleton";
-import ThemeCardSkeleton from "@/components/cards/theme-card-skeleton";
+import { useCategories } from "@/hooks/use-category";
+import CityCardSkeleton from "@/components/cards/city-card/city-card-skeleton";
+import EventCardSkeleton from "@/components/cards/event-card/event-card-skeleton";
+import ThemeCardSkeleton from "@/components/cards/theme-card/theme-card-skeleton";
 import { useSearchModal } from "@/contexts/search-modal-context";
 
 export default function Home() {

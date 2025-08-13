@@ -2,7 +2,7 @@
 import Image from "next/image";
 import nice4k from "@/assets/images/nice4k.jpg";
 import ProfilCard from "@/components/cards/profil-card";
-import ProfilHeader from "@/components/profil-header";
+import ProfilHeader from "@/components/commons/profil-header";
 import { useAuth } from "@/hooks/use-auth";
 import { useCurrentUser } from "@/hooks/use-user";
 import { usePathname } from "next/navigation";

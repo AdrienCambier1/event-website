@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { fetchCurrentUser } from "@/services/fetch-user";
+import { fetchCurrentUser } from "@/services/user-service";
 
 const AuthContext = createContext();
 

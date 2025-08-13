@@ -1,5 +1,5 @@
 "use client";
-import StepIndicator from "@/components/step-indicator";
+import StepIndicator from "@/components/commons/step-indicator";
 import MainTitle from "@/components/titles/main-title";
 import { useState } from "react";
 import { ArrowLeft } from "iconoir-react";

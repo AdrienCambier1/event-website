@@ -4,10 +4,10 @@ import ModalBg from "./modal-bg";
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import { Group } from "iconoir-react";
-import UserElement from "../user-element";
-import { useEventParticipants } from "@/hooks/use-event-participants";
+import UserElement from "../commons/user-element/user-element";
+import { useEventParticipants } from "@/hooks/use-event";
 import { useAuth } from "@/hooks/use-auth";
-import UserElementSkeleton from "../user-element-skeleton";
+import UserElementSkeleton from "../commons/user-element/user-element-skeleton";
 
 export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
   const { token } = useAuth();

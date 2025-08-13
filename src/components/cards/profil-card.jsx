@@ -1,5 +1,5 @@
 import profilPicture from "@/assets/images/profil-pic.jpg";
-import RatingStar from "@/components/rating-stars";
+import RatingStar from "@/components/commons/rating-stars";
 import Image from "next/image";
 import { UserStar } from "iconoir-react";
 

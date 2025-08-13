@@ -1,7 +1,7 @@
 "use client";
 import EventList from "@/components/lists/event-list";
 import { useParams } from "next/navigation";
-import { useCityEvents } from "@/hooks/use-city-events";
+import { useUserEvents } from "@/hooks/use-user-events";
 
 export default function EvenementsPage() {
   const { id } = useParams();
@@ -10,7 +10,7 @@ export default function EvenementsPage() {
     events,
     loading: eventsLoading,
     error: eventsError,
-  } = useCityEvents(id, 0, 50);
+  } = useUserEvents(id, null, 0, 50);
 
   return (
     <EventList

@@ -10,7 +10,7 @@ export default function InformationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("name");
 
-  const { accountData, isLoading, accountError } = useParametres();
+  const { user, isLoading, accountError } = useParametres();
 
   const openModal = (type) => {
     setModalType(type);
@@ -35,22 +35,21 @@ export default function InformationsPage() {
                 icon={User}
                 title="Nom et prénom"
                 description={
-                  `${accountData?.firstName || ""} ${
-                    accountData?.lastName || ""
-                  }`.trim() || "Non renseigné"
+                  `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
+                  "Non renseigné"
                 }
                 onClick={() => openModal("name")}
               />
               <InformationsCard
                 icon={Phone}
                 title="Numéro de téléphone"
-                description={accountData?.phone || "Non renseigné"}
+                description={user?.phone || "Non renseigné"}
                 onClick={() => openModal("phone")}
               />
               <InformationsCard
                 icon={AtSign}
                 title="Pseudo"
-                description={accountData?.pseudo || "Non renseigné"}
+                description={user?.pseudo || "Non renseigné"}
                 onClick={() => openModal("pseudo")}
               />
               <InformationsCard
@@ -67,7 +66,7 @@ export default function InformationsPage() {
         isOpen={isModalOpen}
         setIsOpen={() => setIsModalOpen(false)}
         type={modalType}
-        accountData={accountData}
+        user={user}
       />
     </>
   );

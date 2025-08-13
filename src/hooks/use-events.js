@@ -3,19 +3,22 @@ import { useState, useEffect } from "react";
 import { fetchEvents } from "@/services/fetch-events";
 
 export function useEvents(token, page = 0, size = 10) {
-  const [data, setData] = useState(null);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const shouldShowSkeleton = loading || error !== null;
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
         setLoading(true);
         setError(null);
-        const events = await fetchEvents(token, page, size);
-        setData(events);
+        const eventsData = await fetchEvents(token, page, size);
+        setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erreur inconnue");
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -28,14 +31,15 @@ export function useEvents(token, page = 0, size = 10) {
     try {
       setLoading(true);
       setError(null);
-      const events = await fetchEvents(token, page, size);
-      setData(events);
+      const eventsData = await fetchEvents(token, page, size);
+      setEvents(eventsData._embedded?.eventSummaryResponses || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");
+      setEvents([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return { data, loading, error, refetch };
+  return { events, loading: shouldShowSkeleton, error, refetch };
 }

@@ -8,10 +8,10 @@ export default function EventsPage() {
   const { token } = useAuth();
 
   const {
-    data: eventsData,
+    events,
     loading: eventsLoading,
     error: eventsError,
-  } = useEvents(token, 0, 3);
+  } = useEvents(token, 0, 10);
 
   return (
     <main>
@@ -26,7 +26,7 @@ export default function EventsPage() {
         description="Evenements"
         showSort={true}
         showFilters={true}
-        events={eventsData?._embedded?.eventSummaryResponses || []}
+        events={events}
         isLoading={eventsLoading}
       />
     </main>

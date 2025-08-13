@@ -20,7 +20,7 @@ export default function CompteLayout({ children }) {
   ];
 
   const {
-    user: accountData,
+    user,
     loading: accountLoading,
     error: accountError,
   } = useCurrentUser(isAuthenticated ? token : null);
@@ -28,13 +28,13 @@ export default function CompteLayout({ children }) {
   const isLoading = authLoading || accountLoading;
 
   const shouldShowSkeleton =
-    isLoading || (isAuthenticated && !accountData && !accountError);
+    isLoading || (isAuthenticated && !user && !accountError);
 
   const isParametresSection = pathname?.startsWith("/compte/parametres");
 
   const childrenContent = isParametresSection ? (
     <ParametresProvider
-      accountData={accountData}
+      user={user}
       isLoading={shouldShowSkeleton}
       accountError={accountError}
     >
@@ -53,7 +53,7 @@ export default function CompteLayout({ children }) {
             <div className="banner skeleton-bg"></div>
           ) : (
             <Image
-              src={accountData?.bannerUrl || nice4k}
+              src={user?.bannerUrl || nice4k}
               alt="City image"
               width={800}
               height={450}
@@ -62,20 +62,20 @@ export default function CompteLayout({ children }) {
           )}
           {!shouldShowSkeleton && (
             <ProfilCard
-              profilId={accountData?.id}
-              name={`${accountData?.firstName} ${accountData?.lastName}`}
-              pseudo={accountData?.pseudo}
-              note={accountData?.note}
-              role={accountData?.role}
-              imageUrl={accountData?.imageUrl}
+              profilId={user?.id}
+              name={`${user?.firstName} ${user?.lastName}`}
+              pseudo={user?.pseudo}
+              note={user?.note}
+              role={user?.role}
+              imageUrl={user?.imageUrl}
             />
           )}
         </div>
       </section>
       <ProfilHeader
         isLoading={shouldShowSkeleton}
-        eventPastCount={accountData?.eventPastCount}
-        eventsCount={accountData?.eventsCount}
+        eventPastCount={user?.eventPastCount}
+        eventsCount={user?.eventsCount}
         navigation={navigation}
         isRegistered={true}
       />

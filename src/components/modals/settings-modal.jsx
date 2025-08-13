@@ -9,7 +9,7 @@ export default function SettingsModal({
   isOpen,
   setIsOpen,
   type = "name",
-  accountData,
+  user,
 }) {
   const [mounted, setMounted] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -121,19 +121,19 @@ export default function SettingsModal({
 
   // Préremplir les champs avec les données utilisateur quand le modal s'ouvre
   useEffect(() => {
-    if (isOpen && accountData) {
+    if (isOpen && user) {
       setFormValues((prev) => ({
         ...prev,
-        firstName: accountData.firstName || "",
-        lastName: accountData.lastName || "",
-        phone: accountData.phone || "",
-        pseudo: accountData.pseudo || "",
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        phone: user.phone || "",
+        pseudo: user.pseudo || "",
         currentPassword: "",
         password: "",
         confirmPassword: "",
       }));
     }
-  }, [isOpen, accountData]);
+  }, [isOpen, user]);
 
   if (!mounted) return null;
 

@@ -1,18 +1,22 @@
+"use client";
 import InformationsPage from "./informations/page";
 import PreferencesPage from "./preferences/page";
+import { useParametres } from "@/contexts/parametres-context";
 
-export default function ParametresPage({ accountData, isLoading, accountError }) {
+export default function ParametresPage() {
+  const { user, isLoading, accountError } = useParametres();
+
   return (
     <>
-      <InformationsPage 
-        accountData={accountData} 
-        isLoading={isLoading} 
-        accountError={accountError} 
+      <InformationsPage
+        user={user}
+        isLoading={isLoading}
+        accountError={accountError}
       />
-      <PreferencesPage 
-        accountData={accountData} 
-        isLoading={isLoading} 
-        accountError={accountError} 
+      <PreferencesPage
+        user={user}
+        isLoading={isLoading}
+        accountError={accountError}
       />
     </>
   );

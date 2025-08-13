@@ -5,10 +5,10 @@ import { useCities } from "@/hooks/use-cities";
 
 export default function VillesPage() {
   const {
-    data: citiesData,
+    cities,
     loading: citiesLoading,
     error: citiesError,
-  } = useCities(0, 50);
+  } = useCities(0, 10);
 
   return (
     <main>
@@ -23,7 +23,7 @@ export default function VillesPage() {
         title="Effectuez une recherche"
         description="Villes"
         showSort={true}
-        cities={citiesData?._embedded?.cityResponses || []}
+        cities={cities}
         isLoading={citiesLoading}
       />
     </main>

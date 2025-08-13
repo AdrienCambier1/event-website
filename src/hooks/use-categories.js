@@ -3,13 +3,15 @@ import { fetchCategories } from "@/services/fetch-categories";
 
 export function useCategories() {
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const shouldShowSkeleton = loading || error !== null;
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        setIsLoading(true);
+        setLoading(true);
         setError(null);
 
         const response = await fetchCategories();
@@ -29,7 +31,7 @@ export function useCategories() {
           { name: "Études", key: "etudes", description: "", trending: false },
         ]);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -47,7 +49,7 @@ export function useCategories() {
     categories,
     filterOptions,
     trendingCategories,
-    isLoading,
+    loading: shouldShowSkeleton,
     error,
   };
 }

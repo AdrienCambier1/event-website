@@ -15,7 +15,7 @@ export default function PreferencesPage() {
     error: categoriesError,
   } = useCategories();
 
-  const { accountData, isLoading: accountLoading } = useParametres();
+  const { isLoading: accountLoading } = useParametres();
 
   const isLoading = categoriesLoading || accountLoading;
 

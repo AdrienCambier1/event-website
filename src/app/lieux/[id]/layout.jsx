@@ -10,7 +10,7 @@ export default function LieuLayout({ children }) {
   const { id } = useParams();
 
   const {
-    place: placeData,
+    place,
     loading: placeLoading,
     error: placeError,
   } = usePlaceDetails(id);
@@ -33,13 +33,13 @@ export default function LieuLayout({ children }) {
           </>
         ) : (
           <>
-            <MainTitle title={placeData?.name} />
+            <MainTitle title={place?.name} />
             <p className="text-center">
-              Découvrez les différentes activités disponibles au{" "}
-              {placeData?.name} à {placeData?.cityName}.
+              Découvrez les différentes activités disponibles au {place?.name} à{" "}
+              {place?.cityName}.
             </p>
             <Image
-              src={placeData?.bannerUrl || tokyo4k}
+              src={place?.bannerUrl || tokyo4k}
               alt="Place image"
               width={800}
               height={450}

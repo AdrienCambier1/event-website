@@ -20,6 +20,7 @@ import { useState } from "react";
 import PaymentModal from "@/components/modals/payment-modal";
 import { useEventDetails } from "@/hooks/use-event-details";
 import { formatEventDate } from "@/utils/date-formatter";
+import TicketCardSkeleton from "@/components/cards/ticket-card-skeleton";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ export default function EventPage() {
   const [paymentDialogModal, setPaymentDialogModal] = useState(false);
 
   const {
-    event: eventData,
+    event,
     loading: eventLoading,
     error: eventError,
   } = useEventDetails(id);
@@ -35,21 +36,21 @@ export default function EventPage() {
   const eventInfos = [
     {
       icon: Calendar,
-      value: formatEventDate(eventData?.date, {
+      value: formatEventDate(event?.date, {
         fallback: "samedi 24 juin 2025 • 15h30",
       }),
     },
-    { icon: HomeAltSlim, value: eventData?.placeName },
+    { icon: HomeAltSlim, value: event?.placeName },
     {
       icon: Group,
-      value: `${eventData?.maxCustomers} personnes`,
+      value: `${event?.maxCustomers} personnes`,
       type: "users",
     },
   ];
 
   const placeInfos = [
-    { icon: MapPin, value: eventData?.cityName },
-    { icon: HomeAltSlim, value: eventData?.placeName },
+    { icon: MapPin, value: event?.cityName },
+    { icon: HomeAltSlim, value: event?.placeName },
   ];
 
   return (
@@ -61,7 +62,7 @@ export default function EventPage() {
               {eventLoading ? (
                 <h1 className="skeleton-bg">Nom de l'événement</h1>
               ) : (
-                <h1>{eventData?.name}</h1>
+                <h1>{event?.name}</h1>
               )}
               {eventLoading ? (
                 <p className="skeleton-bg">Organisé par quelqu'un</p>
@@ -69,7 +70,7 @@ export default function EventPage() {
                 <p>
                   Organisé par{" "}
                   <span className="dark-text">
-                    {eventData?.organizer?.pseudo || "Organisateur inconnu"}
+                    {event?.organizer?.pseudo || "Organisateur inconnu"}
                   </span>
                 </p>
               )}
@@ -89,7 +90,7 @@ export default function EventPage() {
             <div className="banner skeleton-bg"></div>
           ) : (
             <Image
-              src={eventData?.imageUrl || niceImage}
+              src={event?.imageUrl || niceImage}
               alt="Event image"
               width={800}
               height={450}
@@ -109,7 +110,7 @@ export default function EventPage() {
                 </>
               ) : (
                 <>
-                  <p>{eventData?.description}</p>
+                  <p>{event?.description}</p>
                 </>
               )}
             </div>
@@ -123,7 +124,7 @@ export default function EventPage() {
                   </div>
                 </>
               ) : (
-                <ThemeTags theme={eventData.categories} />
+                <ThemeTags theme={event.categories} />
               )}
             </div>
             <div className="flex flex-col gap-6">
@@ -132,13 +133,13 @@ export default function EventPage() {
             </div>
             {!eventLoading && (
               <ProfilCard
-                profilId={eventData?.organizer?.id}
+                profilId={event?.organizer?.id}
                 className="relative translate-y-0"
-                name={`${eventData?.organizer?.firstName} ${eventData?.organizer?.lastName}`}
-                pseudo={eventData?.organizer?.pseudo}
-                note={eventData?.organizer?.note}
+                name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
+                pseudo={event?.organizer?.pseudo}
+                note={event?.organizer?.note}
                 role="Organizer"
-                imageUrl={eventData?.organizer?.imageUrl}
+                imageUrl={event?.organizer?.imageUrl}
               />
             )}
           </div>
@@ -146,12 +147,18 @@ export default function EventPage() {
             <div className="flex flex-col gap-6 sticky top-20">
               <h2>Billet</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                <TicketCard
-                  title="Billet Eco+"
-                  description="Billet pour les rats+, tu vas finir debout"
-                  price={43}
-                  onClick={() => setPaymentModal(true)}
-                />
+                {eventLoading ? (
+                  <TicketCardSkeleton />
+                ) : (
+                  <TicketCard
+                    title={event?.name}
+                    description={`Organisé par ${
+                      event?.organizer?.pseudo || "Organisateur inconnu"
+                    }`}
+                    price={event?.price}
+                    onClick={() => setPaymentModal(true)}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -23,20 +23,20 @@ export default function Home() {
   const { token } = useAuth();
 
   const {
-    data: citiesData,
+    cities,
     loading: citiesLoading,
     error: citiesError,
   } = useCities(0, 3);
 
   const {
-    data: eventsData,
+    events,
     loading: eventsLoading,
     error: eventsError,
   } = useEvents(token, 0, 3);
 
   const {
     categories,
-    isLoading: categoriesLoading,
+    loading: categoriesLoading,
     error: categoriesError,
   } = useCategories();
 
@@ -62,11 +62,11 @@ export default function Home() {
                 <CityCardSkeleton />
               </>
             )}
+            {!citiesLoading && (cities?.length === 0 || citiesError) && (
+              <p>Aucune ville disponible pour le moment</p>
+            )}
             {!citiesLoading &&
-              (citiesData?._embedded?.cityResponses?.length === 0 ||
-                citiesError) && <p>Aucune ville disponible pour le moment</p>}
-            {!citiesLoading &&
-              citiesData?._embedded?.cityResponses?.map((city) => (
+              cities?.map((city) => (
                 <CityCard
                   cityId={city.id}
                   key={city.id}
@@ -118,13 +118,11 @@ export default function Home() {
                 <EventCardSkeleton />
               </>
             )}
+            {!eventsLoading && (events?.length === 0 || eventsError) && (
+              <p>Aucun événement disponible pour le moment</p>
+            )}
             {!eventsLoading &&
-              (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
-                eventsError) && (
-                <p>Aucun événement disponible pour le moment</p>
-              )}
-            {!eventsLoading &&
-              eventsData?._embedded?.eventSummaryResponses?.map((event) => (
+              events?.map((event) => (
                 <EventCard
                   eventId={event.id}
                   key={event.id}
@@ -156,13 +154,11 @@ export default function Home() {
                 <EventCardSkeleton />
               </>
             )}
+            {!eventsLoading && (events?.length === 0 || eventsError) && (
+              <p>Aucun événement disponible pour le moment</p>
+            )}
             {!eventsLoading &&
-              (eventsData?._embedded?.eventSummaryResponses?.length === 0 ||
-                eventsError) && (
-                <p>Aucun événement disponible pour le moment</p>
-              )}
-            {!eventsLoading &&
-              eventsData?._embedded?.eventSummaryResponses?.map((event) => (
+              events?.map((event) => (
                 <EventCard
                   eventId={event.id}
                   key={event.id}

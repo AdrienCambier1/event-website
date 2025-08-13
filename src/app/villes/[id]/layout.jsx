@@ -9,11 +9,7 @@ import { useCityDetails } from "@/hooks/use-city-details";
 export default function VilleLayout({ children }) {
   const { id } = useParams();
 
-  const {
-    city: cityData,
-    loading: cityLoading,
-    error: cityError,
-  } = useCityDetails(id);
+  const { city, loading: cityLoading, error: cityError } = useCityDetails(id);
 
   const navigation = [
     { name: "Evenements", href: `/villes/${id}/evenements` },
@@ -34,13 +30,13 @@ export default function VilleLayout({ children }) {
           </>
         ) : (
           <>
-            <MainTitle title={cityData?.name} />
+            <MainTitle title={city?.name} />
             <p className="text-center">
               Découvrez les différentes activités disponibles dans la ville de{" "}
-              {cityData?.name}.
+              {city?.name}.
             </p>
             <Image
-              src={cityData?.bannerUrl || tokyo4k}
+              src={city?.bannerUrl || tokyo4k}
               alt="City image"
               width={800}
               height={450}

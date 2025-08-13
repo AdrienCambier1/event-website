@@ -5,12 +5,12 @@ const ParametresContext = createContext(null);
 
 export function ParametresProvider({
   children,
-  accountData,
+  user,
   isLoading,
   accountError,
 }) {
   const value = {
-    accountData,
+    user,
     isLoading,
     accountError,
   };

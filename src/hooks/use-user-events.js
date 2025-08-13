@@ -5,9 +5,11 @@ import {
 } from "@/services/fetch-user-events";
 
 export function useUserEvents(userId, token, page = 0, size = 10) {
-  const [events, setEvents] = useState(null);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const shouldShowSkeleton = loading && events.length === 0;
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -22,13 +24,13 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
         setLoading(true);
         setError(null);
         const eventsData = await fetchUserEvents(userId, token, page, size);
-        setEvents(eventsData);
+        setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
         console.error("Error in useUserEvents:", err);
         setError(
           err instanceof Error ? err.message : "Une erreur est survenue"
         );
-        setEvents(null);
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -44,11 +46,11 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
       setLoading(true);
       setError(null);
       const eventsData = await fetchUserEvents(userId, token, page, size);
-      setEvents(eventsData);
+      setEvents(eventsData._embedded?.eventSummaryResponses || []);
     } catch (err) {
       console.error("Error in useUserEvents refetch:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
-      setEvents(null);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
@@ -56,16 +58,18 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
 
   return {
     events,
-    loading,
+    loading: shouldShowSkeleton,
     error,
     refetch,
   };
 }
 
 export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
-  const [events, setEvents] = useState(null);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const shouldShowSkeleton = loading && events.length === 0;
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -85,13 +89,13 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
           page,
           size
         );
-        setEvents(eventsData);
+        setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
         console.error("Error in useUserParticipatingEvents:", err);
         setError(
           err instanceof Error ? err.message : "Une erreur est survenue"
         );
-        setEvents(null);
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -112,11 +116,11 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
         page,
         size
       );
-      setEvents(eventsData);
+      setEvents(eventsData._embedded?.eventSummaryResponses || []);
     } catch (err) {
       console.error("Error in useUserParticipatingEvents refetch:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
-      setEvents(null);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
@@ -124,7 +128,7 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
 
   return {
     events,
-    loading,
+    loading: shouldShowSkeleton,
     error,
     refetch,
   };

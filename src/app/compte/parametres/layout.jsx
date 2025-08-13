@@ -5,7 +5,7 @@ import CopyBtn from "@/components/buttons/copy-btn";
 import { useParametres } from "@/contexts/parametres-context";
 
 export default function ParametresLayout({ children }) {
-  const { accountData, isLoading } = useParametres();
+  const { user, isLoading } = useParametres();
 
   return (
     <>
@@ -15,7 +15,7 @@ export default function ParametresLayout({ children }) {
           {isLoading ? (
             <div className="copy-btn skeleton-bg">Pseudo</div>
           ) : (
-            <CopyBtn id={accountData?.pseudo} />
+            <CopyBtn id={user?.pseudo} />
           )}
         </div>
       </section>

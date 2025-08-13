@@ -22,7 +22,7 @@ export default function EvenementsPage() {
       description="Événements organisés"
       showCreateButton={true}
       canEdit={true}
-      events={events?._embedded?.eventSummaryResponses || []}
+      events={events}
       isLoading={shouldShowSkeleton}
     />
   );

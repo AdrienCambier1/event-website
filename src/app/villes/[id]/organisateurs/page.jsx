@@ -9,7 +9,6 @@ export default function OrganisateursPage() {
   const { token } = useAuth();
 
   const {
-    data: organizersData,
     organizers,
     loading: organizersLoading,
     error: organizersError,

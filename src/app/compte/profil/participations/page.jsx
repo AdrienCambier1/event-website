@@ -23,6 +23,7 @@ export default function ParticipationsPage() {
       showCreateButton={true}
       events={participatingEvents?._embedded?.eventSummaryResponses || []}
       isLoading={shouldShowSkeleton}
+      isRegistered={true}
     />
   );
 }

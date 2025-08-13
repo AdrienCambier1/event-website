@@ -36,7 +36,7 @@ export default function OrganiserCard({
         </div>
         <div className="w-full flex justify-end">
           <Link
-            href={`/organisateurs/${organizerId}`}
+            href={`/organisateurs/${organizerId}/evenements`}
             className="secondary-btn"
           >
             <span>Voir le profil</span>

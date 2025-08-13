@@ -57,6 +57,7 @@ export default function Footer() {
                 <Link href="/evenements">Rechercher un événement</Link>
                 <Link href="/villes">Les villes événementielles</Link>
                 <Link href="/lieux">Les lieux événementielles </Link>
+                <Link href="/organisateurs">Tous les organisateurs</Link>
               </nav>
             </div>
             <div className="flex flex-col gap-4">

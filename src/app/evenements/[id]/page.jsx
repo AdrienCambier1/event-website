@@ -137,20 +137,22 @@ export default function EventPage() {
                 name={`${eventData?.organizer?.firstName} ${eventData?.organizer?.lastName}`}
                 pseudo={eventData?.organizer?.pseudo}
                 note={eventData?.organizer?.note}
-                isOrganiser={true}
+                role="Organizer"
                 imageUrl={eventData?.organizer?.imageUrl}
               />
             )}
           </div>
-          <div className="flex flex-col gap-6">
-            <h2>Billet</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-              <TicketCard
-                title="Billet Eco+"
-                description="Billet pour les rats+, tu vas finir debout"
-                price={43}
-                onClick={() => setPaymentModal(true)}
-              />
+          <div>
+            <div className="flex flex-col gap-6 sticky top-20">
+              <h2>Billet</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                <TicketCard
+                  title="Billet Eco+"
+                  description="Billet pour les rats+, tu vas finir debout"
+                  price={43}
+                  onClick={() => setPaymentModal(true)}
+                />
+              </div>
             </div>
           </div>
         </section>

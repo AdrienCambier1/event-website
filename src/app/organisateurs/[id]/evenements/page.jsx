@@ -14,7 +14,7 @@ export default function EvenementsPage() {
 
   return (
     <EventList
-      title="Rechercher un événement"
+      title="Ses événements organisés"
       description="Événements"
       showSort={true}
       showFilters={true}

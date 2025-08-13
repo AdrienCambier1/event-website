@@ -1,13 +1,5 @@
 "use client";
-import {
-  Bookmark,
-  Check,
-  DoubleCheck,
-  MoreHoriz,
-  Trash,
-  UserBadgeCheck,
-  UserXmark,
-} from "iconoir-react";
+import { Bookmark, MoreHoriz, UserXmark } from "iconoir-react";
 import profilPicture from "@/assets/images/profil-pic.jpg";
 import RatingStar from "../rating-stars";
 import ThemeTags from "../theme-tags";
@@ -36,7 +28,6 @@ export default function EventCard({
 }) {
   const [editDropdown, setEditDropdown] = useState(false);
   const [registeredDropdown, setRegisteredDropdown] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
   const [unsubscribeModal, setUnsubscribeModal] = useState(false);
   const editDropdownRef = useRef(null);
   const registeredDropdownRef = useRef(null);
@@ -165,12 +156,13 @@ export default function EventCard({
                   >
                     Voir l'événement
                   </Link>
-                  <button
+                  <Link
+                    href="/compte/profil/tickets"
                     className="dropdown-child"
                     onClick={() => setRegisteredDropdown(false)}
                   >
                     Consulter le billet
-                  </button>
+                  </Link>
                   <button
                     className="dropdown-dangerous"
                     onClick={() => {

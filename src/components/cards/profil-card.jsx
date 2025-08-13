@@ -8,7 +8,7 @@ export default function ProfilCard({
   pseudo,
   note,
   className,
-  isOrganiser,
+  role,
   imageUrl,
 }) {
   return (
@@ -25,9 +25,9 @@ export default function ProfilCard({
       <div className="flex flex-col gap-2 overflow-hidden">
         <h2 className="truncate">{name}</h2>
         <div className="flex items-center gap-2">
-          {isOrganiser && (
+          {role && (
             <div className="green-tag !hidden sm:!flex">
-              <span>Organisateur</span>
+              <span>{role}</span>
               <UserStar />
             </div>
           )}

@@ -55,9 +55,11 @@ export default function MenuModal({ isOpen, setIsOpen }) {
             <Link href="/villes" onClick={setIsOpen}>
               Les villes
             </Link>
-
             <Link href="/lieux" onClick={setIsOpen}>
               Les lieux
+            </Link>
+            <Link href="/organisateurs" onClick={setIsOpen}>
+              Organisateurs
             </Link>
             <Link href="/compte/parametres" onClick={setIsOpen}>
               Paramètres

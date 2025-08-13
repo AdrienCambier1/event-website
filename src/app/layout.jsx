@@ -6,7 +6,7 @@ import { SearchModalProvider } from "@/contexts/search-modal-context";
 import SearchBarModal from "@/components/modals/search-bar-modal";
 
 export const metadata = {
-  title: "VeEvent - Plateforme d'événements",
+  title: "Veevent - Plateforme d'événements",
   description:
     "Découvrez et participez aux meilleurs événements près de chez vous",
   icons: {

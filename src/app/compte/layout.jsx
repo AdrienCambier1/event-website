@@ -12,6 +12,13 @@ export default function CompteLayout({ children }) {
   const { token, isAuthenticated, loading: authLoading } = useAuth();
   const pathname = usePathname();
 
+  const navigation = [
+    { name: "Tickets", href: "/compte/profil/tickets" },
+    { name: "Evenements", href: "/compte/profil/evenements" },
+    { name: "Participations", href: "/compte/profil/participations" },
+    { name: "Avis", href: "/compte/profil/avis" },
+  ];
+
   const {
     user: accountData,
     loading: accountLoading,
@@ -59,7 +66,7 @@ export default function CompteLayout({ children }) {
               name={`${accountData?.firstName} ${accountData?.lastName}`}
               pseudo={accountData?.pseudo}
               note={accountData?.note}
-              isOrganiser={accountData?.role.toLowerCase() === "organizer"}
+              role={accountData?.role}
               imageUrl={accountData?.imageUrl}
             />
           )}
@@ -69,6 +76,8 @@ export default function CompteLayout({ children }) {
         isLoading={shouldShowSkeleton}
         eventPastCount={accountData?.eventPastCount}
         eventsCount={accountData?.eventsCount}
+        navigation={navigation}
+        isRegistered={true}
       />
       {childrenContent}
     </main>

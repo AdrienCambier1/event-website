@@ -61,6 +61,7 @@ export default function Header() {
             <Link href="/evenements">Evenements</Link>
             <Link href="/villes">Les villes</Link>
             <Link href="/lieux">Les lieux</Link>
+            <Link href="/organisateurs">Organisateurs</Link>
           </nav>
           <div className="hidden lg:flex items-center gap-4">
             {!loading && (

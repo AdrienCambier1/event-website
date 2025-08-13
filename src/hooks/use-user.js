@@ -3,7 +3,7 @@ import { fetchCurrentUser, fetchUserById } from "@/services/fetch-user";
 
 export function useCurrentUser(token) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
@@ -47,7 +47,7 @@ export function useCurrentUser(token) {
 
 export function useUserById(userId, token = null) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {

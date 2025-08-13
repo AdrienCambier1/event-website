@@ -5,57 +5,31 @@ import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import { Group } from "iconoir-react";
 import UserElement from "../user-element";
+import { useEventParticipants } from "@/hooks/use-event-participants";
+import { useAuth } from "@/hooks/use-auth";
+import UserElementSkeleton from "../user-element-skeleton";
 
-export default function UsersModal({
-  isOpen,
-  setIsOpen,
-  type = "participants",
-  canEdit = false,
-}) {
+export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
+  const { token } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
   const scrollContainerRef = useRef(null);
 
-  const modalConfig = {
-    participants: {
-      title: "Participants",
-      emptyText: "Aucun participant pour le moment",
-    },
-    subscriptions: {
-      title: "Abonnements",
-      emptyText: "Vous n'êtes abonné à personne",
-    },
-    subscribers: {
-      title: "Abonnés",
-      emptyText: "Vous n'avez pas encore d'abonnés",
-    },
-  };
+  const {
+    participants,
+    loading: participantsLoading,
+    error: participantsError,
+  } = useEventParticipants(eventId, token, isOpen);
 
-  const users = [
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-    { name: "Jean Claude", id: "@jeanclaudedu06" },
-  ];
-
-  const config = modalConfig[type] || modalConfig.participants;
+  const displayUsers =
+    participants.length > 0
+      ? participants.map((p) => ({
+          name: p.firstName + " " + p.lastName,
+          id: `@${p.pseudo}`,
+          imageUrl: p.imageUrl,
+        }))
+      : [];
 
   const checkScrollPosition = () => {
     const container = scrollContainerRef.current;
@@ -79,6 +53,20 @@ export default function UsersModal({
 
   if (!mounted) return null;
 
+  const scrollContainerProps = {
+    ref: scrollContainerRef,
+    onScroll: checkScrollPosition,
+    className: `overflow-card flex flex-col gap-2 ${
+      !isAtTop && !isAtBottom
+        ? "mask-both"
+        : !isAtTop
+        ? "mask-top"
+        : !isAtBottom
+        ? "mask-bottom"
+        : ""
+    }`,
+  };
+
   return ReactDOM.createPortal(
     <>
       <ReactFocusLock
@@ -91,41 +79,32 @@ export default function UsersModal({
             <div className="img-gradient-blue">
               <Group />
             </div>
-            <h3 className="text-center">{config.title}</h3>
+            <h3 className="text-center">Participants</h3>
           </div>
-          {users.length > 0 ? (
-            <div
-              ref={scrollContainerRef}
-              onScroll={checkScrollPosition}
-              className={`overflow-card flex flex-col gap-2 ${
-                !isAtTop && !isAtBottom
-                  ? "mask-both"
-                  : !isAtTop
-                  ? "mask-top"
-                  : !isAtBottom
-                  ? "mask-bottom"
-                  : ""
-              }`}
-            >
-              {users.map((user, index) => (
-                <UserElement name={user.name} key={index} id={user.id} />
+          {!participantsLoading ? (
+            <div {...scrollContainerProps}>
+              <UserElementSkeleton />
+              <UserElementSkeleton />
+            </div>
+          ) : participants.length === 0 || participantsError ? (
+            <p>Aucun participant pour le moment.</p>
+          ) : displayUsers.length > 0 ? (
+            <div {...scrollContainerProps}>
+              {displayUsers.map((user, index) => (
+                <UserElement
+                  name={user.name}
+                  key={index}
+                  id={user.id}
+                  imageUrl={user.imageUrl}
+                />
               ))}
             </div>
           ) : (
-            <p>{config.emptyText}</p>
+            <p>Aucun participant pour le moment</p>
           )}
-          {canEdit ? (
-            <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
-              <button className="secondary-form-btn" onClick={setIsOpen}>
-                <span>Annuler</span>
-              </button>
-              <button className="primary-form-btn">Sauvegarder</button>
-            </div>
-          ) : (
-            <button className="primary-form-btn" onClick={setIsOpen}>
-              <span>Fermer</span>
-            </button>
-          )}
+          <button className="primary-form-btn" onClick={setIsOpen}>
+            <span>Fermer</span>
+          </button>
         </div>
       </ReactFocusLock>
       <ModalBg className="!z-40" isOpen={isOpen} setIsOpen={setIsOpen} />

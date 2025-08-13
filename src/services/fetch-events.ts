@@ -3,6 +3,7 @@ import {
   EventsApiResponse,
   EventCreateRequest,
   EventUpdateRequest,
+  EventParticipantsApiResponse,
 } from "@/types/event";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -135,6 +136,22 @@ export async function fetchUserEvents(
   if (!res.ok)
     throw new Error(
       "Erreur lors du chargement des événements de l'utilisateur"
+    );
+  return await res.json();
+}
+
+export async function fetchEventParticipants(
+  eventId: number,
+  token?: string
+): Promise<EventParticipantsApiResponse> {
+  const res = await fetch(`${API_URL}/events/${eventId}/participants`, {
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+  });
+  if (!res.ok)
+    throw new Error(
+      "Erreur lors du chargement des participants de l'événement"
     );
   return await res.json();
 }

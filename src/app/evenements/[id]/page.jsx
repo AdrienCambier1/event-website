@@ -43,7 +43,7 @@ export default function EventPage() {
     { icon: HomeAltSlim, value: event?.placeName },
     {
       icon: Group,
-      value: `${event?.maxCustomers} personnes`,
+      value: `${event?.currentParticipants} personnes`,
       type: "users",
     },
   ];
@@ -75,10 +75,14 @@ export default function EventPage() {
                 </p>
               )}
             </div>
-            {eventLoading ? <></> : <ItemList items={eventInfos} />}
+            {eventLoading ? (
+              <></>
+            ) : (
+              <ItemList items={eventInfos} eventId={id} />
+            )}
             <div className="flex flex-wrap gap-4 items-center justify-between">
               <button className="primary-btn">
-                <span>S'inscrire à l'événement</span>
+                <span>Signaler l'événement</span>
               </button>
               <button className="blue-rounded-btn">
                 <span>Enregistrer l'événement</span>

@@ -94,6 +94,7 @@ export interface EventDetails {
 export interface EventParticipant {
   id: number;
   pseudo: string;
+  slug: string;
   imageUrl?: string | null;
   _links?: any;
 }

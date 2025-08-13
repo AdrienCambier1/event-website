@@ -2,12 +2,14 @@ import profilPicture from "@/assets/images/profil-pic.jpg";
 import { Trash, UserStar } from "iconoir-react";
 import Image from "next/image";
 
-export default function UserElement({ name, id, canEdit = false }) {
+export default function UserElement({ name, id, imageUrl, canEdit = false }) {
   return (
     <div className="flex items-center gap-4 w-full">
       <Image
-        src={profilPicture}
+        src={imageUrl || profilPicture}
         alt="Profil picture"
+        width={48}
+        height={48}
         className="profil-pic-lg"
       />
       <div className="w-full flex items-center justify-between gap-2 py-3 border-b border-[var(--secondary-border-col)]">

@@ -25,8 +25,8 @@ export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
   const displayUsers =
     participants.length > 0
       ? participants.map((p) => ({
-          name: p.firstName + " " + p.lastName,
-          id: `@${p.pseudo}`,
+          name: p.pseudo,
+          id: `@${p.slug}`,
           imageUrl: p.imageUrl,
         }))
       : [];
@@ -81,7 +81,7 @@ export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
             </div>
             <h3 className="text-center">Participants</h3>
           </div>
-          {!participantsLoading ? (
+          {participantsLoading ? (
             <div {...scrollContainerProps}>
               <UserElementSkeleton />
               <UserElementSkeleton />

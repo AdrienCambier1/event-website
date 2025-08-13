@@ -22,15 +22,18 @@ export default function OrganiserCard({
         height={80}
         className="profil-pic-xl"
       />
-      <div className="flex flex-col gap-4 w-full">
-        <h3 className="text-[var(--secondary-blue)]">{name}</h3>
-        <div className="flex flex-col">
-          <p className="blue-text">{pseudo}</p>
-          <RatingStar note={note} />
+      <div className="flex flex-col gap-4 justify-between w-full">
+        <div className="flex flex-col gap-4">
+          <h3 className="text-[var(--secondary-blue)]">{name}</h3>
+          <div className="flex flex-col">
+            <p className="blue-text">{pseudo}</p>
+            <RatingStar note={note} />
+          </div>
+          <p>
+            {eventPastCount} événements passés | {eventsCount} événements en
+            cours
+          </p>
         </div>
-        <p>
-          {eventPastCount} événements passés | {eventsCount} événements en cours
-        </p>
         <div className="w-full flex justify-end">
           <Link
             href={`/organisateurs/${organizerId}`}

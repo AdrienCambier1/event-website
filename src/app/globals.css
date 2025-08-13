@@ -235,20 +235,27 @@ header nav a {
   @apply dark-shadow rounded-2xl w-full max-h-[20rem] aspect-[16/9] object-cover;
 }
 
+.profil-pic-xl,
+.profil-pic-lg,
+.profil-pic-md,
+.profil-pic-sm {
+  @apply rounded-full object-cover flex-shrink-0;
+}
+
 .profil-pic-xl {
-  @apply h-20 w-20 rounded-full object-cover;
+  @apply h-20 w-20;
 }
 
 .profil-pic-lg {
-  @apply h-16 w-16 rounded-full object-cover;
+  @apply h-16 w-16;
 }
 
 .profil-pic-md {
-  @apply h-12 w-12 rounded-full object-cover;
+  @apply h-12 w-12;
 }
 
 .profil-pic-sm {
-  @apply h-8 w-8 rounded-full object-cover border-2 border-white;
+  @apply h-8 w-8 border-2 border-white;
 }
 
 .img-gradient-blue,

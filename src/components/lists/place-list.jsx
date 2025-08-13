@@ -1,12 +1,12 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
-import CityCard from "@/components/cards/city-card";
 import DropdownButton from "@/components/buttons/dropdown-button";
-import CityCardSkeleton from "../cards/city-card-skeleton";
 import { useState, Suspense, useMemo } from "react";
 import { Erase } from "iconoir-react";
+import PlaceCard from "../cards/place-card";
+import PlaceCardSkeleton from "../cards/place-card-skeleton";
 
-function CityListContent({ title, description, showSort, isLoading, cities }) {
+function PlaceListContent({ title, description, isLoading, places }) {
   const [sortOption, setSortOption] = useState("events");
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -16,21 +16,20 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
     { label: "Ordre Z-A", value: "desc" },
   ];
 
-  const filteredAndSortedCities = useMemo(() => {
-    if (!cities || !Array.isArray(cities)) return [];
+  const filteredAndSortedPlaces = useMemo(() => {
+    if (!places || !Array.isArray(places)) return [];
 
-    let filteredCities = [...cities];
+    let filteredPlaces = [...places];
 
     if (searchKeyword.trim()) {
-      filteredCities = filteredCities.filter(
-        (city) =>
-          city.name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-          city.region?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-          city.country?.toLowerCase().includes(searchKeyword.toLowerCase())
+      filteredPlaces = filteredPlaces.filter(
+        (place) =>
+          place.name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+          place.cityName?.toLowerCase().includes(searchKeyword.toLowerCase())
       );
     }
 
-    return filteredCities.sort((a, b) => {
+    return filteredPlaces.sort((a, b) => {
       switch (sortOption) {
         case "events":
           return (b.eventsCount || 0) - (a.eventsCount || 0);
@@ -42,7 +41,7 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
           return 0;
       }
     });
-  }, [cities, searchKeyword, sortOption]);
+  }, [places, searchKeyword, sortOption]);
 
   return (
     <section className="page-grid">
@@ -51,30 +50,29 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
         <div className="flex flex-col gap-4">
           <input
             type="text"
-            placeholder="Rechercher une ville"
+            placeholder="Rechercher un lieux"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
           />
-          {showSort && (
-            <DropdownButton
-              options={sortOptions}
-              selectedValue={sortOption}
-              label="Trier par :"
-              onSelect={(option) => setSortOption(option.value)}
-            />
-          )}
+
+          <DropdownButton
+            options={sortOptions}
+            selectedValue={sortOption}
+            label="Trier par :"
+            onSelect={(option) => setSortOption(option.value)}
+          />
         </div>
       </div>
       <div className="cards-grid">
         {isLoading && (
           <>
-            <CityCardSkeleton />
-            <CityCardSkeleton />
-            <CityCardSkeleton />
-            <CityCardSkeleton />
+            <PlaceCardSkeleton />
+            <PlaceCardSkeleton />
+            <PlaceCardSkeleton />
+            <PlaceCardSkeleton />
           </>
         )}
-        {!isLoading && filteredAndSortedCities.length === 0 && (
+        {!isLoading && filteredAndSortedPlaces.length === 0 && (
           <div className="flex flex-col gap-4">
             {searchKeyword.trim() ? (
               <>
@@ -93,13 +91,16 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
           </div>
         )}
         {!isLoading &&
-          filteredAndSortedCities.map((city) => (
-            <CityCard
-              cityId={city.id}
-              key={city.id}
-              name={city.name}
-              eventsCount={city.eventsCount || 0}
-              bannerUrl={city.bannerUrl}
+          filteredAndSortedPlaces.map((place) => (
+            <PlaceCard
+              placeId={place.id}
+              key={place.id}
+              name={place.name}
+              eventsCount={place.eventsCount || 0}
+              address={place.address}
+              cityName={place.cityName}
+              placeType={place.type}
+              imageUrl={place.imageUrl}
             />
           ))}
       </div>
@@ -107,10 +108,10 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
   );
 }
 
-export default function CityList(props) {
+export default function PlaceList(props) {
   return (
     <Suspense fallback={<></>}>
-      <CityListContent {...props} />
+      <PlaceListContent {...props} />
     </Suspense>
   );
 }

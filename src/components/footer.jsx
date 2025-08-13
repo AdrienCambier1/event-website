@@ -54,32 +54,23 @@ export default function Footer() {
             <div className="flex flex-col gap-4">
               <h4>Ressources</h4>
               <nav className="flex-wrap">
-                <Link href="/activities/events">Rechercher un événement</Link>
-                <Link href="/activities/organisers">
-                  Rechercher un organisateur
-                </Link>
-                <Link href="/cities">Les villes événementielles</Link>
-                <Link href="/saved/inscriptions">
-                  Consulter mes inscriptions
-                </Link>
-                <Link href="/saved/marked">Consulter mes favoris</Link>
-                <Link href="/subscriptions/events">
-                  Evennements des abonnements
-                </Link>
-                <Link href="/subscriptions/profils">
-                  Profils des abonnements
-                </Link>
+                <Link href="/evenements">Rechercher un événement</Link>
+                <Link href="/villes">Les villes événementielles</Link>
+                <Link href="/lieux">Les lieux événementielles </Link>
               </nav>
             </div>
             <div className="flex flex-col gap-4">
               <h4>Gérer son compte</h4>
               <nav className="flex flex-wrap gap-4 ">
-                <Link href="/account/settings">Paramètres du compte</Link>
-                <Link href="/account/profil/events">Mes evenements</Link>
-                <Link href="/account/profil/participations">
-                  Evenements participés
+                <Link href="/compte/parametres">Paramètres du compte</Link>
+                <Link href="/compte/profil/tickets">Mes tickets</Link>
+                <Link href="/compte/profil/evenements">
+                  Mes événements participés
                 </Link>
-                <Link href="/account/profil/reviews">Avis</Link>
+                <Link href="/compte/profil/participations">
+                  Mes participations
+                </Link>
+                <Link href="/compte/profil/avis">Mes avis</Link>
               </nav>
             </div>
           </div>

@@ -55,26 +55,36 @@ export default function MenuModal({ isOpen, setIsOpen }) {
             <Link href="/villes" onClick={setIsOpen}>
               Les villes
             </Link>
-            <div>
-              <Link href="/villes/events" onClick={setIsOpen}>
-                Evenements
-              </Link>
-              <Link href="/villes/organisateurs" onClick={setIsOpen}>
-                Lieux
-              </Link>
-              <Link href="/villes/organisateurs" onClick={setIsOpen}>
-                Organisateurs
-              </Link>
-            </div>
+
             <Link href="/lieux" onClick={setIsOpen}>
               Les lieux
             </Link>
+            <Link href="/compte/parametres" onClick={setIsOpen}>
+              Paramètres
+            </Link>
             <div>
-              <Link href="/lieux/evenements" onClick={setIsOpen}>
-                Evenements
+              <Link href="/compte/parametres/informations" onClick={setIsOpen}>
+                Mes informations
               </Link>
-              <Link href="/lieux/organisateurs" onClick={setIsOpen}>
-                Organisateurs
+              <Link href="/compte/parametres/preferences" onClick={setIsOpen}>
+                Mes préférences
+              </Link>
+            </div>
+            <Link href="/compte/profil/tickets" onClick={setIsOpen}>
+              Mon activité
+            </Link>
+            <div>
+              <Link href="/compte/profil/tickets" onClick={setIsOpen}>
+                Mes tickets
+              </Link>
+              <Link href="/compte/profil/evenements" onClick={setIsOpen}>
+                Mes événements
+              </Link>
+              <Link href="/compte/profil/participations" onClick={setIsOpen}>
+                Mes participations
+              </Link>
+              <Link href="/compte/profil/avis" onClick={setIsOpen}>
+                Mes avis
               </Link>
             </div>
             <button

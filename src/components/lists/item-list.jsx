@@ -3,7 +3,7 @@ import { NavArrowRight } from "iconoir-react";
 import UsersModal from "../modals/users-modal";
 import { useState } from "react";
 
-export default function ItemList({ items = [], eventId }) {
+export default function ItemList({ items, eventId }) {
   const [isUsersModalOpen, setIsUsersModalOpen] = useState(false);
 
   if (!items || items.length === 0) return null;

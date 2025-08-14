@@ -73,34 +73,38 @@ export default function EventCard({
           />
           {isTrending && <div className="trending-tag">Tendance</div>}
         </div>
-        <div className="flex flex-col gap-4 p-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-[var(--secondary-blue)]">{name}</h3>
-            <Bookmark className="text-[var(--primary-blue)] h-6 w-6 flex-shrink-0" />
-          </div>
-          <div className="flex items-center gap-4">
-            <Image
-              src={organizerImageUrl || profilPicture}
-              alt="Profil picture"
-              width={48}
-              height={48}
-              className="profil-pic-md"
-            />
-            <div className="flex flex-col">
-              <p className="dark-text">{organizerName}</p>
-              <RatingStar note={organizerNote} />
+        <div className="flex flex-col gap-4 p-4 justify-between flex-1">
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-[var(--secondary-blue)]">{name}</h3>
+              <Bookmark className="text-[var(--primary-blue)] h-6 w-6 flex-shrink-0" />
             </div>
+            <div className="flex items-center gap-4">
+              <Image
+                src={organizerImageUrl || profilPicture}
+                alt="Profil picture"
+                width={48}
+                height={48}
+                className="profil-pic-md"
+              />
+              <div className="flex flex-col">
+                <p className="dark-text">{organizerName}</p>
+                <RatingStar note={organizerNote} />
+              </div>
+            </div>
+            <p className="blue-text">
+              {cityName} |{" "}
+              {formatEventDate(date, {
+                fallback: "samedi 24 juin 2025 • 15h30",
+              })}
+            </p>
+            <ThemeTags
+              theme={
+                categories?.map((cat) => cat.name) || ["Musique", "Sponsorisé"]
+              }
+            />
+            <p className="line-clamp-3">{description}</p>
           </div>
-          <p className="blue-text">
-            {cityName} |{" "}
-            {formatEventDate(date, { fallback: "samedi 24 juin 2025 • 15h30" })}
-          </p>
-          <ThemeTags
-            theme={
-              categories?.map((cat) => cat.name) || ["Musique", "Sponsorisé"]
-            }
-          />
-          <p className="line-clamp-3">{description}</p>
           <div className="flex justify-between items-center">
             <ProfilImages totalCount={8} />
             {canEdit && (
@@ -185,9 +189,14 @@ export default function EventCard({
   return (
     <>
       {canEdit || isRegistered ? (
-        <div className="white-card">{eventCardContent()}</div>
+        <div className="white-card flex flex-col h-full">
+          {eventCardContent()}
+        </div>
       ) : (
-        <Link href={`/evenements/${eventId}`} className="white-card">
+        <Link
+          href={`/evenements/${eventId}`}
+          className="white-card flex flex-col h-full"
+        >
           {eventCardContent()}
         </Link>
       )}

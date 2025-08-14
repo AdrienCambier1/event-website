@@ -1,9 +1,3 @@
-/**
- * Formate une date en français avec jour, date et heure
- * @param {string|Date} dateString - La date à formater
- * @param {Object} options - Options de formatage
- * @returns {string} Date formatée
- */
 export const formatEventDate = (dateString, options = {}) => {
   if (!dateString) return "Date non définie";
 
@@ -18,7 +12,6 @@ export const formatEventDate = (dateString, options = {}) => {
       includeTime = true,
       includeDayName = true,
       separator = " • ",
-      fallback = "Date non disponible",
     } = options;
 
     let formattedDate = date.toLocaleDateString("fr-FR", {
@@ -43,20 +36,10 @@ export const formatEventDate = (dateString, options = {}) => {
   }
 };
 
-/**
- * Formate uniquement la date (sans l'heure)
- * @param {string|Date} dateString - La date à formater
- * @returns {string} Date formatée sans l'heure
- */
 export const formatDateOnly = (dateString) => {
   return formatEventDate(dateString, { includeTime: false });
 };
 
-/**
- * Formate uniquement l'heure
- * @param {string|Date} dateString - La date à formater
- * @returns {string} Heure formatée
- */
 export const formatTimeOnly = (dateString) => {
   if (!dateString) return "Heure non définie";
 

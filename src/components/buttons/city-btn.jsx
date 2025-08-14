@@ -8,12 +8,10 @@ export default function CityBtn({ reverse, onClick }) {
   const cityDropdownRef = useRef(null);
 
   const {
-    data: citiesData,
+    cities,
     loading: citiesLoading,
     error: citiesError,
   } = useCities(0, 3);
-
-  const cities = citiesData?._embedded?.cityResponses || [];
 
   useEffect(() => {
     const handleClickOutside = (event) => {

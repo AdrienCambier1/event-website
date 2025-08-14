@@ -6,12 +6,7 @@ import DropdownButton from "@/components/buttons/dropdown-button";
 import { useState, Suspense, useEffect, useRef, useMemo } from "react";
 import { Erase } from "iconoir-react";
 
-function ProfilListContent({
-  title,
-  description,
-  organizers = [],
-  isLoading = false,
-}) {
+function ProfilListContent({ title, description, isLoading, organizers }) {
   const { useSearchParams } = require("next/navigation");
   const searchParams = useSearchParams();
   const [sortOption, setSortOption] = useState("liked");

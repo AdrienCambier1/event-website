@@ -10,6 +10,7 @@ export default function ProfilHeader({
   eventsCount,
   navigation,
   isRegistered,
+  disabledHome = false,
 }) {
   const pathname = usePathname();
   const isProfilRoute = pathname?.includes("/compte/profil/");
@@ -54,7 +55,7 @@ export default function ProfilHeader({
         <CustomNav
           navigation={navigation}
           homeLink="/organisateurs"
-          disabledHome={true}
+          disabledHome={disabledHome}
         />
       )}
     </section>

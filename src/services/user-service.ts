@@ -210,3 +210,38 @@ export async function fetchCurrentUserOrders(
     throw error;
   }
 }
+
+async function fetchOrderEvent(orderId: string | number, token: string) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${API_URL}/orders/${orderId}/events`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Erreur lors de la récupération de l'événement pour la commande ${orderId}`
+    );
+  }
+  const data = await response.json();
+  return data._embedded?.eventResponses?.[0] || null;
+}
+
+export async function fetchCurrentUserOrdersWithEvents(token: string) {
+  const ordersData = await fetchCurrentUserOrders(token);
+  const orders = ordersData._embedded?.orderResponses || [];
+  const enrichedOrders = await Promise.all(
+    orders.map(async (order) => {
+      let event = null;
+      try {
+        event = await fetchOrderEvent(order.id, token);
+      } catch (e) {
+        console.error(e);
+      }
+      return { order, event };
+    })
+  );
+  return enrichedOrders;
+}

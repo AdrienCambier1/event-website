@@ -1,10 +1,11 @@
+"use client";
+import { fetchCurrentUserOrdersWithEvents } from "@/services/user-service";
 import { useState, useEffect } from "react";
 import {
   fetchCurrentUser,
   fetchUserById,
   fetchUserEvents,
   fetchUserParticipatingEvents,
-  fetchCurrentUserOrders,
 } from "@/services/user-service";
 
 export function useCurrentUser(token) {
@@ -225,51 +226,24 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
   };
 }
 
-export function useCurrentUserOrders(token) {
+export function useCurrentUserOrdersWithEvents(token) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && orders.length === 0;
-
-  useEffect(() => {
-    const loadOrders = async () => {
-      if (!token) {
-        setOrders([]);
-        setLoading(false);
-        setError(null);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-        const ordersData = await fetchCurrentUserOrders(token);
-        setOrders(ordersData._embedded?.orderResponses || []);
-      } catch (err) {
-        console.error("Error in useCurrentUserOrders:", err);
-        setError(
-          err instanceof Error ? err.message : "Une erreur est survenue"
-        );
-        setOrders([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadOrders();
-  }, [token]);
-
-  const refetch = async () => {
-    if (!token) return;
-
-    try {
-      setLoading(true);
+  const fetchData = async () => {
+    if (!token) {
+      setOrders([]);
+      setLoading(false);
       setError(null);
-      const ordersData = await fetchCurrentUserOrders(token);
-      setOrders(ordersData._embedded?.orderResponses || []);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const enrichedOrders = await fetchCurrentUserOrdersWithEvents(token);
+      setOrders(enrichedOrders);
     } catch (err) {
-      console.error("Error in useCurrentUserOrders refetch:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
       setOrders([]);
     } finally {
@@ -277,9 +251,17 @@ export function useCurrentUserOrders(token) {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [token]);
+
+  const refetch = async () => {
+    await fetchData();
+  };
+
   return {
     orders,
-    loading: shouldShowSkeleton,
+    loading,
     error,
     refetch,
   };

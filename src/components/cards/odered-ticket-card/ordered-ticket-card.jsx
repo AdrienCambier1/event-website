@@ -18,7 +18,7 @@ export default function OrderedTicketCard({
             <span>{price}€</span>
           </div>
         </div>
-        <div className="border-b-2 border-dashed"></div>
+        <div className="border-b-2 border-dashed border-[var(--secondary-border-col)]"></div>
         <div className="grid grid-cols-2 justify-between gap-4">
           <div>
             <p>Date</p>
@@ -37,7 +37,7 @@ export default function OrderedTicketCard({
             <p className="dark-text">{city}</p>
           </div>
         </div>
-        <div className="border-b-2 border-dashed"></div>
+        <div className="border-b-2 border-dashed border-[var(--secondary-border-col)]"></div>
         <div className="flex justify-center">
           <Barcode
             value={`TICKET-${date}-${id}-VEEVENT`}

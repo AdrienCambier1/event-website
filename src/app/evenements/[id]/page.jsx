@@ -14,18 +14,12 @@ import ThemeTags from "@/components/commons/theme-tags";
 import ProfilCard from "@/components/cards/profil-card";
 import ItemList from "@/components/lists/item-list";
 import TicketCard from "@/components/cards/ticket-card/ticket-card";
-import DialogModal from "@/components/modals/dialog-modal";
-import Link from "next/link";
-import { useState } from "react";
-import PaymentModal from "@/components/modals/payment-modal";
 import { useEventDetails } from "@/hooks/use-event";
 import { formatEventDate } from "@/utils/date-formatter";
 import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
 
 export default function EventPage() {
   const { id } = useParams();
-  const [paymentModal, setPaymentModal] = useState(false);
-  const [paymentDialogModal, setPaymentDialogModal] = useState(false);
 
   const {
     event,
@@ -54,157 +48,133 @@ export default function EventPage() {
   ];
 
   return (
-    <>
-      <main>
-        <section className="event-grid">
-          <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-2">
-              {eventLoading ? (
-                <h1 className="skeleton-bg">Nom de l'événement</h1>
-              ) : (
-                <h1>{event?.name}</h1>
-              )}
-              {eventLoading ? (
-                <p className="skeleton-bg">Organisé par quelqu'un</p>
-              ) : (
-                <p>
-                  Organisé par{" "}
-                  <span className="dark-text">
-                    {event?.organizer?.pseudo || "Organisateur inconnu"}
-                  </span>
-                </p>
-              )}
-            </div>
-            <ItemList
-              items={eventInfos}
-              eventId={id}
-              isLoading={eventLoading}
-            />
-            <div className="flex flex-wrap gap-4 items-center justify-between">
-              {eventLoading ? (
-                <>
-                  <button className="primary-btn skeleton-bg">
-                    <span>Signaler</span>
-                  </button>
-                  <button className="blue-rounded-btn skeleton-bg">
-                    <span>Enregistrer</span>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button className="primary-btn">
-                    <span>Signaler l'événement</span>
-                  </button>
-                  <button className="blue-rounded-btn">
-                    <span>Enregistrer l'événement</span>
-                    <Bookmark />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-          {eventLoading ? (
-            <div className="banner skeleton-bg"></div>
-          ) : (
-            <Image
-              src={event?.imageUrl || niceImage}
-              alt="Event image"
-              width={800}
-              height={450}
-              className="banner"
-            />
-          )}
-        </section>
-        <section className="page-grid">
-          <div className="flex flex-col gap-12 lg:col-span-2">
-            <div className="flex flex-col gap-6">
-              <h2>Description de l'événement</h2>
-              {eventLoading ? (
-                <>
-                  <p className="skeleton-bg">
-                    Description complète de l'événement
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>{event?.description}</p>
-                </>
-              )}
-            </div>
-            <div className="flex flex-col gap-6">
-              <h2>Tags</h2>
-              {eventLoading ? (
-                <>
-                  <div className="flex flex-wrap gap-2 w-full">
-                    <button className="skeleton-btn">Catégorie</button>
-                    <button className="skeleton-btn">Catégorie</button>
-                  </div>
-                </>
-              ) : (
-                <ThemeTags theme={event.categories} />
-              )}
-            </div>
-            <div className="flex flex-col gap-6">
-              <h2>Lieu</h2>
-              <ItemList items={placeInfos} isLoading={eventLoading} />
-            </div>
-            {!eventLoading && (
-              <ProfilCard
-                profilId={event?.organizer?.id}
-                className="relative translate-y-0"
-                name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
-                pseudo={event?.organizer?.pseudo}
-                note={event?.organizer?.note}
-                role="Organizer"
-                imageUrl={event?.organizer?.imageUrl}
-              />
+    <main>
+      <section className="event-grid">
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-2">
+            {eventLoading ? (
+              <h1 className="skeleton-bg">Nom de l'événement</h1>
+            ) : (
+              <h1>{event?.name}</h1>
+            )}
+            {eventLoading ? (
+              <p className="skeleton-bg">Organisé par quelqu'un</p>
+            ) : (
+              <p>
+                Organisé par{" "}
+                <span className="dark-text">
+                  {event?.organizer?.pseudo || "Organisateur inconnu"}
+                </span>
+              </p>
             )}
           </div>
-          <div>
-            <div className="flex flex-col gap-6 sticky top-20">
-              <h2>Billet</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                {eventLoading ? (
-                  <TicketCardSkeleton />
-                ) : (
-                  <TicketCard
-                    title={event?.name}
-                    description={`Organisé par ${
-                      event?.organizer?.pseudo || "Organisateur inconnu"
-                    }`}
-                    price={event?.price}
-                    onClick={() => setPaymentModal(true)}
-                  />
-                )}
-              </div>
+          <ItemList items={eventInfos} eventId={id} isLoading={eventLoading} />
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            {eventLoading ? (
+              <>
+                <button className="primary-btn skeleton-bg">
+                  <span>Signaler</span>
+                </button>
+                <button className="blue-rounded-btn skeleton-bg">
+                  <span>Enregistrer</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="primary-btn">
+                  <span>Signaler l'événement</span>
+                </button>
+                <button className="blue-rounded-btn">
+                  <span>Enregistrer l'événement</span>
+                  <Bookmark />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+        {eventLoading ? (
+          <div className="banner skeleton-bg"></div>
+        ) : (
+          <Image
+            src={event?.imageUrl || niceImage}
+            alt="Event image"
+            width={800}
+            height={450}
+            className="banner"
+          />
+        )}
+      </section>
+      <section className="page-grid">
+        <div className="flex flex-col gap-12 lg:col-span-2">
+          <div className="flex flex-col gap-6">
+            <h2>Description de l'événement</h2>
+            {eventLoading ? (
+              <>
+                <p className="skeleton-bg">
+                  Description complète de l'événement
+                </p>
+              </>
+            ) : (
+              <>
+                <p>{event?.description}</p>
+              </>
+            )}
+          </div>
+          <div className="flex flex-col gap-6">
+            <h2>Tags</h2>
+            {eventLoading ? (
+              <>
+                <div className="flex flex-wrap gap-2 w-full">
+                  <button className="skeleton-btn">Catégorie</button>
+                  <button className="skeleton-btn">Catégorie</button>
+                </div>
+              </>
+            ) : (
+              <ThemeTags theme={event.categories} />
+            )}
+          </div>
+          <div className="flex flex-col gap-6">
+            <h2>Lieu</h2>
+            <ItemList items={placeInfos} isLoading={eventLoading} />
+          </div>
+          {!eventLoading && (
+            <ProfilCard
+              profilId={event?.organizer?.id}
+              className="relative translate-y-0"
+              name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
+              pseudo={event?.organizer?.pseudo}
+              note={event?.organizer?.note}
+              role="Organizer"
+              imageUrl={event?.organizer?.imageUrl}
+            />
+          )}
+        </div>
+        <div>
+          <div className="flex flex-col gap-6 sticky top-20">
+            <h2>Billet</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+              {eventLoading ? (
+                <TicketCardSkeleton />
+              ) : (
+                <TicketCard
+                  title={event?.name}
+                  description={`Cet événement${
+                    event?.isInvitationOnly
+                      ? " uniquement accessible sur invitation"
+                      : " accessible pour tout le monde"
+                  } est organisé par ${
+                    event?.organizer?.pseudo || "Organisateur inconnu"
+                  }`}
+                  price={event?.price}
+                  eventId={event?.id}
+                  isInvitationOnly={event?.isInvitationOnly}
+                  organizer={event?.organizer?.pseudo}
+                />
+              )}
             </div>
           </div>
-        </section>
-      </main>
-      <PaymentModal
-        isOpen={paymentModal}
-        setIsOpen={() => setPaymentModal(false)}
-        onClick={() => setPaymentDialogModal(true)}
-        ticket={event?.name}
-        price={event?.price}
-      />
-      <DialogModal
-        title="Achat effectué"
-        isOpen={paymentDialogModal}
-        setIsOpen={() => setPaymentDialogModal(false)}
-        icon={Check}
-        description={
-          <>
-            L'achat de votre billet pour l'événement{" "}
-            <span className="dark-text">{event?.name}</span> a bien été
-            effectué. <br /> Retrouver votre billet dans la rubrique{" "}
-            <Link href="/compte/profil/tickets" className="blue-text underline">
-              tickets
-            </Link>{" "}
-            de votre profil.
-          </>
-        }
-      />
-    </>
+        </div>
+      </section>
+    </main>
   );
 }

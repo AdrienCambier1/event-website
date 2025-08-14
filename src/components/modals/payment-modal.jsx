@@ -13,6 +13,7 @@ export default function PaymentModal({
   onClick,
   ticket,
   price,
+  isLoading,
 }) {
   const [mounted, setMounted] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(false);
@@ -24,7 +25,6 @@ export default function PaymentModal({
   ];
 
   const handleSubmit = () => {
-    setIsOpen();
     if (onClick) onClick();
   };
 
@@ -83,7 +83,7 @@ export default function PaymentModal({
               <span>Annuler</span>
             </button>
             <button className="primary-form-btn" onClick={handleSubmit}>
-              <span>Payer</span>
+              {isLoading ? <span>Chargement...</span> : <span>Payer</span>}
             </button>
           </div>
         </div>

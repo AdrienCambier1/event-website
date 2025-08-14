@@ -82,3 +82,23 @@ export async function fetchEventDetails(
     throw error;
   }
 }
+
+export async function addEventParticipants(
+  eventId: number | string,
+  userIds: number[],
+  token?: string
+) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${API_URL}/events/${eventId}/participants`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify({ userIds }),
+  });
+  if (!res.ok) {
+    throw new Error("Erreur lors de l'ajout des participants à l'événement");
+  }
+  return await res.json();
+}

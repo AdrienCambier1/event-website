@@ -4,6 +4,7 @@ import {
   fetchEvents,
   fetchEventDetails,
   fetchEventParticipants,
+  addEventParticipants,
 } from "@/services/event-service";
 
 export function useEvents(token, page = 0, size = 10) {
@@ -138,4 +139,29 @@ export function useEventParticipants(eventId, token, shouldFetch = false) {
   };
 
   return { participants, loading, error, refetch };
+}
+
+export function useAddEventParticipants() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+
+  const addParticipants = async (eventId, userIds, token) => {
+    setLoading(true);
+    setError(null);
+    setData(null);
+    try {
+      const result = await addEventParticipants(eventId, userIds, token);
+      setData(result);
+      return result;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur inconnue");
+      setData(null);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { addParticipants, loading, error, data };
 }

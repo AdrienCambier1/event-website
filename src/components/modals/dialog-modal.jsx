@@ -69,7 +69,12 @@ export default function DialogModal({
               </button>
             </div>
           ) : (
-            <button className="primary-form-btn" onClick={setIsOpen}>
+            <button
+              className={`${
+                isDangerous && "!bg-[var(--primary-red)]"
+              } primary-form-btn`}
+              onClick={setIsOpen}
+            >
               <span>Fermer</span>
             </button>
           )}

@@ -75,19 +75,32 @@ export default function EventPage() {
                 </p>
               )}
             </div>
-            {eventLoading ? (
-              <></>
-            ) : (
-              <ItemList items={eventInfos} eventId={id} />
-            )}
+            <ItemList
+              items={eventInfos}
+              eventId={id}
+              isLoading={eventLoading}
+            />
             <div className="flex flex-wrap gap-4 items-center justify-between">
-              <button className="primary-btn">
-                <span>Signaler l'événement</span>
-              </button>
-              <button className="blue-rounded-btn">
-                <span>Enregistrer l'événement</span>
-                <Bookmark />
-              </button>
+              {eventLoading ? (
+                <>
+                  <button className="primary-btn skeleton-bg">
+                    <span>Signaler</span>
+                  </button>
+                  <button className="blue-rounded-btn skeleton-bg">
+                    <span>Enregistrer</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="primary-btn">
+                    <span>Signaler l'événement</span>
+                  </button>
+                  <button className="blue-rounded-btn">
+                    <span>Enregistrer l'événement</span>
+                    <Bookmark />
+                  </button>
+                </>
+              )}
             </div>
           </div>
           {eventLoading ? (
@@ -133,7 +146,7 @@ export default function EventPage() {
             </div>
             <div className="flex flex-col gap-6">
               <h2>Lieu</h2>
-              {eventLoading ? <></> : <ItemList items={placeInfos} />}
+              <ItemList items={placeInfos} isLoading={eventLoading} />
             </div>
             {!eventLoading && (
               <ProfilCard

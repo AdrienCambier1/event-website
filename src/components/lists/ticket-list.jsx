@@ -19,6 +19,7 @@ export default function TicketList({ title, description, isLoading, tickets }) {
             <OrderedTicketCardSkeleton />
             <OrderedTicketCardSkeleton />
             <OrderedTicketCardSkeleton />
+            <OrderedTicketCardSkeleton />
           </>
         )}
         {!isLoading && tickets?.length === 0 && (

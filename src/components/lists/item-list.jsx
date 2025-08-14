@@ -3,7 +3,7 @@ import { NavArrowRight } from "iconoir-react";
 import UsersModal from "../modals/users-modal";
 import { useState } from "react";
 
-export default function ItemList({ items, eventId }) {
+export default function ItemList({ items, eventId, isLoading }) {
   const [isUsersModalOpen, setIsUsersModalOpen] = useState(false);
 
   if (!items || items.length === 0) return null;
@@ -35,7 +35,11 @@ export default function ItemList({ items, eventId }) {
                       !isLast && "border-b border-[var(--secondary-border-col)]"
                     }`}
                   >
-                    <p className="dark-text">{item.value}</p>
+                    {isLoading ? (
+                      <p className="skeleton-bg">Texte de l'élément</p>
+                    ) : (
+                      <p className="dark-text">{item.value}</p>
+                    )}
                     {item.type === "users" && (
                       <button
                         className="secondary-btn"

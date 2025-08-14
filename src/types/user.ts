@@ -28,3 +28,34 @@ export interface User {
 export interface CurrentUserResponse extends User {}
 
 export interface UserByIdResponse extends User {}
+
+// New types for orders
+export interface Ticket {
+  id: number;
+  name: string;
+  lastName: string | null;
+  description: string;
+  unitPrice: number;
+}
+
+export interface Order {
+  id: number;
+  totalPrice: number;
+  ticketToBeCreated: number;
+  tickets: Ticket[];
+  _links: {
+    self: { href: string };
+    tickets: { href: string };
+    users: { href: string };
+    events: { href: string };
+  };
+}
+
+export interface UserOrdersResponse {
+  _embedded: {
+    orderResponses: Order[];
+  };
+  _links: {
+    self: { href: string };
+  };
+}

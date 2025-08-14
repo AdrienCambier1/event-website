@@ -51,7 +51,11 @@ export default function ProfilHeader({
         </div>
       </div>
       {shouldShowNav && (
-        <CustomNav navigation={navigation} homeLink="/organisateurs" />
+        <CustomNav
+          navigation={navigation}
+          homeLink="/organisateurs"
+          disabledHome={true}
+        />
       )}
     </section>
   );

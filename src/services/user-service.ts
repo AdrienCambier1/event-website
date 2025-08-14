@@ -1,4 +1,8 @@
-import { CurrentUserResponse, UserByIdResponse } from "@/types/user";
+import {
+  CurrentUserResponse,
+  UserByIdResponse,
+  UserOrdersResponse,
+} from "@/types/user";
 import { EventsApiResponse } from "@/types/event";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -168,6 +172,41 @@ export async function fetchUserParticipatingEvents(
     return data;
   } catch (error) {
     console.error("Error fetching user participating events:", error);
+    throw error;
+  }
+}
+
+export async function fetchCurrentUserOrders(
+  token: string
+): Promise<UserOrdersResponse> {
+  try {
+    const response = await fetch(`${API_URL}/users/me/orders`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const statusErrors = {
+        401: "Token invalide ou expiré",
+        403: "Accès non autorisé",
+        404: "Commandes non trouvées",
+        500: "Erreur serveur, veuillez réessayer",
+      };
+
+      const errorMessage =
+        statusErrors[response.status] ||
+        `Erreur ${response.status}: Impossible de récupérer les commandes`;
+
+      throw new Error(errorMessage);
+    }
+
+    const data: UserOrdersResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching current user orders:", error);
     throw error;
   }
 }

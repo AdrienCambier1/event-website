@@ -172,8 +172,8 @@ export default function EventPage() {
         isOpen={paymentModal}
         setIsOpen={() => setPaymentModal(false)}
         onClick={() => setPaymentDialogModal(true)}
-        ticket="Billet Eco+"
-        price={43}
+        ticket={event?.name}
+        price={event?.price}
       />
       <DialogModal
         title="Achat effectué"
@@ -183,15 +183,12 @@ export default function EventPage() {
         description={
           <>
             L'achat de votre billet pour l'événement{" "}
-            <span className="dark-text">Atelier fresque végétal</span> a bien
-            été effectué. <br /> Retrouver votre billet dans la rubrique{" "}
-            <Link
-              href="/account/profil/participations"
-              className="blue-text underline"
-            >
-              Mes inscriptions
-            </Link>
-            .
+            <span className="dark-text">{event?.name}</span> a bien été
+            effectué. <br /> Retrouver votre billet dans la rubrique{" "}
+            <Link href="/compte/profil/tickets" className="blue-text underline">
+              tickets
+            </Link>{" "}
+            de votre profil.
           </>
         }
       />

@@ -14,7 +14,7 @@ export default function CustomNav({ navigation, disabledHome, homeLink }) {
         </Link>
       )}
       {navigation.map((item, index) => {
-        if (!item.href) return null; // Ignore les éléments sans href
+        if (!item.href) return null;
 
         const isActive = pathname.includes(item.href);
 

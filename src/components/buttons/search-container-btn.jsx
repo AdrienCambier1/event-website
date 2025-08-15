@@ -44,11 +44,11 @@ export default function SearchContainerBtn() {
         } absolute bottom-0 -z-10 scale-x-95 w-full`}
       />
       <motion.div
-        initial={false}
         animate={{
           height: selected ? "auto" : 0,
           scaleX: selected ? 1 : 0.95,
           scaleY: selected ? 1 : 0,
+          opacity: selected ? 1 : 0,
           paddingTop: selected ? "0.75rem" : "0.5rem",
           transformOrigin: "top",
         }}
@@ -56,6 +56,7 @@ export default function SearchContainerBtn() {
           height: { duration: 0.3, ease: "easeInOut" },
           scaleX: { duration: 0.3, ease: "easeInOut" },
           scaleY: { duration: 0.3, ease: "easeInOut" },
+          opacity: { duration: 0.3, ease: "easeInOut" },
         }}
         className="w-full -z-10 flex flex-col gap-3"
       >

@@ -9,11 +9,13 @@ import SearchContainerBtn from "../buttons/search-container-btn";
 export default function SearchBarModal() {
   const { isSearchModalOpen, closeSearchModal } = useSearchModal();
   const [mounted, setMounted] = useState(false);
-
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("all");
   const [searchDropdown, setSearchDropdown] = useState(false);
   const searchDropdownRef = useRef(null);
+  const scrollContainerRef = useRef(null);
   const inputRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -24,6 +26,18 @@ export default function SearchBarModal() {
     { label: "Lieux", value: "places" },
     { label: "Organisateurs", value: "organisers" },
   ];
+
+  const checkScrollPosition = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    setIsAtTop(container.scrollTop <= 0);
+
+    const isBottom =
+      Math.ceil(container.scrollTop + container.clientHeight) >=
+      container.scrollHeight;
+    setIsAtBottom(isBottom);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -79,9 +93,27 @@ export default function SearchBarModal() {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    if (isSearchModalOpen) {
+      checkScrollPosition();
+    }
+  }, [isSearchModalOpen, checkScrollPosition]);
 
   if (!mounted) return null;
+
+  const scrollContainerProps = {
+    ref: scrollContainerRef,
+    onScroll: checkScrollPosition,
+    className: `${isSearchModalOpen ? "opacity-100" : "opacity-0"} ${
+      !isAtTop && !isAtBottom
+        ? "mask-both"
+        : !isAtTop
+        ? "mask-top"
+        : !isAtBottom
+        ? "mask-bottom"
+        : ""
+    } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide transition `,
+  };
 
   return (
     <>
@@ -153,11 +185,7 @@ export default function SearchBarModal() {
             </div>
           </div>
         </div>
-        <div
-          className={`${
-            isSearchModalOpen ? "opacity-100" : "opacity-0"
-          } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide transition`}
-        >
+        <div {...scrollContainerProps}>
           <h2 className="text-white">Résultat des recherches</h2>
           <SearchContainerBtn />
           <SearchContainerBtn />

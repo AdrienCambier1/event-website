@@ -4,6 +4,9 @@ import ModalBg from "./modal-bg";
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import { User, Phone, AtSign, Lock } from "iconoir-react";
+import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
+import { useAuth } from "@/contexts/auth-context";
+import { useParametres } from "@/contexts/parametres-context";
 
 export default function SettingsModal({
   isOpen,
@@ -11,7 +14,13 @@ export default function SettingsModal({
   type = "name",
   user,
 }) {
-  const [mounted, setMounted] = useState(false);
+  const { token } = useAuth();
+  const { refetch } = useCurrentUser(token);
+  const { setUser } = useParametres();
+
+  const { updateUser, loading, error, success, data } =
+    useUpdateCurrentUser(token);
+
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -20,6 +29,36 @@ export default function SettingsModal({
     currentPassword: "",
     password: "",
   });
+
+  const patchUserData = async (formValues, type) => {
+    let updateData = {};
+    if (type === "name") {
+      updateData = {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+      };
+    } else if (type === "phone") {
+      updateData = {
+        phone: formValues.phone,
+      };
+    } else if (type === "pseudo") {
+      updateData = {
+        pseudo: formValues.pseudo,
+      };
+    } else if (type === "password") {
+      if (
+        formValues.password &&
+        formValues.password === formValues.confirmPassword
+      ) {
+        updateData = {
+          password: formValues.password,
+        };
+      } else {
+        return;
+      }
+    }
+    await updateUser(updateData);
+  };
 
   const modalConfig = {
     name: {
@@ -47,7 +86,7 @@ export default function SettingsModal({
         {
           name: "phone",
           label: "Numéro de téléphone",
-          type: "tel",
+          type: "text",
           placeholder: "06 12 34 56 78",
         },
       ],
@@ -94,30 +133,21 @@ export default function SettingsModal({
   const Icon = config.icon;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
+    const fieldName = e.target.dataset.field || e.target.name.split("_")[0];
     setFormValues((prev) => ({
       ...prev,
-      [name]: value,
+      [fieldName]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormValues({
-      firstName: "",
-      lastName: "",
-      phone: "",
-      pseudo: "",
-      currentPassword: "",
-      password: "",
-      confirmPassword: "",
-    });
+    await patchUserData(formValues, type);
+    const refreshed = await refetch();
+    setUser(refreshed);
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isOpen && user) {
@@ -134,8 +164,6 @@ export default function SettingsModal({
     }
   }, [isOpen, user]);
 
-  if (!mounted) return null;
-
   return ReactDOM.createPortal(
     <>
       <ReactFocusLock
@@ -149,26 +177,34 @@ export default function SettingsModal({
             <h3 className="text-center">{config.title}</h3>
           </div>
           <form>
-            {config.fields.map((field) => (
+            {config.fields.map((field, index) => (
               <div key={field.name} className="flex flex-col gap-2 w-full">
                 <label htmlFor={field.name}>{field.label}</label>
                 <input
                   id={field.name}
-                  name={field.name}
+                  name={`${field.name}_${Date.now()}_${index}`}
                   type={field.type}
                   value={formValues[field.name] || ""}
                   onChange={handleChange}
                   placeholder={field.placeholder}
+                  autoComplete="off"
                 />
               </div>
             ))}
           </form>
           <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
-            <button className="secondary-form-btn" onClick={setIsOpen}>
+            <button
+              className="secondary-form-btn"
+              onClick={() => setIsOpen(false)}
+            >
               <span>Annuler</span>
             </button>
             <button className="primary-form-btn" onClick={handleSubmit}>
-              <span>Sauvegarder</span>
+              {loading ? (
+                <span>Modification...</span>
+              ) : (
+                <span>Sauvegarder</span>
+              )}
             </button>
           </div>
         </div>

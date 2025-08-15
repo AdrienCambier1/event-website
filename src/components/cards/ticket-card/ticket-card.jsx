@@ -2,6 +2,7 @@
 import { Plus, Check, CloudXmark } from "iconoir-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAddEventParticipants } from "@/hooks/use-event";
+import { useInvitation } from "@/hooks/use-invitation";
 import DialogModal from "@/components/modals/dialog-modal";
 import PaymentModal from "@/components/modals/payment-modal";
 import { useState } from "react";
@@ -25,6 +26,7 @@ export default function TicketCard({
   const pathname = usePathname();
 
   const { addParticipants, loading: addLoading } = useAddEventParticipants();
+  const { sendInvitation, loading: invitationLoading } = useInvitation();
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -36,7 +38,16 @@ export default function TicketCard({
 
   const handleSubmit = async () => {
     try {
-      await addParticipants(eventId, [user.id], token);
+      if (isInvitationOnly) {
+        await sendInvitation(
+          eventId,
+          user.id,
+          token,
+          `Demande d'invitation à l'événement ${title}`
+        );
+      } else {
+        await addParticipants(eventId, [user.id], token);
+      }
       setPaymentSuccess(true);
       setPaymentModal(false);
     } catch (e) {
@@ -74,7 +85,7 @@ export default function TicketCard({
         onClick={handleSubmit}
         ticket={title}
         price={price}
-        isLoading={addLoading}
+        isLoading={isInvitationOnly ? invitationLoading : addLoading}
       />
       <DialogModal
         title="Achat effectué"

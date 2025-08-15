@@ -2,6 +2,7 @@ import {
   CurrentUserResponse,
   UserByIdResponse,
   UserOrdersResponse,
+  UserUpdateRequest,
 } from "@/types/user";
 import { EventsApiResponse } from "@/types/event";
 
@@ -244,4 +245,40 @@ export async function fetchCurrentUserOrdersWithEvents(token: string) {
     })
   );
   return enrichedOrders;
+}
+
+export async function updateCurrentUser(
+  token: string,
+  updateData: UserUpdateRequest
+): Promise<CurrentUserResponse> {
+  try {
+    const response = await fetch(`${API_URL}/users/me`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) {
+      const statusErrors = {
+        400: "Requête invalide",
+        401: "Token invalide ou expiré",
+        403: "Accès non autorisé",
+        404: "Utilisateur non trouvé",
+        500: "Erreur serveur, veuillez réessayer",
+      };
+      const errorMessage =
+        statusErrors[response.status] ||
+        `Erreur ${response.status}: Impossible de mettre à jour l'utilisateur`;
+      throw new Error(errorMessage);
+    }
+
+    const data: CurrentUserResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating current user:", error);
+    throw error;
+  }
 }

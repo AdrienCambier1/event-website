@@ -85,7 +85,7 @@ export default function EventPage() {
                   <ReportBtn
                     title={event?.name}
                     userId={user?.id}
-                    eventId={event?.id}
+                    organizerId={event?.id}
                     isAuthenticated={isAuthenticated}
                     token={token}
                   />

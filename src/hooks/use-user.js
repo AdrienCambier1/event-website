@@ -6,6 +6,7 @@ import {
   fetchUserById,
   fetchUserEvents,
   fetchUserParticipatingEvents,
+  updateCurrentUser,
 } from "@/services/user-service";
 
 export function useCurrentUser(token) {
@@ -18,7 +19,7 @@ export function useCurrentUser(token) {
       setUser(null);
       setLoading(false);
       setError(null);
-      return;
+      return null;
     }
 
     setLoading(true);
@@ -27,10 +28,12 @@ export function useCurrentUser(token) {
     try {
       const userData = await fetchCurrentUser(token);
       setUser(userData);
+      return userData;
     } catch (err) {
       console.error("Error in useCurrentUser:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -41,7 +44,7 @@ export function useCurrentUser(token) {
   }, [token]);
 
   const refetch = async () => {
-    await fetchData();
+    return await fetchData();
   };
 
   return {
@@ -85,7 +88,7 @@ export function useUserById(userId, token = null) {
   }, [userId, token]);
 
   const refetch = async () => {
-    await fetchData();
+    return await fetchData();
   };
 
   return {
@@ -256,7 +259,7 @@ export function useCurrentUserOrdersWithEvents(token) {
   }, [token]);
 
   const refetch = async () => {
-    await fetchData();
+    return await fetchData();
   };
 
   return {
@@ -265,4 +268,31 @@ export function useCurrentUserOrdersWithEvents(token) {
     error,
     refetch,
   };
+}
+
+export function useUpdateCurrentUser(token) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [data, setData] = useState(null);
+
+  const updateUser = async (updateData) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+    try {
+      const updatedUser = await updateCurrentUser(token, updateData);
+      setData(updatedUser);
+      setSuccess(true);
+      return updatedUser;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      setSuccess(false);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { updateUser, loading, error, success, data };
 }

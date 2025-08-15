@@ -10,7 +10,7 @@ export default function ReportBtn({
   isAuthenticated,
   token,
   userId,
-  eventId,
+  organizerId,
 }) {
   const [reportModal, setReportModal] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
@@ -63,8 +63,7 @@ export default function ReportBtn({
         reportType: reports[selected].type,
         description: reports[selected].description,
         senderUserId: userId,
-        reportedUserId: null,
-        eventId: eventId,
+        reportedUserId: organizerId,
       });
       setReportSuccess(true);
       setReportModal(false);

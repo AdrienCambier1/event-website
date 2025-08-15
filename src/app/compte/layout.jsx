@@ -6,11 +6,16 @@ import ProfilHeader from "@/components/commons/profil-header";
 import { useAuth } from "@/hooks/use-auth";
 import { useCurrentUser } from "@/hooks/use-user";
 import { usePathname } from "next/navigation";
-import { ParametresProvider } from "@/contexts/parametres-context";
+import {
+  ParametresProvider,
+  useParametres,
+} from "@/contexts/parametres-context";
+import { useEffect } from "react";
 
 export default function CompteLayout({ children }) {
   const { token, isAuthenticated, loading: authLoading } = useAuth();
-  const pathname = usePathname();
+  const { setUser, setAccountError, setIsLoading, user, accountError } =
+    useParametres();
 
   const navigation = [
     { name: "Tickets", href: "/compte/profil/tickets" },
@@ -20,29 +25,28 @@ export default function CompteLayout({ children }) {
   ];
 
   const {
-    user,
+    user: userData,
     loading: accountLoading,
-    error: accountError,
+    error: userAccountError,
   } = useCurrentUser(isAuthenticated ? token : null);
 
   const isLoading = authLoading || accountLoading;
 
+  useEffect(() => {
+    setUser(userData);
+    setAccountError(userAccountError);
+    setIsLoading(isLoading);
+  }, [
+    userData,
+    userAccountError,
+    isLoading,
+    setUser,
+    setAccountError,
+    setIsLoading,
+  ]);
+
   const shouldShowSkeleton =
     isLoading || (isAuthenticated && !user && !accountError);
-
-  const isParametresSection = pathname?.startsWith("/compte/parametres");
-
-  const childrenContent = isParametresSection ? (
-    <ParametresProvider
-      user={user}
-      isLoading={shouldShowSkeleton}
-      accountError={accountError}
-    >
-      {children}
-    </ParametresProvider>
-  ) : (
-    children
-  );
 
   return (
     <main>
@@ -80,7 +84,7 @@ export default function CompteLayout({ children }) {
         isRegistered={true}
         disabledHome={true}
       />
-      {childrenContent}
+      {children}
     </main>
   );
 }

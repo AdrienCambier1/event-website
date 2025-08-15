@@ -24,9 +24,8 @@ export default function SearchBarModal() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Enter" && isSearchModalOpen && searchTerm.trim()) {
-        e.preventDefault();
-        handleSearch(e);
+      if (e.key === "Escape") {
+        closeSearchModal();
       }
     };
 
@@ -37,7 +36,7 @@ export default function SearchBarModal() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isSearchModalOpen, searchTerm, searchType]);
+  }, [isSearchModalOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,24 +56,6 @@ export default function SearchBarModal() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchDropdown]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-
-    if (!searchTerm.trim()) return;
-
-    if (searchType === "events") {
-      router.push(
-        `/activities/events?search=${encodeURIComponent(searchTerm)}`
-      );
-    } else {
-      router.push(
-        `/activities/organisers?search=${encodeURIComponent(searchTerm)}`
-      );
-    }
-
-    closeSearchModal();
-  };
 
   const handleTypeChange = (type) => {
     setSearchType(type);
@@ -128,7 +109,7 @@ export default function SearchBarModal() {
           />
           <div className="flex items-center gap-3">
             <p className="hidden md:block border border-[var(--secondary-border-col)] px-2 rounded-md">
-              Entrer
+              Esc
             </p>
             <div className="relative" ref={searchDropdownRef}>
               <button

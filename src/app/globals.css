@@ -461,6 +461,7 @@ p {
 
 .search-bar-btn {
   @apply relative max-w-[30rem] w-full flex items-center gap-6 bg-white p-4 rounded-full blue-shadow transition;
+  outline: none;
 }
 
 .nav-btn {
@@ -542,7 +543,8 @@ p {
 input,
 textarea,
 .input-btn {
-  @apply focus:border-[var(--primary-blue)] placeholder:text-[var(--light-gray)] text-[var(--dark-gray)] bg-white border-[var(--primary-border-col)] border rounded-xl p-3 focus:outline-none w-full flex items-center justify-start gap-4 transition;
+  @apply focus:border-[var(--primary-blue)] placeholder:text-[var(--light-gray)] text-[var(--dark-gray)] bg-white border-[var(--primary-border-col)] border rounded-xl p-3 w-full flex items-center justify-start gap-4 transition;
+  outline: none;
 }
 
 input:focus,
@@ -581,7 +583,8 @@ input:-moz-autofill:focus {
 }
 
 .invisible-input {
-  @apply h-fit border-none outline-none bg-transparent p-0 rounded-none;
+  @apply h-fit border-none bg-transparent p-0 rounded-none;
+  outline: none;
 }
 
 .credit-card input {

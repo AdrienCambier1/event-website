@@ -59,3 +59,18 @@ export interface UserOrdersResponse {
     self: { href: string };
   };
 }
+
+export interface UserUpdateRequest {
+  firstName?: string;
+  lastName?: string;
+  pseudo?: string;
+  email?: string;
+  password?: string;
+  phone?: string | null;
+  description?: string | null;
+  imageUrl?: string | null;
+  bannerUrl?: string | null;
+  socials?: string | null;
+  categoryKeys?: string[];
+  note?: number | null;
+}

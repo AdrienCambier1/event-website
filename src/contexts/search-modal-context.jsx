@@ -10,15 +10,15 @@ export function SearchModalProvider({ children }) {
   const closeSearchModal = () => setIsSearchModalOpen(false);
   const toggleSearchModal = () => setIsSearchModalOpen((prev) => !prev);
 
+  const value = {
+    isSearchModalOpen,
+    openSearchModal,
+    closeSearchModal,
+    toggleSearchModal,
+  };
+
   return (
-    <SearchModalContext.Provider
-      value={{
-        isSearchModalOpen,
-        openSearchModal,
-        closeSearchModal,
-        toggleSearchModal,
-      }}
-    >
+    <SearchModalContext.Provider value={value}>
       {children}
     </SearchModalContext.Provider>
   );

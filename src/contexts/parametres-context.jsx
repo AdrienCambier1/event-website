@@ -1,18 +1,20 @@
 "use client";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const ParametresContext = createContext(null);
 
-export function ParametresProvider({
-  children,
-  user,
-  isLoading,
-  accountError,
-}) {
+export function ParametresProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [accountError, setAccountError] = useState(null);
+
   const value = {
     user,
+    setUser,
     isLoading,
+    setIsLoading,
     accountError,
+    setAccountError,
   };
 
   return (

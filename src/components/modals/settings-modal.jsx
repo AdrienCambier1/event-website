@@ -119,7 +119,6 @@ export default function SettingsModal({
     setMounted(true);
   }, []);
 
-  // Préremplir les champs avec les données utilisateur quand le modal s'ouvre
   useEffect(() => {
     if (isOpen && user) {
       setFormValues((prev) => ({

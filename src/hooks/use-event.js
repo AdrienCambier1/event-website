@@ -5,6 +5,7 @@ import {
   fetchEventDetails,
   fetchEventParticipants,
   addEventParticipants,
+  createEventReport,
 } from "@/services/event-service";
 
 export function useEvents(token, page = 0, size = 10) {
@@ -164,4 +165,29 @@ export function useAddEventParticipants() {
   };
 
   return { addParticipants, loading, error, data };
+}
+
+export function useEventReport(token) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+
+  const sendReport = async (report) => {
+    setLoading(true);
+    setError(null);
+    setData(null);
+    try {
+      const result = await createEventReport(report, token);
+      setData(result);
+      return result;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur inconnue");
+      setData(null);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { sendReport, loading, error, data };
 }

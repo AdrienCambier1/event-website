@@ -102,3 +102,26 @@ export async function addEventParticipants(
   }
   return await res.json();
 }
+
+export async function createEventReport(
+  { reportType, description, senderUserId, reportedUserId },
+  token
+) {
+  const res = await fetch(`${API_URL}/reports`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify({
+      reportType,
+      description,
+      senderUserId,
+      reportedUserId,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error("Erreur lors de l'envoi du signalement");
+  }
+  return await res.json();
+}

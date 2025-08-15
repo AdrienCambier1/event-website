@@ -588,7 +588,8 @@ input:-moz-autofill:focus {
   @apply border-none p-0 rounded-none !bg-transparent text-white placeholder:text-white/50;
 }
 
-.modal-content input {
+.modal-content input,
+textarea {
   @apply bg-[rgba(var(--primary-border-col-rgb),0.2)] border-[var(--primary-border-col)];
 }
 

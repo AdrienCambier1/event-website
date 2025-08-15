@@ -1,9 +1,22 @@
 "use client";
-import { NavArrowRight } from "iconoir-react";
+import {
+  Circle,
+  Check,
+  NavArrowRight,
+  CheckCircle,
+  CheckCircleSolid,
+} from "iconoir-react";
 import UsersModal from "../modals/users-modal";
 import { useState } from "react";
 
-export default function ItemList({ items, eventId, isLoading }) {
+export default function ItemList({
+  items,
+  eventId,
+  isLoading,
+  isRadio,
+  selected,
+  setSelected,
+}) {
   const [isUsersModalOpen, setIsUsersModalOpen] = useState(false);
 
   if (!items || items.length === 0) return null;
@@ -16,7 +29,15 @@ export default function ItemList({ items, eventId, isLoading }) {
           const Icon = item.icon;
 
           return (
-            <div key={index} className="flex items-center gap-3 w-full">
+            <div
+              key={index}
+              className={`${
+                isRadio && "cursor-pointer"
+              } flex items-center gap-3 w-full`}
+              onClick={
+                isRadio && setSelected ? () => setSelected(index) : undefined
+              }
+            >
               {item.type === "payment" ? (
                 <div className="flex items-center justify-between py-3 w-full">
                   <p>
@@ -27,6 +48,12 @@ export default function ItemList({ items, eventId, isLoading }) {
                 </div>
               ) : (
                 <>
+                  {isRadio &&
+                    (selected === index ? (
+                      <CheckCircleSolid className="h-6 w-6 blue-text" />
+                    ) : (
+                      <Circle className="h-6 w-6 text-[var(--light-gray)]" />
+                    ))}
                   {Icon && (
                     <Icon className="h-6 w-6 text-[var(--light-gray)]" />
                   )}
@@ -37,6 +64,8 @@ export default function ItemList({ items, eventId, isLoading }) {
                   >
                     {isLoading ? (
                       <p className="skeleton-bg">Texte de l'élément</p>
+                    ) : selected === index ? (
+                      <p className="blue-text">{item.value}</p>
                     ) : (
                       <p className="dark-text">{item.value}</p>
                     )}

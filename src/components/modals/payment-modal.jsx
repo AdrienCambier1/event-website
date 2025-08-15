@@ -62,10 +62,10 @@ export default function PaymentModal({
             </div>
             <h3 className="text-center">Votre commande</h3>
           </div>
-          <div
+          <form
             ref={scrollContainerRef}
             onScroll={checkScrollPosition}
-            className={`overflow-card rounded-t-xl flex flex-col gap-8 ${
+            className={`overflow-card rounded-t-xl ${
               !isAtBottom && "mask-bottom"
             }`}
           >
@@ -77,13 +77,13 @@ export default function PaymentModal({
               </p>
             </div>
             <ItemList items={paymentInfos} />
-          </div>
+          </form>
           <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
             <button className="secondary-form-btn" onClick={setIsOpen}>
               <span>Annuler</span>
             </button>
             <button className="primary-form-btn" onClick={handleSubmit}>
-              {isLoading ? <span>Chargement...</span> : <span>Payer</span>}
+              {isLoading ? <span>Paiement...</span> : <span>Payer</span>}
             </button>
           </div>
         </div>

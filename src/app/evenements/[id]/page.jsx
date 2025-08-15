@@ -2,14 +2,7 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import niceImage from "@/assets/images/nice.jpg";
-import {
-  Bookmark,
-  Calendar,
-  Check,
-  Group,
-  HomeAltSlim,
-  MapPin,
-} from "iconoir-react";
+import { Bookmark, Calendar, Group, HomeAltSlim, MapPin } from "iconoir-react";
 import ThemeTags from "@/components/commons/theme-tags";
 import ProfilCard from "@/components/cards/profil-card";
 import ItemList from "@/components/lists/item-list";
@@ -17,8 +10,11 @@ import TicketCard from "@/components/cards/ticket-card/ticket-card";
 import { useEventDetails } from "@/hooks/use-event";
 import { formatEventDate } from "@/utils/date-formatter";
 import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
+import ReportModal from "@/components/modals/report-modal";
+import { useState } from "react";
 
 export default function EventPage() {
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { id } = useParams();
 
   const {
@@ -48,133 +44,148 @@ export default function EventPage() {
   ];
 
   return (
-    <main>
-      <section className="event-grid">
-        <div className="flex flex-col gap-12">
-          <div className="flex flex-col gap-2">
-            {eventLoading ? (
-              <h1 className="skeleton-bg">Nom de l'événement</h1>
-            ) : (
-              <h1>{event?.name}</h1>
-            )}
-            {eventLoading ? (
-              <p className="skeleton-bg">Organisé par quelqu'un</p>
-            ) : (
-              <p>
-                Organisé par{" "}
-                <span className="dark-text">
-                  {event?.organizer?.pseudo || "Organisateur inconnu"}
-                </span>
-              </p>
-            )}
-          </div>
-          <ItemList items={eventInfos} eventId={id} isLoading={eventLoading} />
-          <div className="flex flex-wrap gap-4 items-center justify-between">
-            {eventLoading ? (
-              <>
-                <button className="primary-btn skeleton-bg">
-                  <span>Signaler</span>
-                </button>
-                <button className="blue-rounded-btn skeleton-bg">
-                  <span>Enregistrer</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="primary-btn">
-                  <span>Signaler l'événement</span>
-                </button>
-                <button className="blue-rounded-btn">
-                  <span>Enregistrer l'événement</span>
-                  <Bookmark />
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-        {eventLoading ? (
-          <div className="banner skeleton-bg"></div>
-        ) : (
-          <Image
-            src={event?.imageUrl || niceImage}
-            alt="Event image"
-            width={800}
-            height={450}
-            className="banner"
-          />
-        )}
-      </section>
-      <section className="page-grid">
-        <div className="flex flex-col gap-12 lg:col-span-2">
-          <div className="flex flex-col gap-6">
-            <h2>Description de l'événement</h2>
-            {eventLoading ? (
-              <>
-                <p className="skeleton-bg">
-                  Description complète de l'événement
-                </p>
-              </>
-            ) : (
-              <>
-                <p>{event?.description}</p>
-              </>
-            )}
-          </div>
-          <div className="flex flex-col gap-6">
-            <h2>Tags</h2>
-            {eventLoading ? (
-              <>
-                <div className="flex flex-wrap gap-2 w-full">
-                  <button className="skeleton-btn">Catégorie</button>
-                  <button className="skeleton-btn">Catégorie</button>
-                </div>
-              </>
-            ) : (
-              <ThemeTags theme={event.categories} />
-            )}
-          </div>
-          <div className="flex flex-col gap-6">
-            <h2>Lieu</h2>
-            <ItemList items={placeInfos} isLoading={eventLoading} />
-          </div>
-          {!eventLoading && (
-            <ProfilCard
-              profilId={event?.organizer?.id}
-              className="relative translate-y-0"
-              name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
-              pseudo={event?.organizer?.pseudo}
-              note={event?.organizer?.note}
-              role="Organizer"
-              imageUrl={event?.organizer?.imageUrl}
-            />
-          )}
-        </div>
-        <div>
-          <div className="flex flex-col gap-6 sticky top-20">
-            <h2>Billet</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+    <>
+      <main>
+        <section className="event-grid">
+          <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-2">
               {eventLoading ? (
-                <TicketCardSkeleton />
+                <h1 className="skeleton-bg">Nom de l'événement</h1>
               ) : (
-                <TicketCard
-                  title={event?.name}
-                  description={`Cet événement${
-                    event?.isInvitationOnly
-                      ? " uniquement accessible sur invitation"
-                      : " accessible pour tout le monde"
-                  } est organisé par ${
-                    event?.organizer?.pseudo || "Organisateur inconnu"
-                  }`}
-                  price={event?.price}
-                  eventId={event?.id}
-                  isInvitationOnly={event?.isInvitationOnly}
-                  organizer={event?.organizer?.pseudo}
-                />
+                <h1>{event?.name}</h1>
+              )}
+              {eventLoading ? (
+                <p className="skeleton-bg">Organisé par quelqu'un</p>
+              ) : (
+                <p>
+                  Organisé par{" "}
+                  <span className="dark-text">
+                    {event?.organizer?.pseudo || "Organisateur inconnu"}
+                  </span>
+                </p>
+              )}
+            </div>
+            <ItemList
+              items={eventInfos}
+              eventId={id}
+              isLoading={eventLoading}
+            />
+            <div className="flex flex-wrap gap-4 items-center justify-between">
+              {eventLoading ? (
+                <>
+                  <button className="primary-btn skeleton-bg">
+                    <span>Signaler</span>
+                  </button>
+                  <button className="blue-rounded-btn skeleton-bg">
+                    <span>Enregistrer</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="primary-btn"
+                    onClick={() => setIsReportModalOpen(true)}
+                  >
+                    <span>Signaler l'événement</span>
+                  </button>
+                  <button className="blue-rounded-btn">
+                    <span>Enregistrer l'événement</span>
+                    <Bookmark />
+                  </button>
+                </>
               )}
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+          {eventLoading ? (
+            <div className="banner skeleton-bg"></div>
+          ) : (
+            <Image
+              src={event?.imageUrl || niceImage}
+              alt="Event image"
+              width={800}
+              height={450}
+              className="banner"
+            />
+          )}
+        </section>
+        <section className="page-grid">
+          <div className="flex flex-col gap-12 lg:col-span-2">
+            <div className="flex flex-col gap-6">
+              <h2>Description de l'événement</h2>
+              {eventLoading ? (
+                <>
+                  <p className="skeleton-bg">
+                    Description complète de l'événement
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>{event?.description}</p>
+                </>
+              )}
+            </div>
+            <div className="flex flex-col gap-6">
+              <h2>Tags</h2>
+              {eventLoading ? (
+                <>
+                  <div className="flex flex-wrap gap-2 w-full">
+                    <button className="skeleton-btn">Catégorie</button>
+                    <button className="skeleton-btn">Catégorie</button>
+                  </div>
+                </>
+              ) : (
+                <ThemeTags theme={event.categories} />
+              )}
+            </div>
+            <div className="flex flex-col gap-6">
+              <h2>Lieu</h2>
+              <ItemList items={placeInfos} isLoading={eventLoading} />
+            </div>
+            {!eventLoading && (
+              <ProfilCard
+                profilId={event?.organizer?.id}
+                className="relative translate-y-0"
+                name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
+                pseudo={event?.organizer?.pseudo}
+                note={event?.organizer?.note}
+                role="Organizer"
+                imageUrl={event?.organizer?.imageUrl}
+              />
+            )}
+          </div>
+          <div>
+            <div className="flex flex-col gap-6 sticky top-20">
+              <h2>Billet</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                {eventLoading ? (
+                  <TicketCardSkeleton />
+                ) : (
+                  <TicketCard
+                    title={event?.name}
+                    description={`Cet événement${
+                      event?.isInvitationOnly
+                        ? " uniquement accessible sur invitation"
+                        : " accessible pour tout le monde"
+                    } est organisé par ${
+                      event?.organizer?.pseudo || "Organisateur inconnu"
+                    }`}
+                    price={event?.price}
+                    eventId={event?.id}
+                    isInvitationOnly={event?.isInvitationOnly}
+                    organizer={event?.organizer?.pseudo}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <ReportModal
+        isOpen={isReportModalOpen}
+        setIsOpen={() => setIsReportModalOpen(false)}
+        eventId={event?.id}
+        name={event?.name}
+      />
+    </>
   );
 }

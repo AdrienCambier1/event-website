@@ -1,24 +1,27 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Check, NavArrowRight, Search } from "iconoir-react";
-import { useRouter } from "next/navigation";
 import ModalBg from "./modal-bg";
 import ReactFocusLock from "react-focus-lock";
 import { useSearchModal } from "@/contexts/search-modal-context";
+import SearchContainerBtn from "../buttons/search-container-btn";
 
 export default function SearchBarModal() {
   const { isSearchModalOpen, closeSearchModal } = useSearchModal();
   const [mounted, setMounted] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchType, setSearchType] = useState("events");
+  const [searchType, setSearchType] = useState("all");
   const [searchDropdown, setSearchDropdown] = useState(false);
-  const router = useRouter();
   const searchDropdownRef = useRef(null);
   const inputRef = useRef(null);
   const modalRef = useRef(null);
 
   const searchTypes = [
+    { label: "Tous", value: "all" },
     { label: "Evenements", value: "events" },
+    { label: "Villes", value: "cities" },
+    { label: "Lieux", value: "places" },
     { label: "Organisateurs", value: "organisers" },
   ];
 
@@ -86,7 +89,7 @@ export default function SearchBarModal() {
         ref={modalRef}
         className={`${
           isSearchModalOpen ? "visible" : "invisible"
-        } modal-container !items-start`}
+        } modal-container flex-col !justify-start`}
       >
         <div
           className={`${
@@ -102,7 +105,13 @@ export default function SearchBarModal() {
             placeholder={
               searchType === "events"
                 ? "Rechercher un événement"
-                : "Rechercher un organisateur"
+                : searchType === "cities"
+                ? "Rechercher une ville"
+                : searchType === "places"
+                ? "Rechercher un lieu"
+                : searchType === "organisers"
+                ? "Rechercher un organisateur"
+                : "Rechercher un élément"
             }
             className="invisible-input truncate"
             autoComplete="off"
@@ -143,6 +152,16 @@ export default function SearchBarModal() {
               </div>
             </div>
           </div>
+        </div>
+        <div
+          className={`${
+            isSearchModalOpen ? "opacity-100" : "opacity-0"
+          } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide transition`}
+        >
+          <h2 className="text-white">Résultat des recherches</h2>
+          <SearchContainerBtn />
+          <SearchContainerBtn />
+          <SearchContainerBtn />
         </div>
       </ReactFocusLock>
       <ModalBg isOpen={isSearchModalOpen} setIsOpen={closeSearchModal} />

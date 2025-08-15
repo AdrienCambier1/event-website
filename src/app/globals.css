@@ -341,14 +341,16 @@ p {
 .back-form-btn svg,
 .more-btn svg,
 .nav-btn svg,
-.search-bar-btn > svg {
+.search-bar-btn > svg,
+.search-element-btn div svg {
   @apply h-6 w-6 flex-shrink-0 transition;
 }
 
 .rounded-form-btn svg,
 .back-form-btn svg,
 .theme-btn svg,
-.search-bar-btn > svg {
+.search-bar-btn > svg,
+.search-element-btn div svg {
   @apply text-[var(--primary-blue)];
 }
 
@@ -488,11 +490,14 @@ p {
   @apply bg-slate-200 animate-pulse py-1.5 px-4 rounded-full text-transparent w-fit;
 }
 
+.search-element-btn {
+  @apply rounded-full p-4 bg-white/80 backdrop-blur-sm hover:bg-white transition w-full flex justify-between items-center gap-4 pointer-events-auto cursor-pointer;
+}
+
 /********/
 /* Tags */
 /********/
-
-.blue-tag svg,
+s .blue-tag svg,
 .green-tag svg {
   @apply w-4 h-4 flex-shrink-0;
 }

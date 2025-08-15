@@ -21,7 +21,7 @@ export default function ParticipationsPage() {
       title="Mes événements participés"
       description="Evenements"
       showCreateButton={true}
-      events={participatingEvents?._embedded?.eventSummaryResponses || []}
+      events={participatingEvents}
       isLoading={shouldShowSkeleton}
       isRegistered={true}
     />

@@ -4,41 +4,19 @@ import ModalBg from "./modal-bg";
 import ReactDOM from "react-dom";
 import { Megaphone } from "iconoir-react";
 import ItemList from "../lists/item-list";
-import { useState, useEffect } from "react";
 
-export default function ReportModal({ isOpen, setIsOpen, eventId, name }) {
-  const [selected, setSelected] = useState(0);
-
-  useEffect(() => {
-    if (isOpen) {
-      setSelected(0);
-    }
-  }, [isOpen]);
-
-  const reports = [
-    {
-      type: "SPAM",
-      value: "Spam",
-      description:
-        "L'événement semble être du spam, une arnaque ou une publicité abusive.",
-    },
-    {
-      type: "INAPPROPRIATE_CONTENT",
-      value: "Contenu inapproprié",
-      description:
-        "L'événement contient des propos, images ou liens inappropriés ou offensants.",
-    },
-    {
-      type: "OTHER",
-      value: "Autre",
-      description: "Autre motif.",
-    },
-  ];
-
-  const handleSubmit = async () => {
-    // Handle form submission
-  };
-
+export default function ReportModal({
+  isOpen,
+  setIsOpen,
+  name,
+  onClick,
+  selected,
+  setSelected,
+  reports,
+  description,
+  setDescription,
+  isLoading,
+}) {
   return ReactDOM.createPortal(
     <>
       <ReactFocusLock
@@ -66,7 +44,11 @@ export default function ReportModal({ isOpen, setIsOpen, eventId, name }) {
             {reports[selected]?.type === "OTHER" && (
               <div className="flex flex-col gap-2 w-full">
                 <label>Description</label>
-                <textarea placeholder="Décrivez votre signalement"></textarea>
+                <textarea
+                  placeholder="Décrivez votre signalement"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </div>
             )}
           </form>
@@ -74,8 +56,8 @@ export default function ReportModal({ isOpen, setIsOpen, eventId, name }) {
             <button className="secondary-form-btn" onClick={setIsOpen}>
               <span>Annuler</span>
             </button>
-            <button className="primary-form-btn" onClick={handleSubmit}>
-              <span>Signaler</span>
+            <button className="primary-form-btn" onClick={onClick}>
+              {isLoading ? <span>Signalement...</span> : <span>Signaler</span>}
             </button>
           </div>
         </div>

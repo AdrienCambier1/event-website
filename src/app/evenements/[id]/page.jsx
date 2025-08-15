@@ -10,11 +10,11 @@ import TicketCard from "@/components/cards/ticket-card/ticket-card";
 import { useEventDetails } from "@/hooks/use-event";
 import { formatEventDate } from "@/utils/date-formatter";
 import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
-import ReportModal from "@/components/modals/report-modal";
-import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import ReportBtn from "@/components/buttons/report-btn";
 
 export default function EventPage() {
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const { isAuthenticated, user, token } = useAuth();
   const { id } = useParams();
 
   const {
@@ -74,7 +74,7 @@ export default function EventPage() {
               {eventLoading ? (
                 <>
                   <button className="primary-btn skeleton-bg">
-                    <span>Signaler</span>
+                    <span>Signaler l'événement</span>
                   </button>
                   <button className="blue-rounded-btn skeleton-bg">
                     <span>Enregistrer</span>
@@ -82,12 +82,13 @@ export default function EventPage() {
                 </>
               ) : (
                 <>
-                  <button
-                    className="primary-btn"
-                    onClick={() => setIsReportModalOpen(true)}
-                  >
-                    <span>Signaler l'événement</span>
-                  </button>
+                  <ReportBtn
+                    title={event?.name}
+                    userId={user?.id}
+                    eventId={event?.id}
+                    isAuthenticated={isAuthenticated}
+                    token={token}
+                  />
                   <button className="blue-rounded-btn">
                     <span>Enregistrer l'événement</span>
                     <Bookmark />
@@ -173,6 +174,9 @@ export default function EventPage() {
                     eventId={event?.id}
                     isInvitationOnly={event?.isInvitationOnly}
                     organizer={event?.organizer?.pseudo}
+                    isAuthenticated={isAuthenticated}
+                    user={user}
+                    token={token}
                   />
                 )}
               </div>
@@ -180,12 +184,6 @@ export default function EventPage() {
           </div>
         </section>
       </main>
-      <ReportModal
-        isOpen={isReportModalOpen}
-        setIsOpen={() => setIsReportModalOpen(false)}
-        eventId={event?.id}
-        name={event?.name}
-      />
     </>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 import { Plus, Check, CloudXmark } from "iconoir-react";
-import { useAuth } from "@/hooks/use-auth";
 import { useRouter, usePathname } from "next/navigation";
 import { useAddEventParticipants } from "@/hooks/use-event";
 import DialogModal from "@/components/modals/dialog-modal";
@@ -15,13 +14,16 @@ export default function TicketCard({
   eventId,
   isInvitationOnly,
   organizer,
+  isAuthenticated,
+  user,
+  token,
 }) {
   const [paymentModal, setPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
-  const { isAuthenticated, user, token } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+
   const { addParticipants, loading: addLoading } = useAddEventParticipants();
 
   const handleClick = () => {

@@ -14,6 +14,7 @@ export default function SettingsModal({
   type = "name",
   user,
 }) {
+  const [mounted, setMounted] = useState(false);
   const { token } = useAuth();
   const { refetch } = useCurrentUser(token);
   const { setUser } = useParametres();
@@ -163,6 +164,12 @@ export default function SettingsModal({
       }));
     }
   }, [isOpen, user]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return ReactDOM.createPortal(
     <>

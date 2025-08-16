@@ -15,7 +15,6 @@ export default function SearchContainerBtn() {
           opacity: selected ? 1 : 0,
           paddingLeft: selected ? "0.75rem" : "2rem",
           paddingRight: selected ? "0.75rem" : "2rem",
-          paddingTop: selected ? "0.5rem" : "0",
           paddingBottom: selected ? "0.5rem" : "0",
         }}
         transition={{
@@ -24,7 +23,6 @@ export default function SearchContainerBtn() {
           opacity: { duration: 0.3, ease: "easeInOut" },
           paddingLeft: { duration: 0.3, ease: "easeInOut" },
           paddingRight: { duration: 0.3, ease: "easeInOut" },
-          paddingTop: { duration: 0.3, ease: "easeInOut" },
           paddingBottom: { duration: 0.3, ease: "easeInOut" },
         }}
         className="flex items-center justify-between pointer-events-auto cursor-pointer"

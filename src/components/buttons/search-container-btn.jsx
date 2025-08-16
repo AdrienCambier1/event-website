@@ -2,9 +2,16 @@ import { Check, NavArrowUp } from "iconoir-react";
 import SearchElementBtn from "./search-element-btn/search-element-btn";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useSearchModal } from "@/contexts/search-modal-context";
 
-export default function SearchContainerBtn() {
+export default function SearchContainerBtn({
+  title,
+  description,
+  action,
+  type,
+}) {
   const [selected, setSelected] = useState(false);
+  const { closeSearchModal } = useSearchModal();
 
   return (
     <div className="relative">
@@ -28,13 +35,18 @@ export default function SearchContainerBtn() {
         className="flex items-center justify-between pointer-events-auto cursor-pointer"
         onClick={() => setSelected(!selected)}
       >
-        <p className="text-white">Villes</p>
+        <p className="text-white">{title}</p>
         <NavArrowUp className="h-6 w-6 text-white" />
       </motion.div>
 
       <SearchElementBtn
         selected={selected}
         onClick={() => setSelected(!selected)}
+        title={title}
+        description={description}
+        action={action}
+        type={type}
+        isParent={true}
       />
       <SearchElementBtn
         className={`${
@@ -58,9 +70,9 @@ export default function SearchContainerBtn() {
         }}
         className="w-full -z-10 flex flex-col gap-3"
       >
-        <SearchElementBtn />
-        <SearchElementBtn />
-        <SearchElementBtn />
+        <SearchElementBtn onClick={closeSearchModal} />
+        <SearchElementBtn onClick={closeSearchModal} />
+        <SearchElementBtn onClick={closeSearchModal} />
       </motion.div>
     </div>
   );

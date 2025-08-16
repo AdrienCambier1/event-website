@@ -112,7 +112,7 @@ export default function SearchBarModal() {
         : !isAtBottom
         ? "mask-bottom"
         : ""
-    } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide transition `,
+    } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide transition pointer-event-auto`,
   };
 
   return (

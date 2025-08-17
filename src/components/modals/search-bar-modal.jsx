@@ -21,10 +21,15 @@ export default function SearchBarModal() {
     { label: "Evenements", value: "events" },
     { label: "Villes", value: "cities" },
     { label: "Lieux", value: "places" },
-    { label: "Organisateurs", value: "organisers" },
+    { label: "Organisateurs", value: "organizers" },
   ];
 
   useEffect(() => {
+    if (isSearchModalOpen) {
+      setSearchTerm("");
+      setSearchType("all");
+    }
+
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         closeSearchModal();
@@ -82,6 +87,7 @@ export default function SearchBarModal() {
           results={results}
           isLoading={loading}
           searchTerm={searchTerm}
+          searchType={searchType}
         />
       </ReactFocusLock>
       <ModalBg isOpen={isSearchModalOpen} setIsOpen={closeSearchModal} />

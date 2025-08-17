@@ -1,15 +1,13 @@
-import { City, User, NavArrowRight, MapPin } from "iconoir-react";
+import { User, NavArrowRight } from "iconoir-react";
 
-export default function SearchElementBtnSkeleton({ type }) {
+export default function SearchElementBtnSkeleton({ className }) {
   return (
-    <div className="search-element-btn skeleton-bg">
+    <div className={`search-element-btn skeleton-bg ${className}`}>
       <div className="flex items-center gap-2">
-        {type === "city" && <City />}
-        {type === "place" && <MapPin />}
-        {type === "organizer" && <User />}
-        <p className="dark-text">Titre</p> <p>Ville</p>
+        <User />
+        <p className="dark-text">Titre</p> <p>Information</p>
       </div>
-      <button className="secondary-btn">
+      <button className="secondary-btn flex-shrink-0">
         <span>Voir</span>
         <NavArrowRight />
       </button>

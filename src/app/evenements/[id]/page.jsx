@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Image from "next/image";
 import niceImage from "@/assets/images/nice.jpg";
 import { Bookmark, Calendar, Group, HomeAltSlim, MapPin } from "iconoir-react";
@@ -43,6 +43,10 @@ export default function EventPage() {
     { icon: HomeAltSlim, value: event?.placeName },
   ];
 
+  if (eventError) {
+    notFound();
+  }
+
   return (
     <>
       <main>
@@ -50,7 +54,7 @@ export default function EventPage() {
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-2">
               {eventLoading ? (
-                <h1 className="skeleton-bg">Nom de l'événement</h1>
+                <h1 className="skeleton-bg">Nom de l'événement </h1>
               ) : (
                 <h1>{event?.name}</h1>
               )}

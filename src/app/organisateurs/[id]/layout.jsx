@@ -4,7 +4,7 @@ import nice4k from "@/assets/images/nice4k.jpg";
 import ProfilCard from "@/components/cards/profil-card";
 import ProfilHeader from "@/components/commons/profil-header";
 import { useUserById } from "@/hooks/use-user";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 
 export default function OrganisateurLayout({ children }) {
   const { id } = useParams();
@@ -19,6 +19,10 @@ export default function OrganisateurLayout({ children }) {
     loading: organizerLoading,
     error: organizerError,
   } = useUserById(id);
+
+  if (organizerError) {
+    notFound();
+  }
 
   return (
     <main>

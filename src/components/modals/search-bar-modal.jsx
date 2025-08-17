@@ -5,9 +5,11 @@ import ReactFocusLock from "react-focus-lock";
 import { useSearchModal } from "@/contexts/search-modal-context";
 import SearchBarInput from "../commons/search-bar-input";
 import SearchList from "../lists/search-list";
+import { useSearch } from "@/hooks/use-search";
 
 export default function SearchBarModal() {
   const { isSearchModalOpen, closeSearchModal } = useSearchModal();
+  const { results, loading, error, search } = useSearch();
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("all");
@@ -47,6 +49,12 @@ export default function SearchBarModal() {
   }, [isSearchModalOpen]);
 
   useEffect(() => {
+    if (searchTerm.length > 0) {
+      search(searchTerm);
+    }
+  }, [searchTerm, search]);
+
+  useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -69,7 +77,12 @@ export default function SearchBarModal() {
           setSearchType={setSearchType}
         />
 
-        <SearchList isSearchModalOpen={isSearchModalOpen} />
+        <SearchList
+          isSearchModalOpen={isSearchModalOpen}
+          results={results}
+          isLoading={loading}
+          searchTerm={searchTerm}
+        />
       </ReactFocusLock>
       <ModalBg isOpen={isSearchModalOpen} setIsOpen={closeSearchModal} />
     </>

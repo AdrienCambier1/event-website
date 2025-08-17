@@ -9,6 +9,7 @@ export default function SearchContainerBtn({
   description,
   action,
   type,
+  results,
 }) {
   const [selected, setSelected] = useState(false);
   const { closeSearchModal } = useSearchModal();
@@ -51,7 +52,7 @@ export default function SearchContainerBtn({
       <SearchElementBtn
         className={`${
           selected ? "opacity-0" : "opacity-100"
-        } absolute bottom-0 -z-10 scale-x-95 w-full`}
+        } absolute bottom-0 -z-10 scale-x-95 w-full pointer-events-none`}
       />
       <motion.div
         animate={{

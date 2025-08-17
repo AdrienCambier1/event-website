@@ -7,6 +7,7 @@ export function useSearch() {
   const [error, setError] = useState(null);
 
   const doSearch = useCallback(async (query) => {
+    setResults(null);
     setLoading(true);
     setError(null);
     try {

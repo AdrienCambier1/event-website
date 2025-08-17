@@ -22,11 +22,14 @@ export default function SearchBarInput({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    if (searchDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [searchDropdown]);
 
   const handleTypeChange = (value) => {
     setSearchType(value);
@@ -69,6 +72,7 @@ export default function SearchBarInput({
         </p>
         <div className="relative">
           <button
+            ref={dropdownRef}
             className="secondary-btn"
             type="button"
             onClick={() => setSearchDropdown(!searchDropdown)}
@@ -79,7 +83,6 @@ export default function SearchBarInput({
             <NavArrowRight />
           </button>
           <div
-            ref={dropdownRef}
             className={`${
               searchDropdown ? "visible opacity-100" : "invisible opacity-0"
             } !w-fit right-0 dropdown-parent`}

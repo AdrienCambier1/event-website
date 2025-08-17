@@ -18,9 +18,7 @@ export default function SettingsModal({
   const { token } = useAuth();
   const { refetch } = useCurrentUser(token);
   const { setUser } = useParametres();
-
-  const { updateUser, loading, error, success, data } =
-    useUpdateCurrentUser(token);
+  const { updateUser, loading } = useUpdateCurrentUser(token);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -207,11 +205,7 @@ export default function SettingsModal({
               <span>Annuler</span>
             </button>
             <button className="primary-form-btn" onClick={handleSubmit}>
-              {loading ? (
-                <span>Modification...</span>
-              ) : (
-                <span>Sauvegarder</span>
-              )}
+              {loading ? <span>Sauvegarde...</span> : <span>Sauvegarder</span>}
             </button>
           </div>
         </div>

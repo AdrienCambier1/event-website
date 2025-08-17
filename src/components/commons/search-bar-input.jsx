@@ -59,7 +59,7 @@ export default function SearchBarInput({
             ? "Rechercher une ville"
             : searchType === "places"
             ? "Rechercher un lieu"
-            : searchType === "organisers"
+            : searchType === "organizers"
             ? "Rechercher un organisateur"
             : "Rechercher un élément"
         }

@@ -317,6 +317,10 @@ p {
   @apply text-[var(--primary-red)] text-sm;
 }
 
+.green-text {
+  @apply text-[var(--primary-green)] text-sm;
+}
+
 .dropdown-text {
   @apply mx-3 box-border border-b border-[var(--secondary-border-col)];
 }

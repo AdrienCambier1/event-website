@@ -2,6 +2,7 @@ import { getThemeIcon } from "@/utils/theme-icons";
 
 export default function ThemeButton({
   theme = "musique",
+  label = "Musique",
   onClick,
   isSelected,
 }) {
@@ -26,7 +27,7 @@ export default function ThemeButton({
             isSelected ? "text-white" : "text-[var(--primary-blue)]"
           } font-bold  transition`}
         >
-          {theme}
+          {label}
         </p>
       </div>
       {getThemeIcon(theme, iconClasses)}

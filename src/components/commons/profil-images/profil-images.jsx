@@ -5,10 +5,14 @@ export default function ProfilImages({
   images = [profilPicture, profilPicture, profilPicture],
   totalCount = images.length,
 }) {
-  const visibleImages = images.slice(0, 3);
+  const maxVisible = Math.min(3, totalCount);
+  const visibleImages = images.slice(0, maxVisible);
 
-  const remaining =
-    totalCount > visibleImages.length ? totalCount - visibleImages.length : 0;
+  const remaining = totalCount > maxVisible ? totalCount - maxVisible : 0;
+
+  if (totalCount === 0) {
+    return null;
+  }
 
   return (
     <div className="flex items-center gap-2 relative">

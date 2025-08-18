@@ -23,6 +23,7 @@ export default function EventCard({
   organizerImageUrl,
   organizerNote,
   imageUrl,
+  currentParticipants,
   cityName,
   categories,
 }) {
@@ -106,7 +107,7 @@ export default function EventCard({
             <p className="line-clamp-3">{description}</p>
           </div>
           <div className="flex justify-between items-center">
-            <ProfilImages totalCount={8} />
+            <ProfilImages totalCount={currentParticipants} />
             {canEdit && (
               <div className="relative" ref={editDropdownRef}>
                 <button

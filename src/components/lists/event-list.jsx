@@ -169,6 +169,7 @@ function EventListContent({
               organizerImageUrl={event.organizer?.imageUrl}
               organizerNote={event.organizer?.note}
               imageUrl={event.imageUrl}
+              currentParticipants={event.currentParticipants}
               cityName={event.cityName}
               isTrending={event.isTrending}
               categories={event.categories}

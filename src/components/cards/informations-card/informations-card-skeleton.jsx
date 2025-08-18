@@ -6,7 +6,9 @@ export default function InformationsCardSkeleton() {
       <div className="flex justify-between gap-4">
         <div className="flex flex-col gap-4 min-w-0">
           <h4>Information</h4>
-          <p className="break-words">Description de l'information</p>
+          <p className="break-words line-clamp-2">
+            Description de l'information
+          </p>
         </div>
       </div>
       <div className="w-full flex justify-end">

@@ -139,7 +139,7 @@ export default function EventPage() {
                   </div>
                 </>
               ) : (
-                <ThemeTags theme={event.categories} />
+                <ThemeTags themes={event.categories} />
               )}
             </div>
             <div className="flex flex-col gap-6">

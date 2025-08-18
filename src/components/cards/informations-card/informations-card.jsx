@@ -12,7 +12,7 @@ export default function InformationsCard({
       <div className="flex justify-between gap-4">
         <div className="flex flex-col gap-4 min-w-0">
           <h4>{title}</h4>
-          <p className="break-words">{description}</p>
+          <p className="break-words line-clamp-2">{description}</p>
         </div>
         <div className="img-gradient-blue">{Icon && <Icon />}</div>
       </div>

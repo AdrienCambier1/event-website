@@ -471,7 +471,7 @@ p {
 }
 
 .nav-btn {
-  @apply flex items-center gap-4 hover:bg-white p-2 rounded-xl transition w-full;
+  @apply flex items-center gap-4 hover:bg-white p-2 rounded-xl transition w-full cursor-pointer;
 }
 
 .nav-btn:hover {

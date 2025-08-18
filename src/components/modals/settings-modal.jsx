@@ -3,10 +3,11 @@ import ReactFocusLock from "react-focus-lock";
 import ModalBg from "./modal-bg";
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
-import { User, Phone, AtSign, Lock } from "iconoir-react";
+import { User, Phone, Lock, Text } from "iconoir-react";
 import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
 import { useAuth } from "@/contexts/auth-context";
 import { useParametres } from "@/contexts/parametres-context";
+import PasswordInput from "../inputs/password-input";
 
 export default function SettingsModal({
   isOpen,
@@ -23,8 +24,9 @@ export default function SettingsModal({
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
-    phone: "",
     pseudo: "",
+    phone: "",
+    description: "",
     currentPassword: "",
     password: "",
   });
@@ -35,14 +37,15 @@ export default function SettingsModal({
       updateData = {
         firstName: formValues.firstName,
         lastName: formValues.lastName,
+        pseudo: formValues.pseudo,
       };
     } else if (type === "phone") {
       updateData = {
         phone: formValues.phone,
       };
-    } else if (type === "pseudo") {
+    } else if (type === "description") {
       updateData = {
-        pseudo: formValues.pseudo,
+        description: formValues.description,
       };
     } else if (type === "password") {
       if (
@@ -76,6 +79,12 @@ export default function SettingsModal({
           type: "text",
           placeholder: "Dupont",
         },
+        {
+          name: "pseudo",
+          label: "Pseudo",
+          type: "text",
+          placeholder: "MonPseudo123",
+        },
       ],
     },
     phone: {
@@ -90,13 +99,13 @@ export default function SettingsModal({
         },
       ],
     },
-    pseudo: {
-      icon: AtSign,
-      title: "Modification du pseudo",
+    description: {
+      icon: Text,
+      title: "Modification de la description",
       fields: [
         {
-          name: "pseudo",
-          label: "Pseudo",
+          name: "description",
+          label: "Description",
           type: "text",
           placeholder: "MonPseudo123",
         },
@@ -154,8 +163,9 @@ export default function SettingsModal({
         ...prev,
         firstName: user.firstName || "",
         lastName: user.lastName || "",
-        phone: user.phone || "",
         pseudo: user.pseudo || "",
+        phone: user.phone || "",
+        description: user.description || "",
         currentPassword: "",
         password: "",
         confirmPassword: "",
@@ -185,15 +195,33 @@ export default function SettingsModal({
             {config.fields.map((field, index) => (
               <div key={field.name} className="flex flex-col gap-2 w-full">
                 <label htmlFor={field.name}>{field.label}</label>
-                <input
-                  id={field.name}
-                  name={`${field.name}_${Date.now()}_${index}`}
-                  type={field.type}
-                  value={formValues[field.name] || ""}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  autoComplete="off"
-                />
+                {type === "password" && (
+                  <PasswordInput
+                    name={`${field.name}_${Date.now()}_${index}`}
+                    placeholder={field.placeholder}
+                    value={formValues[field.name] || ""}
+                    handleChange={handleChange}
+                  />
+                )}
+                {type === "description" && (
+                  <textarea
+                    name="description"
+                    value={formValues.description}
+                    onChange={handleChange}
+                    placeholder="Quelques mots pour vous décrire"
+                  />
+                )}
+                {type != "password" && type != "description" && (
+                  <input
+                    id={field.name}
+                    name={`${field.name}_${Date.now()}_${index}`}
+                    type={field.type}
+                    value={formValues[field.name] || ""}
+                    onChange={handleChange}
+                    placeholder={field.placeholder}
+                    autoComplete="off"
+                  />
+                )}
               </div>
             ))}
           </form>

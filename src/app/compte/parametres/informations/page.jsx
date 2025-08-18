@@ -1,6 +1,6 @@
 "use client";
 import InformationsCard from "@/components/cards/informations-card/informations-card";
-import { User, Phone, AtSign, Lock } from "iconoir-react";
+import { User, Phone, Lock, Text } from "iconoir-react";
 import SettingsModal from "@/components/modals/settings-modal";
 import { useState } from "react";
 import { useParametres } from "@/contexts/parametres-context";
@@ -32,10 +32,11 @@ export default function InformationsPage() {
             <>
               <InformationsCard
                 icon={User}
-                title="Nom et prénom"
+                title="Nom prénom et pseudo"
                 description={
-                  `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
-                  "Non renseigné"
+                  `${user?.firstName || ""} ${user?.lastName || ""} @${
+                    user?.pseudo || ""
+                  }`.trim() || "Non renseigné"
                 }
                 onClick={() => openModal("name")}
               />
@@ -46,10 +47,10 @@ export default function InformationsPage() {
                 onClick={() => openModal("phone")}
               />
               <InformationsCard
-                icon={AtSign}
-                title="Pseudo"
-                description={user?.pseudo || "Non renseigné"}
-                onClick={() => openModal("pseudo")}
+                icon={Text}
+                title="Description"
+                description={user?.description || "Non renseigné"}
+                onClick={() => openModal("description")}
               />
               <InformationsCard
                 icon={Lock}

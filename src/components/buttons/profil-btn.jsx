@@ -7,10 +7,10 @@ import { useAuth } from "@/hooks/use-auth";
 import DialogModal from "../modals/dialog-modal";
 
 export default function ProfilBtn({ reverse, onClick }) {
-  const { user, logoutUser } = useAuth();
   const [profilDropdown, setProfilDropdown] = useState(false);
-  const profilDropdownRef = useRef(null);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { user, logoutUser } = useAuth();
+  const profilDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,6 +36,11 @@ export default function ProfilBtn({ reverse, onClick }) {
     onClick && onClick();
   };
 
+  const navigation = [
+    { name: "Mon compte", href: "/compte/profil/tickets" },
+    { name: "Paramètres", href: "/compte/parametres" },
+  ];
+
   return (
     <>
       <div className="relative" ref={profilDropdownRef}>
@@ -59,13 +64,16 @@ export default function ProfilBtn({ reverse, onClick }) {
         `}
         >
           <p className="dropdown-text">{user?.pseudo || "Utilisateur"}</p>
-          <Link
-            href="/compte/profil/tickets"
-            className="dropdown-child"
-            onClick={handleClose}
-          >
-            Mon compte
-          </Link>
+          {navigation.map((item, index) => (
+            <Link
+              key={index}
+              href={item.href}
+              className="dropdown-child"
+              onClick={handleClose}
+            >
+              {item.name}
+            </Link>
+          ))}
           <button
             className="dropdown-dangerous"
             onClick={() => setLogoutModalOpen(!logoutModalOpen)}

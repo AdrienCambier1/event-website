@@ -2,31 +2,43 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NavBtn({ icon: Icon, href = "", label, children }) {
+export default function NavBtn({
+  icon: Icon,
+  href = "",
+  onClick,
+  label,
+  children,
+}) {
   const pathname = usePathname();
   const isActive = pathname === href;
 
-  return (
-    <Link href={href} className="nav-btn">
+  const navBtnContent = () => (
+    <>
       <div
-        className={`${
+        className={
           isActive
             ? "bg-[var(--primary-blue)] blue-shadow"
             : "bg-[rgba(var(--primary-blue-rgb),0.1)]"
-        }`}
+        }
       >
-        {Icon && (
-          <Icon
-            className={`${
-              isActive ? "text-white" : "text-[var(--primary-blue)]"
-            }`}
-          />
-        )}
+        {Icon && <Icon className={isActive ? "text-white" : "blue-text"} />}
         {children}
       </div>
-      <span className={`${isActive && "text-[var(--primary-blue)]"}`}>
-        {label}
-      </span>
-    </Link>
+      <span className="blue-text">{label}</span>
+    </>
+  );
+
+  return (
+    <>
+      {onClick ? (
+        <div className="nav-btn" onClick={onClick}>
+          {navBtnContent()}
+        </div>
+      ) : (
+        <Link href={href} className="nav-btn">
+          {navBtnContent()}
+        </Link>
+      )}
+    </>
   );
 }

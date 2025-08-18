@@ -9,7 +9,6 @@ import InformationsCardSkeleton from "@/components/cards/informations-card/infor
 export default function InformationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("name");
-
   const { user, isLoading, accountError } = useParametres();
 
   const openModal = (type) => {

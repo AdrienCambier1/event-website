@@ -601,7 +601,7 @@ input:-moz-autofill:focus {
 }
 
 .modal-content input,
-textarea {
+.modal-content textarea {
   @apply bg-[rgba(var(--primary-border-col-rgb),0.2)] border-[var(--primary-border-col)];
 }
 

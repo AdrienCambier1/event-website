@@ -5,22 +5,20 @@ import ProfilCard from "@/components/cards/profil-card";
 import ProfilHeader from "@/components/commons/profil-header";
 import { useAuth } from "@/hooks/use-auth";
 import { useCurrentUser } from "@/hooks/use-user";
-import { usePathname } from "next/navigation";
-import {
-  ParametresProvider,
-  useParametres,
-} from "@/contexts/parametres-context";
+import { useParametres } from "@/contexts/parametres-context";
 import { useEffect } from "react";
 
 export default function CompteLayout({ children }) {
-  const { token, isAuthenticated } = useAuth();
+  const { token } = useAuth();
   const { setUser, setAccountError, setIsLoading, user } = useParametres();
 
   const {
     user: userData,
     loading: accountLoading,
     error: userAccountError,
-  } = useCurrentUser(isAuthenticated ? token : null);
+  } = useCurrentUser(token);
+
+  const isLoading = accountLoading || !user;
 
   const navigation = [
     { name: "Tickets", href: "/compte/profil/tickets" },
@@ -32,11 +30,11 @@ export default function CompteLayout({ children }) {
   useEffect(() => {
     setUser(userData);
     setAccountError(userAccountError);
-    setIsLoading(accountLoading);
+    setIsLoading(isLoading);
   }, [
     userData,
     userAccountError,
-    accountLoading,
+    isLoading,
     setUser,
     setAccountError,
     setIsLoading,
@@ -47,7 +45,7 @@ export default function CompteLayout({ children }) {
       <section className="container">
         <h1>Mon profil</h1>
         <div className="relative">
-          {accountLoading ? (
+          {isLoading ? (
             <div className="banner skeleton-bg"></div>
           ) : (
             <Image
@@ -58,7 +56,7 @@ export default function CompteLayout({ children }) {
               className="banner"
             />
           )}
-          {!accountLoading && (
+          {!isLoading && (
             <ProfilCard
               profilId={user?.id}
               name={`${user?.firstName} ${user?.lastName}`}
@@ -71,7 +69,7 @@ export default function CompteLayout({ children }) {
         </div>
       </section>
       <ProfilHeader
-        isLoading={accountLoading}
+        isLoading={isLoading}
         eventPastCount={user?.eventPastCount}
         eventsCount={user?.eventsCount}
         navigation={navigation}

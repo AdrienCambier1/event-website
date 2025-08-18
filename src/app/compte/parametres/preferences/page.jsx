@@ -15,7 +15,6 @@ export default function PreferencesPage() {
   const { token } = useAuth();
   const { user, isLoading: accountLoading } = useParametres();
   const { updateUser, loading } = useUpdateCurrentUser(token);
-
   const { categories, isLoading: categoriesLoading } = useCategories();
 
   const isLoading = categoriesLoading || accountLoading;

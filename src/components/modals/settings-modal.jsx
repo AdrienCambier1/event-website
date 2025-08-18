@@ -232,7 +232,11 @@ export default function SettingsModal({
             >
               <span>Annuler</span>
             </button>
-            <button className="primary-form-btn" onClick={handleSubmit}>
+            <button
+              className="primary-form-btn"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
               {loading ? <span>Sauvegarde...</span> : <span>Sauvegarder</span>}
             </button>
           </div>

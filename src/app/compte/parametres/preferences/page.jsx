@@ -17,8 +17,8 @@ export default function PreferencesPage() {
   const [successCategories, setSuccessCategories] = useState(false);
   const { token } = useAuth();
   const { user, isLoading: accountLoading, setUser } = useParametres();
-  const { updateUser, loading } = useUpdateCurrentUser(token);
   const { categories, isLoading: categoriesLoading } = useCategories();
+  const { updateUser } = useUpdateCurrentUser(token);
   const { refetch } = useCurrentUser(token);
 
   const isLoading = categoriesLoading || accountLoading;
@@ -42,8 +42,11 @@ export default function PreferencesPage() {
   const categoryKeys = selectedThemes;
 
   const handleUpdateCategories = async () => {
+    if (loadingCategories) return;
+
     setLoadingCategories(true);
     setSuccessCategories(null);
+
     try {
       await updateUser({ categoryKeys });
       const refreshed = await refetch();
@@ -57,8 +60,11 @@ export default function PreferencesPage() {
   };
 
   const handleBecomeOrganizer = async () => {
+    if (loadingRole) return;
+
     setLoadingRole(true);
     setSuccessRole(null);
+
     try {
       await updateUser({ role: "Organizer" });
       const refreshed = await refetch();
@@ -102,11 +108,7 @@ export default function PreferencesPage() {
           )}
         </div>
         <div className="flex flex-wrap gap-4 items-center justify-between">
-          <button
-            className="blue-rounded-btn"
-            onClick={handleUpdateCategories}
-            disabled={loadingCategories}
-          >
+          <button className="blue-rounded-btn" onClick={handleUpdateCategories}>
             <span>{loadingCategories ? "Modification..." : "Modifier"}</span>
             <EditPencil />
           </button>
@@ -117,47 +119,41 @@ export default function PreferencesPage() {
       </div>
       <div className="flex flex-col gap-6">
         <h3>Gérez vos événements</h3>
-        {isLoading && (
+        {isLoading ? (
           <>
             <p className="skeleton-bg">
               Devenir organisateur ou être redirigé vers l'interface
               d'administration
             </p>
             <button className="skeleton-btn">
-              <span>Role ou redirection</span>
+              <span>Rôle ou redirection</span>
             </button>
           </>
-        )}
-        {!isLoading && !canManageEvents && (
+        ) : (
           <>
             <p>
-              Devenez organisateur et gérez vos événements facilement depuis
-              notre interface d'administration.
+              {canManageEvents
+                ? "Gérez vos événements depuis notre interface d'administration."
+                : "Devenez organisateur et gérez vos événements facilement depuis notre interface d'administration."}
             </p>
-            <button
-              className="primary-btn"
-              onClick={handleBecomeOrganizer}
-              disabled={loadingRole}
-            >
-              <span>
-                {loadingRole
-                  ? "Changement en cours..."
-                  : "Devenir organisateur"}
-              </span>
-            </button>
-          </>
-        )}
-        {!isLoading && canManageEvents && (
-          <>
-            <p>Gérez vos événements depuis notre interface d'administration.</p>
             <div className="flex flex-wrap gap-4 items-center justify-between">
-              <Link
-                href="https://veevent-admin.vercel.app/"
-                className="primary-btn"
-                target="_blank"
-              >
-                <span>Accéder à l'administration</span>
-              </Link>
+              {canManageEvents ? (
+                <Link
+                  href="https://veevent-admin.vercel.app/"
+                  className="primary-btn"
+                  target="_blank"
+                >
+                  <span>Accéder à l'administration</span>
+                </Link>
+              ) : (
+                <button className="primary-btn" onClick={handleBecomeOrganizer}>
+                  <span>
+                    {loadingRole
+                      ? "Changement en cours..."
+                      : "Devenir organisateur"}
+                  </span>
+                </button>
+              )}
               {successRole && (
                 <p className="green-text">Vous êtes désormais organisateur</p>
               )}

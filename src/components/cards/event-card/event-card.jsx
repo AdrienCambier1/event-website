@@ -99,7 +99,7 @@ export default function EventCard({
               })}
             </p>
             <ThemeTags
-              theme={
+              themes={
                 categories?.map((cat) => cat.name) || ["Musique", "Sponsorisé"]
               }
             />

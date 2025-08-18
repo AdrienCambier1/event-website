@@ -3,11 +3,14 @@ import Link from "next/link";
 import { NavArrowRight } from "iconoir-react";
 import CustomNav from "@/components/commons/custom-nav";
 import { usePathname } from "next/navigation";
+import ThemeTags from "./theme-tags";
 
 export default function ProfilHeader({
   isLoading,
   eventPastCount,
   eventsCount,
+  description,
+  themes,
   navigation,
   isRegistered,
   disabledHome = false,
@@ -50,6 +53,8 @@ export default function ProfilHeader({
             )}
           </div>
         </div>
+        <p>{description}</p>
+        <ThemeTags themes={themes} />
       </div>
       {shouldShowNav && (
         <CustomNav

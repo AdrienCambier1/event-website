@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useCategories } from "@/hooks/use-category";
 import { useParametres } from "@/contexts/parametres-context";
 import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton";
-import { useUpdateCurrentUser } from "@/hooks/use-user";
+import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
 import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
@@ -13,9 +13,10 @@ export default function PreferencesPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
-  const { user, isLoading: accountLoading } = useParametres();
+  const { user, isLoading: accountLoading, setUser } = useParametres();
   const { updateUser, loading } = useUpdateCurrentUser(token);
   const { categories, isLoading: categoriesLoading } = useCategories();
+  const { refetch } = useCurrentUser(token);
 
   const isLoading = categoriesLoading || accountLoading;
 
@@ -42,6 +43,8 @@ export default function PreferencesPage() {
     setError(null);
     try {
       await updateUser({ categoryKeys });
+      const refreshed = await refetch();
+      setUser(refreshed);
       setSuccess(true);
     } catch (e) {
       setError("Erreur lors de la mise à jour");

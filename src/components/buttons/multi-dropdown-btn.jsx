@@ -55,7 +55,7 @@ export default function MultiDropdownBtn({
           <span>{label}</span>
           <NavArrowDown className="text-[var(--dark-gray)] h-5 w-5 hover:opacity-75 transition ml-auto flex-shrink-0" />
         </div>
-        {selectedOptions.length > 0 && <ThemeTags theme={selectedThemes} />}
+        {selectedOptions.length > 0 && <ThemeTags themes={selectedThemes} />}
       </button>
 
       <div

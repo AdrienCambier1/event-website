@@ -20,7 +20,6 @@ import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton"
 import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
 function InscriptionPageContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const {
     register,
@@ -29,7 +28,6 @@ function InscriptionPageContent() {
   } = useRegister();
   const { loginWithCredentials } = useAuth();
   const { categories, isLoading: categoriesLoading } = useCategories();
-  const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({

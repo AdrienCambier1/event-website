@@ -72,6 +72,8 @@ export default function CompteLayout({ children }) {
         isLoading={isLoading}
         eventPastCount={user?.eventPastCount}
         eventsCount={user?.eventsCount}
+        description={user?.description}
+        themes={user?.categories}
         navigation={navigation}
         isRegistered={true}
         disabledHome={true}

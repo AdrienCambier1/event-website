@@ -61,6 +61,8 @@ export default function OrganisateurLayout({ children }) {
         isLoading={organizerLoading}
         eventPastCount={organizerData?.eventPastCount}
         eventsCount={organizerData?.eventsCount}
+        description={organizerData?.description}
+        themes={organizerData?.categories}
         navigation={navigation}
         isRegistered={false}
       />

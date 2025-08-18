@@ -1,10 +1,10 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
 import CityCard from "@/components/cards/city-card/city-card";
-import DropdownButton from "@/components/buttons/dropdown-button";
 import CityCardSkeleton from "../cards/city-card/city-card-skeleton";
 import { useState, Suspense, useMemo } from "react";
 import { Erase } from "iconoir-react";
+import DropdownBtn from "../buttons/dropdown-btn";
 
 function CityListContent({ title, description, showSort, isLoading, cities }) {
   const [sortOption, setSortOption] = useState("events");
@@ -56,7 +56,7 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
             onChange={(e) => setSearchKeyword(e.target.value)}
           />
           {showSort && (
-            <DropdownButton
+            <DropdownBtn
               options={sortOptions}
               selectedValue={sortOption}
               label="Trier par :"

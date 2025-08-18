@@ -3,7 +3,7 @@ import { NavArrowDown } from "iconoir-react";
 import { useState, useEffect, useRef } from "react";
 import { Check } from "iconoir-react";
 
-export default function DropdownButton({
+export default function DropdownBtn({
   options = [],
   selectedValue = null,
   label = "Trier par :",

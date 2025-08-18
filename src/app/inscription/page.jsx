@@ -11,12 +11,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { ArrowLeft } from "iconoir-react";
 import StepIndicator from "@/components/commons/step-indicator";
-import ThemeButton from "@/components/buttons/theme-btn/theme-btn";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeClosed } from "iconoir-react";
 import { useRegister } from "@/hooks/use-register";
 import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";
+import PasswordInput from "@/components/inputs/password-input";
+import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton";
+import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
 function InscriptionPageContent() {
   const router = useRouter();
@@ -133,11 +134,9 @@ function InscriptionPageContent() {
     if (step < 3) {
       handleNextStep();
     } else {
-      // Étape 3 : inscription finale
       try {
         const response = await register(formData);
 
-        // Connexion automatique après inscription
         const redirectPath = searchParams.get("redirect") || "/";
         await loginWithCredentials(
           formData.email,
@@ -146,7 +145,6 @@ function InscriptionPageContent() {
         );
       } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
-        // L'erreur est déjà gérée par le hook useRegister
       }
     }
   };
@@ -199,22 +197,12 @@ function InscriptionPageContent() {
             </div>
             <div className="flex flex-col gap-2">
               <label>Mot de passe*</label>
-              <div className="relative">
-                <input
-                  type={`${showPassword ? "text" : "password"}`}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="****"
-                />
-                <div className="input-icon">
-                  {showPassword ? (
-                    <Eye onClick={() => setShowPassword(!showPassword)} />
-                  ) : (
-                    <EyeClosed onClick={() => setShowPassword(!showPassword)} />
-                  )}
-                </div>
-              </div>
+              <PasswordInput
+                name="password"
+                placeholder="****"
+                value={formData.password}
+                handleChange={handleChange}
+              />
               {formData.password && (
                 <p
                   className={
@@ -278,30 +266,28 @@ function InscriptionPageContent() {
           </>
         );
       case 3:
-        // Utiliser les catégories dynamiques, avec fallback si elles ne sont pas encore chargées
-        const availableThemes = categoriesLoading
-          ? [
-              { label: "Musique", value: "music" },
-              { label: "Sport", value: "sport" },
-              { label: "Études", value: "learning" },
-              { label: "Culture", value: "culture" },
-              { label: "Technologie", value: "technology" },
-            ]
-          : categories.map((category) => ({
-              label: category.name,
-              value: category.key.toLowerCase(),
-            }));
-
         return (
           <>
-            {availableThemes.map((theme) => (
-              <ThemeButton
-                key={theme.value}
-                theme={theme.label}
-                isSelected={formData.interests.includes(theme.value)}
-                onClick={() => handleThemeToggle(theme.value)}
-              />
-            ))}
+            {categoriesLoading && (
+              <>
+                <ThemeBtnSkeleton />
+                <ThemeBtnSkeleton />
+                <ThemeBtnSkeleton />
+              </>
+            )}
+            {!categoriesLoading &&
+              categories.map((category) => (
+                <ThemeBtn
+                  key={category.key}
+                  theme={category.key}
+                  label={category.name}
+                  isSelected={formData.interests.includes(category.key)}
+                  onClick={() => handleThemeToggle(category.key)}
+                />
+              ))}
+            {!categoriesLoading && categories.length === 0 && (
+              <p>Aucune catégorie disponible pour le moment</p>
+            )}
             <p className="text-center">
               Une fois validé, vous pourrrez modifier vos préférences dans votre
               profil

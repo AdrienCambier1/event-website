@@ -3,8 +3,8 @@ import StepIndicator from "@/components/commons/step-indicator";
 import MainTitle from "@/components/titles/main-title";
 import { useState } from "react";
 import { ArrowLeft } from "iconoir-react";
-import ImagePicker from "@/components/buttons/image-picker";
-import MultiDropdownButton from "@/components/buttons/multi-dropdown-button";
+import ImagePicker from "@/components/commons/image-picker";
+import MultiDropdownButton from "@/components/buttons/multi-dropdown-btn";
 import Link from "next/link";
 
 export default function CreatePage() {

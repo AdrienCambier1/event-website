@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/contexts/auth-context";
 import { SearchModalProvider } from "@/contexts/search-modal-context";
-import SearchBarModal from "@/components/modals/search-bar-modal";
+import SearchModal from "@/components/modals/search-modal";
 import { ParametresProvider } from "@/contexts/parametres-context";
 import ScrollToTop from "@/components/commons/scroll-to-top";
 
@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
               <Header />
               {children}
               <Footer />
-              <SearchBarModal />
+              <SearchModal />
             </ParametresProvider>
           </SearchModalProvider>
         </AuthProvider>

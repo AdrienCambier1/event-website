@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Check } from "iconoir-react";
 import ThemeTags from "../commons/theme-tags";
 
-export default function MultiDropdownButton({
+export default function MultiDropdownBtn({
   options = [],
   selectedValues = [],
   label = "Filtrer par :",

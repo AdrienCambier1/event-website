@@ -3,11 +3,11 @@ import { useState, useRef, useEffect } from "react";
 import ModalBg from "./modal-bg";
 import ReactFocusLock from "react-focus-lock";
 import { useSearchModal } from "@/contexts/search-modal-context";
-import SearchBarInput from "../commons/search-bar-input";
+import SearchBarInput from "../inputs/search-bar-input";
 import SearchList from "../lists/search-list";
 import { useSearch } from "@/hooks/use-search";
 
-export default function SearchBarModal() {
+export default function SearchModal() {
   const { isSearchModalOpen, closeSearchModal } = useSearchModal();
   const { results, loading, error, search } = useSearch();
   const [mounted, setMounted] = useState(false);

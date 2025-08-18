@@ -1,6 +1,6 @@
 import { getThemeIcon } from "@/utils/theme-icons";
 
-export default function ThemeButton({
+export default function ThemeBtn({
   theme = "musique",
   label = "Musique",
   onClick,

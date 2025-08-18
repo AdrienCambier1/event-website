@@ -14,8 +14,7 @@ import { useEffect } from "react";
 
 export default function CompteLayout({ children }) {
   const { token, isAuthenticated, loading: authLoading } = useAuth();
-  const { setUser, setAccountError, setIsLoading, user, accountError } =
-    useParametres();
+  const { setUser, setAccountError, setIsLoading, user } = useParametres();
 
   const navigation = [
     { name: "Tickets", href: "/compte/profil/tickets" },
@@ -45,15 +44,12 @@ export default function CompteLayout({ children }) {
     setIsLoading,
   ]);
 
-  const shouldShowSkeleton =
-    isLoading || (isAuthenticated && !user && !accountError);
-
   return (
     <main>
       <section className="container">
         <h1>Mon profil</h1>
         <div className="relative">
-          {shouldShowSkeleton ? (
+          {isLoading ? (
             <div className="banner skeleton-bg"></div>
           ) : (
             <Image
@@ -64,7 +60,7 @@ export default function CompteLayout({ children }) {
               className="banner"
             />
           )}
-          {!shouldShowSkeleton && (
+          {!isLoading && (
             <ProfilCard
               profilId={user?.id}
               name={`${user?.firstName} ${user?.lastName}`}
@@ -77,7 +73,7 @@ export default function CompteLayout({ children }) {
         </div>
       </section>
       <ProfilHeader
-        isLoading={shouldShowSkeleton}
+        isLoading={isLoading}
         eventPastCount={user?.eventPastCount}
         eventsCount={user?.eventsCount}
         navigation={navigation}

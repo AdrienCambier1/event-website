@@ -2,19 +2,18 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useUserEvents } from "@/hooks/use-user";
 import EventList from "@/components/lists/event-list";
+import { useParametres } from "@/contexts/parametres-context";
 
 export default function EvenementsPage() {
-  const { user, token, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, token, isAuthenticated } = useAuth();
   const {
     events,
     loading: eventsLoading,
     error,
   } = useUserEvents(isAuthenticated ? user?.id : null, token);
+  const { isLoading: parentLoading } = useParametres();
 
-  const isLoading = authLoading || eventsLoading;
-
-  const shouldShowSkeleton =
-    isLoading || (isAuthenticated && !events && !error);
+  const isLoading = eventsLoading || parentLoading;
 
   return (
     <EventList
@@ -23,7 +22,7 @@ export default function EvenementsPage() {
       showCreateButton={true}
       canEdit={true}
       events={events}
-      isLoading={shouldShowSkeleton}
+      isLoading={isLoading}
     />
   );
 }

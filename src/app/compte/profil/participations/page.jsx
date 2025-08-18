@@ -2,19 +2,18 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useUserParticipatingEvents } from "@/hooks/use-user";
 import EventList from "@/components/lists/event-list";
+import { useParametres } from "@/contexts/parametres-context";
 
 export default function ParticipationsPage() {
-  const { user, token, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, token, isAuthenticated } = useAuth();
   const {
     events: participatingEvents,
     loading: eventsLoading,
     error,
   } = useUserParticipatingEvents(isAuthenticated ? user?.id : null, token);
+  const { isLoading: parentLoading } = useParametres();
 
-  const isLoading = authLoading || eventsLoading;
-
-  const shouldShowSkeleton =
-    isLoading || (isAuthenticated && !participatingEvents && !error);
+  const isLoading = eventsLoading || parentLoading;
 
   return (
     <EventList
@@ -22,7 +21,7 @@ export default function ParticipationsPage() {
       description="Evenements"
       showCreateButton={true}
       events={participatingEvents}
-      isLoading={shouldShowSkeleton}
+      isLoading={isLoading}
       isRegistered={true}
     />
   );

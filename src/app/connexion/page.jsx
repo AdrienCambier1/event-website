@@ -12,6 +12,7 @@ import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeClosed } from "iconoir-react";
 import { useAuth } from "@/hooks/use-auth";
+import PasswordInput from "@/components/inputs/password-input";
 
 function ConnexionPageContent() {
   const { loginWithCredentials } = useAuth();
@@ -78,23 +79,13 @@ function ConnexionPageContent() {
           </div>
           <div className="flex flex-col gap-2">
             <label>Mot de passe</label>
-            <div className="relative">
-              <input
-                type={`${showPassword ? "text" : "password"}`}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="****"
-                className={`border ${error && "border-[var(--primary-red)]"}`}
-              />
-              <div className="input-icon">
-                {showPassword ? (
-                  <Eye onClick={() => setShowPassword(!showPassword)} />
-                ) : (
-                  <EyeClosed onClick={() => setShowPassword(!showPassword)} />
-                )}
-              </div>
-            </div>
+            <PasswordInput
+              name="password"
+              placeholder="****"
+              value={formData.password}
+              handleChange={handleChange}
+              error={error}
+            />
             {error && (
               <p className="red-text">
                 Mot de passe ou email incorrect. Essayez à nouveau.

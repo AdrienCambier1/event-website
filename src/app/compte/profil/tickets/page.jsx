@@ -3,12 +3,15 @@ import TicketList from "@/components/lists/ticket-list";
 import { useCurrentUserOrdersWithEvents } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
 import { formatDateOnly, formatEventDate } from "@/utils/date-formatter";
+import { useParametres } from "@/contexts/parametres-context";
 
 export default function TicketsPage() {
-  const { user, token, isAuthenticated, loading: authLoading } = useAuth();
-  const { orders, loading, error } = useCurrentUserOrdersWithEvents(token);
+  const { token } = useAuth();
+  const { orders, loading: ordersLoading } =
+    useCurrentUserOrdersWithEvents(token);
+  const { isLoading: parentLoading } = useParametres();
 
-  const isLoading = authLoading || loading;
+  const isLoading = ordersLoading || parentLoading;
 
   const tickets = Array.isArray(orders)
     ? orders.map(({ order, event }) => ({
@@ -27,14 +30,11 @@ export default function TicketsPage() {
       }))
     : [];
 
-  const shouldShowSkeleton =
-    isLoading || (isAuthenticated && !tickets.length && !error);
-
   return (
     <TicketList
       title="Mes tickets disponibles"
       description="Tickets"
-      isLoading={shouldShowSkeleton}
+      isLoading={isLoading}
       tickets={tickets}
     />
   );

@@ -1,5 +1,4 @@
 "use client";
-import ThemeButton from "@/components/buttons/theme-btn/theme-btn";
 import { EditPencil } from "iconoir-react";
 import { useState, useEffect } from "react";
 import { useCategories } from "@/hooks/use-category";
@@ -7,6 +6,7 @@ import { useParametres } from "@/contexts/parametres-context";
 import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton";
 import { useUpdateCurrentUser } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
+import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
 export default function PreferencesPage() {
   const [selectedThemes, setSelectedThemes] = useState([]);
@@ -63,7 +63,7 @@ export default function PreferencesPage() {
         )}
         {!isLoading &&
           categories.map((category, index) => (
-            <ThemeButton
+            <ThemeBtn
               key={index}
               theme={category.key}
               label={category.name}

@@ -104,12 +104,10 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && events.length === 0;
-
   useEffect(() => {
     const loadEvents = async () => {
       if (!userId) {
-        setEvents(null);
+        setEvents([]); // Toujours un tableau vide
         setLoading(false);
         setError(null);
         return;
@@ -153,7 +151,7 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
 
   return {
     events,
-    loading: shouldShowSkeleton,
+    loading,
     error,
     refetch,
   };
@@ -164,12 +162,10 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && events.length === 0;
-
   useEffect(() => {
     const loadEvents = async () => {
       if (!userId) {
-        setEvents(null);
+        setEvents([]); // Toujours un tableau vide
         setLoading(false);
         setError(null);
         return;
@@ -223,7 +219,7 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
 
   return {
     events,
-    loading: shouldShowSkeleton,
+    loading,
     error,
     refetch,
   };

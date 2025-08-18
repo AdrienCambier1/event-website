@@ -1,14 +1,14 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
 import EventCard from "@/components/cards/event-card/event-card";
-import DropdownButton from "@/components/buttons/dropdown-button";
-import MultiDropdownButton from "@/components/buttons/multi-dropdown-button";
 import EventCardSkeleton from "../cards/event-card/event-card-skeleton";
 import { useState, useEffect, Suspense, useMemo } from "react";
 import { Erase, Plus } from "iconoir-react";
 import Link from "next/link";
 import { useUrlFilters } from "@/hooks/use-url-filters";
 import { useCategories } from "@/hooks/use-category";
+import MultiDropdownBtn from "../buttons/multi-dropdown-btn";
+import DropdownBtn from "../buttons/dropdown-btn";
 
 function EventListContent({
   title,
@@ -99,7 +99,7 @@ function EventListContent({
             onChange={(e) => updateSearch(e.target.value)}
           />
           {showFilters && (
-            <MultiDropdownButton
+            <MultiDropdownBtn
               options={filterOptions}
               selectedValues={selectedFilters}
               label="Filtre par catégorie :"
@@ -108,7 +108,7 @@ function EventListContent({
             />
           )}
           {showSort && (
-            <DropdownButton
+            <DropdownBtn
               options={sortOptions}
               selectedValue={sortOption}
               label="Trier par :"

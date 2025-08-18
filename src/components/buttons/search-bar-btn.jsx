@@ -6,7 +6,7 @@ import { TextPlugin } from "gsap/TextPlugin";
 
 gsap.registerPlugin(TextPlugin);
 
-export default function SearchBarButton({ onClick }) {
+export default function SearchBarBtn({ onClick }) {
   const textRef = useRef(null);
   const cursorRef = useRef(null);
 

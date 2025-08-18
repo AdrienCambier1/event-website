@@ -2,9 +2,9 @@
 import CustomTitle from "@/components/titles/custom-title";
 import OrganiserCard from "@/components/cards/organizer-card/organizer-card";
 import OrganiserCardSkeleton from "@/components/cards/organizer-card/organizer-card-skeleton";
-import DropdownButton from "@/components/buttons/dropdown-button";
 import { useState, Suspense, useEffect, useRef, useMemo } from "react";
 import { Erase } from "iconoir-react";
+import DropdownBtn from "../buttons/dropdown-btn";
 
 function ProfilListContent({ title, description, isLoading, organizers }) {
   const { useSearchParams } = require("next/navigation");
@@ -81,7 +81,7 @@ function ProfilListContent({ title, description, isLoading, organizers }) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <DropdownButton
+          <DropdownBtn
             options={sortOptions}
             selectedValue={sortOption}
             label="Trier par :"

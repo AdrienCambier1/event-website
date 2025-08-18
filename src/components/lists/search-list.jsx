@@ -21,9 +21,7 @@ export default function SearchList({
         isSearchModalOpen ? "opacity-100" : "opacity-0"
       } mt-6 w-full max-w-[30rem] flex flex-col gap-3 overflow-auto scrollbar-hide pointer-events-auto transition`}
     >
-      <h2 className={`${isLoading && "skeleton-bg"} text-white`}>
-        Résultat des recherches
-      </h2>
+      <h2 className="text-white">Résultat des recherches</h2>
       {isLoading ? (
         <>
           <SearchContainerBtnSkeleton />

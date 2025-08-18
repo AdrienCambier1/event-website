@@ -1,5 +1,4 @@
 "use client";
-import SearchBarButton from "@/components/buttons/search-bar-button";
 import CustomTitle from "@/components/titles/custom-title";
 import CityCard from "@/components/cards/city-card/city-card";
 import { NavArrowRight } from "iconoir-react";
@@ -15,6 +14,7 @@ import CityCardSkeleton from "@/components/cards/city-card/city-card-skeleton";
 import EventCardSkeleton from "@/components/cards/event-card/event-card-skeleton";
 import ThemeCardSkeleton from "@/components/cards/theme-card/theme-card-skeleton";
 import { useSearchModal } from "@/contexts/search-modal-context";
+import SearchBarBtn from "@/components/buttons/search-bar-btn";
 
 export default function Home() {
   const { toggleSearchModal } = useSearchModal();
@@ -49,7 +49,7 @@ export default function Home() {
             <br /> Un festival 🎪 à ne pas manquer. Tout est ici. Découvrez,
             réservez, profitez. 🗓️
           </p>
-          <SearchBarButton onClick={toggleSearchModal} />
+          <SearchBarBtn onClick={toggleSearchModal} />
         </section>
         <section className="container">
           <CustomTitle title="Les villes tendances" description="Villes" />

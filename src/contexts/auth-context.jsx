@@ -69,7 +69,6 @@ export function AuthProvider({ children }) {
                 "Erreur lors de la récupération du profil:",
                 profileError
               );
-              // Si on ne peut pas récupérer le profil, on utilise juste les données du token
               setToken(storedToken);
               setUser(decodedToken);
               setIsAuthenticated(true);

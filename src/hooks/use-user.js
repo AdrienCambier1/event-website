@@ -16,9 +16,6 @@ export function useCurrentUser(token) {
 
   const fetchData = async () => {
     if (!token) {
-      setUser(null);
-      setLoading(false);
-      setError(null);
       return null;
     }
 

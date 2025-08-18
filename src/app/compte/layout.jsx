@@ -13,8 +13,14 @@ import {
 import { useEffect } from "react";
 
 export default function CompteLayout({ children }) {
-  const { token, isAuthenticated, loading: authLoading } = useAuth();
+  const { token, isAuthenticated } = useAuth();
   const { setUser, setAccountError, setIsLoading, user } = useParametres();
+
+  const {
+    user: userData,
+    loading: accountLoading,
+    error: userAccountError,
+  } = useCurrentUser(isAuthenticated ? token : null);
 
   const navigation = [
     { name: "Tickets", href: "/compte/profil/tickets" },
@@ -23,22 +29,14 @@ export default function CompteLayout({ children }) {
     { name: "Avis", href: "/compte/profil/avis" },
   ];
 
-  const {
-    user: userData,
-    loading: accountLoading,
-    error: userAccountError,
-  } = useCurrentUser(isAuthenticated ? token : null);
-
-  const isLoading = authLoading || accountLoading;
-
   useEffect(() => {
     setUser(userData);
     setAccountError(userAccountError);
-    setIsLoading(isLoading);
+    setIsLoading(accountLoading);
   }, [
     userData,
     userAccountError,
-    isLoading,
+    accountLoading,
     setUser,
     setAccountError,
     setIsLoading,
@@ -49,7 +47,7 @@ export default function CompteLayout({ children }) {
       <section className="container">
         <h1>Mon profil</h1>
         <div className="relative">
-          {isLoading ? (
+          {accountLoading ? (
             <div className="banner skeleton-bg"></div>
           ) : (
             <Image
@@ -60,7 +58,7 @@ export default function CompteLayout({ children }) {
               className="banner"
             />
           )}
-          {!isLoading && (
+          {!accountLoading && (
             <ProfilCard
               profilId={user?.id}
               name={`${user?.firstName} ${user?.lastName}`}
@@ -73,7 +71,7 @@ export default function CompteLayout({ children }) {
         </div>
       </section>
       <ProfilHeader
-        isLoading={isLoading}
+        isLoading={accountLoading}
         eventPastCount={user?.eventPastCount}
         eventsCount={user?.eventsCount}
         navigation={navigation}

@@ -7,11 +7,14 @@ import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton"
 import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
 import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
+import Link from "next/link";
 
 export default function PreferencesPage() {
   const [selectedThemes, setSelectedThemes] = useState([]);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
+  const [loadingRole, setLoadingRole] = useState(false);
+  const [successRole, setSuccessRole] = useState(false);
+  const [loadingCategories, setLoadingCategories] = useState(false);
+  const [successCategories, setSuccessCategories] = useState(false);
   const { token } = useAuth();
   const { user, isLoading: accountLoading, setUser } = useParametres();
   const { updateUser, loading } = useUpdateCurrentUser(token);
@@ -38,63 +41,130 @@ export default function PreferencesPage() {
 
   const categoryKeys = selectedThemes;
 
-  const handleUpdate = async () => {
-    setSuccess(false);
-    setError(null);
+  const handleUpdateCategories = async () => {
+    setLoadingCategories(true);
+    setSuccessCategories(null);
     try {
       await updateUser({ categoryKeys });
       const refreshed = await refetch();
       setUser(refreshed);
-      setSuccess(true);
     } catch (e) {
-      setError("Erreur lors de la mise à jour");
+      console.log("Erreur lors de la mise à jour");
+    } finally {
+      setLoadingCategories(false);
+      setSuccessCategories(true);
     }
   };
 
+  const handleBecomeOrganizer = async () => {
+    setLoadingRole(true);
+    setSuccessRole(null);
+    try {
+      await updateUser({ role: "Organizer" });
+      const refreshed = await refetch();
+      setUser(refreshed);
+    } catch (e) {
+      console.log("Erreur lors du changement de rôle");
+    } finally {
+      setLoadingRole(false);
+      setSuccessRole(true);
+    }
+  };
+
+  const role = user?.role?.toLowerCase();
+  const canManageEvents = role === "organizer" || role === "admin";
+
   return (
-    <div className="flex flex-col gap-6">
-      <h3>Préférences du compte</h3>
-      <div className="cards-grid">
+    <>
+      <div className="flex flex-col gap-6">
+        <h3>Préférences du compte</h3>
+        <div className="cards-grid">
+          {isLoading && (
+            <>
+              <ThemeBtnSkeleton />
+              <ThemeBtnSkeleton />
+              <ThemeBtnSkeleton />
+              <ThemeBtnSkeleton />
+            </>
+          )}
+          {!isLoading &&
+            categories.map((category, index) => (
+              <ThemeBtn
+                key={index}
+                theme={category.key}
+                label={category.name}
+                isSelected={selectedThemes.includes(category.key)}
+                onClick={() => handleThemeToggle(category.key)}
+              />
+            ))}
+          {!isLoading && categories.length === 0 && (
+            <p>Aucune catégorie disponible pour le moment</p>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-4 items-center justify-between">
+          <button
+            className="blue-rounded-btn"
+            onClick={handleUpdateCategories}
+            disabled={loadingCategories}
+          >
+            <span>{loadingCategories ? "Modification..." : "Modifier"}</span>
+            <EditPencil />
+          </button>
+          {successCategories && (
+            <p className="green-text">Les préférences ont été enregistrées</p>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-6">
+        <h3>Gérez vos événements</h3>
         {isLoading && (
           <>
-            <ThemeBtnSkeleton />
-            <ThemeBtnSkeleton />
-            <ThemeBtnSkeleton />
-            <ThemeBtnSkeleton />
+            <p className="skeleton-bg">
+              Devenir organisateur ou être redirigé vers l'interface
+              d'administration
+            </p>
+            <button className="skeleton-btn">
+              <span>Role ou redirection</span>
+            </button>
           </>
         )}
-        {!isLoading &&
-          categories.map((category, index) => (
-            <ThemeBtn
-              key={index}
-              theme={category.key}
-              label={category.name}
-              isSelected={selectedThemes.includes(category.key)}
-              onClick={() => handleThemeToggle(category.key)}
-            />
-          ))}
-        {!isLoading && categories.length === 0 && (
-          <p>Aucune catégorie disponible pour le moment</p>
+        {!isLoading && !canManageEvents && (
+          <>
+            <p>
+              Devenez organisateur et gérez vos événements facilement depuis
+              notre interface d'administration.
+            </p>
+            <button
+              className="primary-btn"
+              onClick={handleBecomeOrganizer}
+              disabled={loadingRole}
+            >
+              <span>
+                {loadingRole
+                  ? "Changement en cours..."
+                  : "Devenir organisateur"}
+              </span>
+            </button>
+          </>
+        )}
+        {!isLoading && canManageEvents && (
+          <>
+            <p>Gérez vos événements depuis notre interface d'administration.</p>
+            <div className="flex flex-wrap gap-4 items-center justify-between">
+              <Link
+                href="https://veevent-admin.vercel.app/"
+                className="primary-btn"
+                target="_blank"
+              >
+                <span>Accéder à l'administration</span>
+              </Link>
+              {successRole && (
+                <p className="green-text">Vous êtes désormais organisateur</p>
+              )}
+            </div>
+          </>
         )}
       </div>
-      <div className="flex flex-wrap gap-4 items-center justify-between">
-        <button
-          className="blue-rounded-btn"
-          onClick={handleUpdate}
-          disabled={loading}
-        >
-          <span>{loading ? "Modification..." : "Modifier"}</span>
-          <EditPencil />
-        </button>
-        {success && (
-          <span className="green-text">
-            Les préférences ont été enregistrées
-          </span>
-        )}
-        {error && (
-          <span className="red-text">Erreur lors de la mise à jour</span>
-        )}
-      </div>
-    </div>
+    </>
   );
 }

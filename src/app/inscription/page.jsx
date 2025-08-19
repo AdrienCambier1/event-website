@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { ArrowLeft } from "iconoir-react";
 import StepIndicator from "@/components/commons/step-indicator";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useRegister } from "@/hooks/use-register";
 import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";

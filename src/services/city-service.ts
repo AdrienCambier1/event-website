@@ -80,7 +80,6 @@ export async function fetchCityEvents(
 
 export async function fetchCityOrganizers(
   cityId: string | number,
-  token?: string,
   limit = 10
 ): Promise<CityOrganizersResponse> {
   try {
@@ -88,16 +87,13 @@ export async function fetchCityOrganizers(
       limit: limit.toString(),
     });
 
-    const headers = {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-
     const response = await fetch(
       `${API_URL}/cities/${cityId}/organizers?${params}`,
       {
         method: "GET",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
 

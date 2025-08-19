@@ -6,11 +6,9 @@ import { useState, useEffect, useRef } from "react";
 import { Group } from "iconoir-react";
 import UserElement from "../commons/user-element/user-element";
 import { useEventParticipants } from "@/hooks/use-event";
-import { useAuth } from "@/hooks/use-auth";
 import UserElementSkeleton from "../commons/user-element/user-element-skeleton";
 
 export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
-  const { token } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
@@ -20,7 +18,7 @@ export default function UsersModal({ isOpen, setIsOpen, eventId = null }) {
     participants,
     loading: participantsLoading,
     error: participantsError,
-  } = useEventParticipants(eventId, token, isOpen);
+  } = useEventParticipants(eventId, isOpen);
 
   const displayUsers =
     participants.length > 0

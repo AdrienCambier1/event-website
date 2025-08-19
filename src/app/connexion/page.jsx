@@ -10,7 +10,6 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Eye, EyeClosed } from "iconoir-react";
 import { useAuth } from "@/hooks/use-auth";
 import PasswordInput from "@/components/inputs/password-input";
 

@@ -6,13 +6,12 @@ import { useAuth } from "@/hooks/use-auth";
 
 export default function OrganisateursPage() {
   const { id } = useParams();
-  const { token } = useAuth();
 
   const {
     organizers,
     loading: organizersLoading,
     error: organizersError,
-  } = useCityOrganizers(id, token, 50);
+  } = useCityOrganizers(id, 50);
 
   return (
     <ProfilList

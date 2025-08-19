@@ -13,7 +13,7 @@ export default function VillesPage() {
   return (
     <main>
       <section className="container items-center">
-        <MainTitle title={`Les villes événementielles`} />
+        <MainTitle title="Les villes événementielles" />
         <p className="text-center">
           Découvrez les différentes villes proche de chez vous qui organisent
           des événements.

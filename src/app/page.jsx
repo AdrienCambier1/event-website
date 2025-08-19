@@ -17,7 +17,6 @@ import { useSearchModal } from "@/contexts/search-modal-context";
 import SearchBarBtn from "@/components/buttons/search-bar-btn";
 
 export default function Home() {
-  const { token } = useAuth();
   const { toggleSearchModal } = useSearchModal();
 
   const {
@@ -30,13 +29,12 @@ export default function Home() {
     events: trendingEvents,
     loading: trendingLoading,
     error: trendingError,
-  } = useTrendingEvents(token);
-
+  } = useTrendingEvents();
   const {
     events,
     loading: eventsLoading,
     error: eventsError,
-  } = useEvents(token, 0, 3);
+  } = useEvents(0, 3);
 
   const {
     categories,
@@ -107,9 +105,10 @@ export default function Home() {
                     description={category.description}
                   />
                 ))}
-            {!categoriesLoading && categories.length === 0 && (
-              <p>Aucune catégorie disponible pour le moment</p>
-            )}
+            {!categoriesLoading &&
+              (categories?.length === 0 || categoriesError) && (
+                <p>Aucune catégorie disponible pour le moment</p>
+              )}
           </div>
         </section>
         <section className="container">

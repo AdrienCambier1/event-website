@@ -2,11 +2,17 @@
 import CustomTitle from "@/components/titles/custom-title";
 import CityCard from "@/components/cards/city-card/city-card";
 import CityCardSkeleton from "../cards/city-card/city-card-skeleton";
-import { useState, Suspense, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Erase } from "iconoir-react";
 import DropdownBtn from "../buttons/dropdown-btn";
 
-function CityListContent({ title, description, showSort, isLoading, cities }) {
+export default function CityList({
+  title,
+  description,
+  showSort,
+  isLoading,
+  cities,
+}) {
   const [sortOption, setSortOption] = useState("events");
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -104,13 +110,5 @@ function CityListContent({ title, description, showSort, isLoading, cities }) {
           ))}
       </div>
     </section>
-  );
-}
-
-export default function CityList(props) {
-  return (
-    <Suspense fallback={<></>}>
-      <CityListContent {...props} />
-    </Suspense>
   );
 }

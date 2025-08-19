@@ -2,16 +2,18 @@
 import CustomTitle from "@/components/titles/custom-title";
 import OrganiserCard from "@/components/cards/organizer-card/organizer-card";
 import OrganiserCardSkeleton from "@/components/cards/organizer-card/organizer-card-skeleton";
-import { useState, Suspense, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Erase } from "iconoir-react";
 import DropdownBtn from "../buttons/dropdown-btn";
 
-function ProfilListContent({ title, description, isLoading, organizers }) {
-  const { useSearchParams } = require("next/navigation");
-  const searchParams = useSearchParams();
+export default function ProfilList({
+  title,
+  description,
+  isLoading,
+  organizers,
+}) {
   const [sortOption, setSortOption] = useState("liked");
   const [searchTerm, setSearchTerm] = useState("");
-  const initializedRef = useRef(false);
 
   const sortOptions = [
     { label: "Mieux noté", value: "liked" },
@@ -56,19 +58,6 @@ function ProfilListContent({ title, description, isLoading, organizers }) {
       }
     });
   }, [organizers, searchTerm, sortOption]);
-
-  useEffect(() => {
-    if (initializedRef.current) return;
-
-    if (searchParams) {
-      const searchParam = searchParams.get("search");
-      if (searchParam) {
-        setSearchTerm(searchParam);
-      }
-    }
-
-    initializedRef.current = true;
-  }, [searchParams]);
 
   return (
     <section className="page-grid">
@@ -131,13 +120,5 @@ function ProfilListContent({ title, description, isLoading, organizers }) {
           ))}
       </div>
     </section>
-  );
-}
-
-export default function ProfilList(props) {
-  return (
-    <Suspense fallback={<></>}>
-      <ProfilListContent {...props} />
-    </Suspense>
   );
 }

@@ -100,7 +100,6 @@ export async function fetchPlaceEvents(
 
 export async function fetchPlaceOrganizers(
   placeId: string | number,
-  token?: string,
   limit = 10
 ): Promise<CityOrganizersResponse> {
   try {
@@ -108,16 +107,13 @@ export async function fetchPlaceOrganizers(
       limit: limit.toString(),
     });
 
-    const headers = {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-
     const response = await fetch(
       `${API_URL}/places/${placeId}/organizers?${params}`,
       {
         method: "GET",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
 

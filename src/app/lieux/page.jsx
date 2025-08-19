@@ -13,7 +13,7 @@ export default function LieuxPage() {
   return (
     <main>
       <section className="container items-center">
-        <MainTitle title={`Les lieux événementielles`} />
+        <MainTitle title="Les lieux événementiels" />
         <p className="text-center">
           Découvrez tous les lieux où se déroulent les événements.
         </p>

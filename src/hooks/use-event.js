@@ -10,7 +10,7 @@ import {
   fetchTrendingEvents,
 } from "@/services/event-service";
 
-export function useEvents(token, page = 0, size = 10) {
+export function useEvents(page = 0, size = 10) {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +20,7 @@ export function useEvents(token, page = 0, size = 10) {
       try {
         setLoading(true);
         setError(null);
-        const eventsData = await fetchEvents(token, page, size);
+        const eventsData = await fetchEvents(page, size);
         setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erreur inconnue");
@@ -31,13 +31,13 @@ export function useEvents(token, page = 0, size = 10) {
     };
 
     loadEvents();
-  }, [token, page, size]);
+  }, [page, size]);
 
   const refetch = async () => {
     try {
       setLoading(true);
       setError(null);
-      const eventsData = await fetchEvents(token, page, size);
+      const eventsData = await fetchEvents(page, size);
       setEvents(eventsData._embedded?.eventSummaryResponses || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");
@@ -94,7 +94,7 @@ export function useEventDetails(eventId) {
   };
 }
 
-export function useEventParticipants(eventId, token, shouldFetch = false) {
+export function useEventParticipants(eventId, shouldFetch = false) {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -108,7 +108,7 @@ export function useEventParticipants(eventId, token, shouldFetch = false) {
       try {
         setLoading(true);
         setError(null);
-        const participantsData = await fetchEventParticipants(eventId, token);
+        const participantsData = await fetchEventParticipants(eventId);
         setParticipants(participantsData._embedded?.userSummaries || []);
       } catch (err) {
         console.error("Error in useEventParticipants:", err);
@@ -120,7 +120,7 @@ export function useEventParticipants(eventId, token, shouldFetch = false) {
     };
 
     loadParticipants();
-  }, [eventId, token, shouldFetch]);
+  }, [eventId, shouldFetch]);
 
   const refetch = async () => {
     if (!eventId) return;
@@ -128,7 +128,7 @@ export function useEventParticipants(eventId, token, shouldFetch = false) {
     try {
       setLoading(true);
       setError(null);
-      const participantsData = await fetchEventParticipants(eventId, token);
+      const participantsData = await fetchEventParticipants(eventId);
       setParticipants(participantsData._embedded?.userSummaries || []);
     } catch (err) {
       console.error("Error in useEventParticipants refetch:", err);
@@ -233,7 +233,7 @@ export function useEventWithPlaceDetails(eventId) {
   };
 }
 
-export function useTrendingEvents(token) {
+export function useTrendingEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -243,7 +243,7 @@ export function useTrendingEvents(token) {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchTrendingEvents(token);
+        const data = await fetchTrendingEvents();
         setEvents(data._embedded?.eventSummaryResponses || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erreur inconnue");
@@ -253,13 +253,13 @@ export function useTrendingEvents(token) {
       }
     };
     loadTrending();
-  }, [token]);
+  }, []);
 
   const refetch = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchTrendingEvents(token);
+      const data = await fetchTrendingEvents();
       setEvents(data._embedded?.eventSummaryResponses || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");

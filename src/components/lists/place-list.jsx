@@ -1,12 +1,12 @@
 "use client";
 import CustomTitle from "@/components/titles/custom-title";
-import { useState, Suspense, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Erase } from "iconoir-react";
 import PlaceCard from "../cards/place-card/place-card";
 import PlaceCardSkeleton from "../cards/place-card/place-card-skeleton";
 import DropdownBtn from "../buttons/dropdown-btn";
 
-function PlaceListContent({ title, description, isLoading, places }) {
+export default function PlaceList({ title, description, isLoading, places }) {
   const [sortOption, setSortOption] = useState("events");
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -105,13 +105,5 @@ function PlaceListContent({ title, description, isLoading, places }) {
           ))}
       </div>
     </section>
-  );
-}
-
-export default function PlaceList(props) {
-  return (
-    <Suspense fallback={<></>}>
-      <PlaceListContent {...props} />
-    </Suspense>
   );
 }

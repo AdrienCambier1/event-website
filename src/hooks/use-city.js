@@ -131,7 +131,7 @@ export function useCityEvents(
   };
 }
 
-export function useCityOrganizers(cityId, token, limit = 10) {
+export function useCityOrganizers(cityId, limit = 10) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -146,7 +146,7 @@ export function useCityOrganizers(cityId, token, limit = 10) {
       try {
         setLoading(true);
         setError(null);
-        const organizersData = await fetchCityOrganizers(cityId, token, limit);
+        const organizersData = await fetchCityOrganizers(cityId, limit);
         setData(organizersData);
       } catch (err) {
         setError(
@@ -160,7 +160,7 @@ export function useCityOrganizers(cityId, token, limit = 10) {
     }
 
     loadCityOrganizers();
-  }, [cityId, token, limit]);
+  }, [cityId, limit]);
 
   return {
     data,

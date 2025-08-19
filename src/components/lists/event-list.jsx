@@ -2,7 +2,7 @@
 import CustomTitle from "@/components/titles/custom-title";
 import EventCard from "@/components/cards/event-card/event-card";
 import EventCardSkeleton from "../cards/event-card/event-card-skeleton";
-import { useState, useEffect, Suspense, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Erase, Plus } from "iconoir-react";
 import Link from "next/link";
 import { useUrlFilters } from "@/hooks/use-url-filters";
@@ -10,7 +10,7 @@ import { useCategories } from "@/hooks/use-category";
 import MultiDropdownBtn from "../buttons/multi-dropdown-btn";
 import DropdownBtn from "../buttons/dropdown-btn";
 
-function EventListContent({
+export default function EventList({
   title,
   description,
   showSort,
@@ -179,13 +179,5 @@ function EventListContent({
           ))}
       </div>
     </section>
-  );
-}
-
-export default function EventList(props) {
-  return (
-    <Suspense fallback={<></>}>
-      <EventListContent {...props} />
-    </Suspense>
   );
 }

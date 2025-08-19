@@ -4,7 +4,6 @@ import { EventDetails } from "@/types/event";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function fetchEvents(
-  token?: string,
   page = 0,
   size = 10
 ): Promise<EventsApiResponse> {
@@ -13,46 +12,15 @@ export async function fetchEvents(
     size: size.toString(),
   });
 
-  const res = await fetch(`${API_URL}/events?${params}`, {
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
+  const res = await fetch(`${API_URL}/events?${params}`);
   if (!res.ok) throw new Error("Erreur lors du chargement des événements");
   return await res.json();
 }
 
-export async function fetchUserEvents(
-  userEventsUrl: string,
-  token?: string,
-  page = 0,
-  size = 10
-): Promise<EventsApiResponse> {
-  const url = new URL(userEventsUrl);
-  url.searchParams.set("page", page.toString());
-  url.searchParams.set("size", size.toString());
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
-  if (!res.ok)
-    throw new Error(
-      "Erreur lors du chargement des événements de l'utilisateur"
-    );
-  return await res.json();
-}
-
 export async function fetchEventParticipants(
-  eventId: number,
-  token?: string
+  eventId: number
 ): Promise<EventParticipantsApiResponse> {
-  const res = await fetch(`${API_URL}/events/${eventId}/participants`, {
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
+  const res = await fetch(`${API_URL}/events/${eventId}/participants`);
   if (!res.ok)
     throw new Error(
       "Erreur lors du chargement des participants de l'événement"
@@ -138,12 +106,8 @@ export async function fetchEventPlace(eventId: string | number) {
   return await res.json();
 }
 
-export async function fetchTrendingEvents(token?: string) {
-  const res = await fetch(`${API_URL}/events/trending`, {
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
+export async function fetchTrendingEvents() {
+  const res = await fetch(`${API_URL}/events/trending`);
   if (!res.ok)
     throw new Error("Erreur lors du chargement des événements tendances");
   return await res.json();

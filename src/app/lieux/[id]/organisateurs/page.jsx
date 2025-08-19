@@ -6,13 +6,12 @@ import { usePlaceOrganizers } from "@/hooks/use-place";
 
 export default function OrganisateursPage() {
   const { id } = useParams();
-  const { token } = useAuth();
 
   const {
     organizers,
     loading: organizersLoading,
     error: organizersError,
-  } = usePlaceOrganizers(id, token, 50);
+  } = usePlaceOrganizers(id, 50);
 
   return (
     <ProfilList

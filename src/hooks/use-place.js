@@ -131,7 +131,7 @@ export function usePlaceEvents(placeId, size = 10) {
   };
 }
 
-export function usePlaceOrganizers(placeId, token, limit = 10) {
+export function usePlaceOrganizers(placeId, limit = 10) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -146,11 +146,7 @@ export function usePlaceOrganizers(placeId, token, limit = 10) {
       try {
         setLoading(true);
         setError(null);
-        const organizersData = await fetchPlaceOrganizers(
-          placeId,
-          token,
-          limit
-        );
+        const organizersData = await fetchPlaceOrganizers(placeId, limit);
         setData(organizersData);
       } catch (err) {
         setError(
@@ -163,7 +159,7 @@ export function usePlaceOrganizers(placeId, token, limit = 10) {
     }
 
     loadPlaceOrganizers();
-  }, [placeId, token, limit]);
+  }, [placeId, limit]);
 
   return {
     data,

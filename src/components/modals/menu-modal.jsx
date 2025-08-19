@@ -18,6 +18,32 @@ export default function MenuModal({ isOpen, setIsOpen }) {
     });
   };
 
+  const navigation = [
+    { href: "/evenements", label: "Événements" },
+    { href: "/villes", label: "Les villes" },
+    { href: "/lieux", label: "Les lieux" },
+    { href: "/organisateurs", label: "Organisateurs" },
+    { href: "/compte/parametres", label: "Paramètres" },
+    {
+      label: "Paramètres enfants",
+      children: [
+        { href: "/compte/parametres/informations", label: "Mes informations" },
+        { href: "/compte/parametres/preferences", label: "Mes préférences" },
+      ],
+    },
+    { href: "/compte/profil/tickets", label: "Mon activité" },
+    {
+      label: "Profil enfants",
+      children: [
+        { href: "/compte/profil/tickets", label: "Mes tickets" },
+        { href: "/compte/profil/evenements", label: "Mes événements" },
+        { href: "/compte/profil/participations", label: "Mes participations" },
+        { href: "/compte/profil/favoris", label: "Mes favoris" },
+        { href: "/compte/profil/avis", label: "Mes avis" },
+      ],
+    },
+  ];
+
   return (
     <>
       <ReactFocusLock
@@ -49,46 +75,25 @@ export default function MenuModal({ isOpen, setIsOpen }) {
           </div>
           <nav>
             <h4>Pages</h4>
-            <Link href="/evenements" onClick={setIsOpen}>
-              Evenements
-            </Link>
-            <Link href="/villes" onClick={setIsOpen}>
-              Les villes
-            </Link>
-            <Link href="/lieux" onClick={setIsOpen}>
-              Les lieux
-            </Link>
-            <Link href="/organisateurs" onClick={setIsOpen}>
-              Organisateurs
-            </Link>
-            <Link href="/compte/parametres" onClick={setIsOpen}>
-              Paramètres
-            </Link>
-            <div>
-              <Link href="/compte/parametres/informations" onClick={setIsOpen}>
-                Mes informations
-              </Link>
-              <Link href="/compte/parametres/preferences" onClick={setIsOpen}>
-                Mes préférences
-              </Link>
-            </div>
-            <Link href="/compte/profil/tickets" onClick={setIsOpen}>
-              Mon activité
-            </Link>
-            <div>
-              <Link href="/compte/profil/tickets" onClick={setIsOpen}>
-                Mes tickets
-              </Link>
-              <Link href="/compte/profil/evenements" onClick={setIsOpen}>
-                Mes événements
-              </Link>
-              <Link href="/compte/profil/participations" onClick={setIsOpen}>
-                Mes participations
-              </Link>
-              <Link href="/compte/profil/avis" onClick={setIsOpen}>
-                Mes avis
-              </Link>
-            </div>
+            {navigation.map((item) =>
+              item.children ? (
+                <div key={item.label}>
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      onClick={setIsOpen}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <Link key={item.href} href={item.href} onClick={setIsOpen}>
+                  {item.label}
+                </Link>
+              )
+            )}
             <button
               onClick={() => {
                 toggleSearchModal();

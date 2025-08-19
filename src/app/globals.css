@@ -214,6 +214,15 @@ header nav a {
   @apply text-[var(--light-gray)];
 }
 
+.custom-nav {
+  @apply bg-white rounded-full blue-shadow p-2 flex items-center w-fit max-w-full overflow-auto scrollbar-hide;
+}
+
+.custom-nav .primary-btn,
+.custom-nav .blue-rounded-btn {
+  @apply flex-shrink-0;
+}
+
 /**********/
 /* Images */
 /**********/

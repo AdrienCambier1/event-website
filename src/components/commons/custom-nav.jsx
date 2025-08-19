@@ -7,7 +7,7 @@ export default function CustomNav({ navigation, disabledHome, homeLink }) {
   const pathname = usePathname();
 
   return (
-    <div className="bg-white rounded-full blue-shadow p-2 flex items-center w-fit max-w-full">
+    <div className="custom-nav">
       {!disabledHome && (
         <Link href={homeLink || "/"} className="px-4">
           <Home className="h-6 w-6 text-[var(--primary-blue)] hover:opacity-75 transition" />

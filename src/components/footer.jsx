@@ -71,6 +71,7 @@ export default function Footer() {
                 <Link href="/compte/profil/participations">
                   Mes participations
                 </Link>
+                <Link href="/compte/profil/favoris">Mes favoris</Link>
                 <Link href="/compte/profil/avis">Mes avis</Link>
               </nav>
             </div>

@@ -25,28 +25,30 @@ export default function ParametresLayout({ children }) {
         </div>
       </section>
       <section className="page-grid mt-8">
-        <div className="flex flex-col gap-6 col-span-1">
-          <NavBtn
-            icon={User}
-            href="/compte/parametres"
-            label="Aperçu du compte"
-            isActive={true}
-          />
-          <NavBtn
-            icon={DatabaseScript}
-            href="/compte/parametres/informations"
-            label="Données du compte"
-          />
-          <NavBtn
-            icon={Settings}
-            href="/compte/parametres/preferences"
-            label="Préférences du compte"
-          />
-          <NavBtn
-            icon={LogOut}
-            onClick={() => setLogoutModalOpen(true)}
-            label="Se déconnecter"
-          />
+        <div>
+          <div className="flex flex-col gap-6 col-span-1 sticky top-20">
+            <NavBtn
+              icon={User}
+              href="/compte/parametres"
+              label="Aperçu du compte"
+              isActive={true}
+            />
+            <NavBtn
+              icon={DatabaseScript}
+              href="/compte/parametres/informations"
+              label="Données du compte"
+            />
+            <NavBtn
+              icon={Settings}
+              href="/compte/parametres/preferences"
+              label="Préférences du compte"
+            />
+            <NavBtn
+              icon={LogOut}
+              onClick={() => setLogoutModalOpen(true)}
+              label="Se déconnecter"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-12 lg:col-span-2">{children}</div>
       </section>

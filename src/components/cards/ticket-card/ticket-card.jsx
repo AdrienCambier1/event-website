@@ -18,6 +18,7 @@ export default function TicketCard({
   isAuthenticated,
   user,
   token,
+  isDisabled,
 }) {
   const [paymentModal, setPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -71,7 +72,7 @@ export default function TicketCard({
             <button
               className="primary-btn"
               onClick={handleClick}
-              disabled={addLoading}
+              disabled={addLoading || isDisabled}
             >
               <span>Réserver</span>
               <Plus />

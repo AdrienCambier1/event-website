@@ -1,11 +1,5 @@
 "use client";
-import {
-  Circle,
-  Check,
-  NavArrowRight,
-  CheckCircle,
-  CheckCircleSolid,
-} from "iconoir-react";
+import { Circle, NavArrowRight, CheckCircleSolid } from "iconoir-react";
 import UsersModal from "../modals/users-modal";
 import { useState } from "react";
 
@@ -67,7 +61,13 @@ export default function ItemList({
                     ) : selected === index ? (
                       <p className="blue-text">{item.value}</p>
                     ) : (
-                      <p className="dark-text">{item.value}</p>
+                      <div className="flex flex-wrap gap-2">
+                        <p className="dark-text">{item.value} </p>
+                        {item.information && (
+                          <p className="green-text">{item.information}</p>
+                        )}
+                        {item.error && <p className="red-text">{item.error}</p>}
+                      </div>
                     )}
                     {item.type === "users" && (
                       <button

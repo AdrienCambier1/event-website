@@ -43,6 +43,14 @@ export default function EventPage() {
     {
       icon: Group,
       value: `${event?.currentParticipants} personnes`,
+      information:
+        event && event.currentParticipants < event.maxCustomers
+          ? `Limité à ${event.maxCustomers} personnes`
+          : null,
+      error:
+        event && event.currentParticipants >= event.maxCustomers
+          ? "Cet événement est complet"
+          : null,
       type: "users",
     },
   ];
@@ -203,6 +211,7 @@ export default function EventPage() {
                     isAuthenticated={isAuthenticated}
                     user={user}
                     token={token}
+                    isDisabled={event.currentParticipants >= event.maxCustomers}
                   />
                 )}
               </div>

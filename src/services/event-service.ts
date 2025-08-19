@@ -137,3 +137,14 @@ export async function fetchEventPlace(eventId: string | number) {
   }
   return await res.json();
 }
+
+export async function fetchTrendingEvents(token?: string) {
+  const res = await fetch(`${API_URL}/events/trending`, {
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+  });
+  if (!res.ok)
+    throw new Error("Erreur lors du chargement des événements tendances");
+  return await res.json();
+}

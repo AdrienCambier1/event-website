@@ -7,6 +7,7 @@ import {
   addEventParticipants,
   createEventReport,
   fetchEventPlace,
+  fetchTrendingEvents,
 } from "@/services/event-service";
 
 export function useEvents(token, page = 0, size = 10) {
@@ -232,4 +233,43 @@ export function useEventWithPlaceDetails(eventId) {
     error,
     refetchEvent,
   };
+}
+
+export function useTrendingEvents(token) {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadTrending = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchTrendingEvents(token);
+        setEvents(data._embedded?.eventSummaryResponses || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Erreur inconnue");
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTrending();
+  }, [token]);
+
+  const refetch = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchTrendingEvents(token);
+      setEvents(data._embedded?.eventSummaryResponses || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur inconnue");
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { events, loading, error, refetch };
 }

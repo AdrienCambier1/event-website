@@ -7,7 +7,7 @@ import EventCard from "@/components/cards/event-card/event-card";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
 import { useCities } from "@/hooks/use-city";
-import { useEvents } from "@/hooks/use-event";
+import { useEvents, useTrendingEvents } from "@/hooks/use-event";
 import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";
 import CityCardSkeleton from "@/components/cards/city-card/city-card-skeleton";
@@ -25,6 +25,12 @@ export default function Home() {
     loading: citiesLoading,
     error: citiesError,
   } = useCities(0, 3);
+
+  const {
+    events: trendingEvents,
+    loading: trendingLoading,
+    error: trendingError,
+  } = useTrendingEvents(token);
 
   const {
     events,
@@ -112,34 +118,37 @@ export default function Home() {
             description="Événements"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {eventsLoading && (
+            {trendingLoading && (
               <>
                 <EventCardSkeleton />
                 <EventCardSkeleton />
                 <EventCardSkeleton />
               </>
             )}
-            {!eventsLoading && (events?.length === 0 || eventsError) && (
-              <p>Aucun événement disponible pour le moment</p>
-            )}
-            {!eventsLoading &&
-              events?.map((event) => (
-                <EventCard
-                  eventId={event.id}
-                  key={event.id}
-                  date={event.date}
-                  description={event.description}
-                  name={event.name}
-                  organizerName={event.organizer?.pseudo}
-                  organizerImageUrl={event.organizer?.imageUrl}
-                  organizerNote={event.organizer?.note}
-                  imageUrl={event.imageUrl}
-                  currentParticipants={event.currentParticipants}
-                  cityName={event.cityName}
-                  isTrending={event.isTrending}
-                  categories={event.categories}
-                />
-              ))}
+            {!trendingLoading &&
+              (trendingEvents?.length === 0 || trendingError) && (
+                <p>Aucun événement tendance pour le moment</p>
+              )}
+            {!trendingLoading &&
+              trendingEvents
+                ?.slice(0, 3)
+                .map((event) => (
+                  <EventCard
+                    eventId={event.id}
+                    key={event.id}
+                    date={event.date}
+                    description={event.description}
+                    name={event.name}
+                    organizerName={event.organizer?.pseudo}
+                    organizerImageUrl={event.organizer?.imageUrl}
+                    organizerNote={event.organizer?.note}
+                    imageUrl={event.imageUrl}
+                    currentParticipants={event.currentParticipants}
+                    cityName={event.cityName}
+                    isTrending={event.isTrending}
+                    categories={event.categories}
+                  />
+                ))}
           </div>
           <Link href="/evenements" className="blue-rounded-btn">
             <span>Voir plus</span>

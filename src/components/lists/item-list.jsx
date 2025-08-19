@@ -52,7 +52,7 @@ export default function ItemList({
                     <Icon className="h-6 w-6 text-[var(--light-gray)]" />
                   )}
                   <div
-                    className={`w-full py-3 flex items-center justify-between ${
+                    className={`w-full py-3 flex items-center justify-between gap-2 ${
                       !isLast && "border-b border-[var(--secondary-border-col)]"
                     }`}
                   >

@@ -47,7 +47,7 @@ export default function EventPage() {
       value: `${event?.currentParticipants} personnes`,
       information:
         event && event.currentParticipants < event.maxCustomers
-          ? `Limité à ${event.maxCustomers} personnes`
+          ? `Limité à ${event.maxCustomers}`
           : null,
       error:
         event && event.currentParticipants >= event.maxCustomers

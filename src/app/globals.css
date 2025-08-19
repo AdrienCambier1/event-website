@@ -39,7 +39,7 @@ body {
 }
 
 header {
-  @apply top-0 fixed px-6 w-full bg-[rgba(var(--background-rgb),0.75)] backdrop-blur-md z-30;
+  @apply top-0 fixed px-6 w-full bg-[rgba(var(--background-rgb),0.8)] backdrop-blur-md z-30;
 }
 
 main {
@@ -427,7 +427,7 @@ p {
 }
 
 .img-remove-btn {
-  @apply bg-[rgba(var(--primary-red-rgb),0.75)] backdrop-blur-[2px] text-white dark-shadow;
+  @apply bg-[rgba(var(--primary-red-rgb),0.8)] backdrop-blur-[2px] text-white dark-shadow;
 }
 
 .rounded-form-btn {
@@ -538,7 +538,7 @@ s .blue-tag svg,
 }
 
 .trending-tag {
-  @apply absolute top-4 -left-2 bg-[var(--primary-blue)] px-4 py-1.5 text-white rounded-tl-lg rounded-r-lg;
+  @apply absolute top-4 -left-2 bg-[rgba(var(--primary-blue-rgb),0.8)] backdrop-blur-sm px-4 py-1.5 text-white rounded-tl-lg rounded-r-lg;
 }
 
 .trending-tag::before {

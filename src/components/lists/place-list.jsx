@@ -102,7 +102,7 @@ export default function PlaceList({ title, description, isLoading, places }) {
               address={place.address}
               cityName={place.cityName}
               placeType={place.type}
-              imageUrl={place.imageUrl}
+              imageUrl={place.bannerUrl}
             />
           ))}
       </div>

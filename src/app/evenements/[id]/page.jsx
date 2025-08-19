@@ -157,7 +157,11 @@ export default function EventPage() {
                 </>
               ) : (
                 <>
-                  <p>{event?.description}</p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: event?.contentHtml || "",
+                    }}
+                  />
                 </>
               )}
             </div>

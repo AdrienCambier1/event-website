@@ -52,23 +52,25 @@ export default function CityList({
 
   return (
     <section className="page-grid">
-      <div className="flex flex-col gap-6">
-        <CustomTitle title={title} description={description} />
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Rechercher une ville"
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-          />
-          {showSort && (
-            <DropdownBtn
-              options={sortOptions}
-              selectedValue={sortOption}
-              label="Trier par :"
-              onSelect={(option) => setSortOption(option.value)}
+      <div>
+        <div className="flex flex-col gap-6 sticky top-20">
+          <CustomTitle title={title} description={description} />
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Rechercher une ville"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
             />
-          )}
+            {showSort && (
+              <DropdownBtn
+                options={sortOptions}
+                selectedValue={sortOption}
+                label="Trier par :"
+                onSelect={(option) => setSortOption(option.value)}
+              />
+            )}
+          </div>
         </div>
       </div>
       <div className="cards-grid">

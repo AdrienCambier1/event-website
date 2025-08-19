@@ -13,7 +13,7 @@ export default function CityCard({ cityId, name, eventsCount, bannerUrl }) {
         className="object-cover"
       />
 
-      <div className="p-4 h-full w-full flex flex-col gap-24 z-10">
+      <div className="p-4 h-full w-full flex flex-col gap-24 justify-between z-10">
         <div className="flex justify-between items-center">
           <p>{eventsCount} événements</p>
           <p className="!font-extrabold">{name}</p>

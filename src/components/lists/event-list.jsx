@@ -104,42 +104,44 @@ export default function EventList({
 
   return (
     <section className="page-grid">
-      <div className="flex flex-col gap-6">
-        <CustomTitle title={title} description={description} />
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Mot clé"
-            value={searchTerm}
-            onChange={(e) => updateSearch(e.target.value)}
-          />
-          {showFilters && (
-            <MultiDropdownBtn
-              options={filterOptions}
-              selectedValues={selectedFilters}
-              label="Filtre par catégorie :"
-              onSelect={(option) => addFilter(option.value)}
-              onRemove={removeFilter}
+      <div>
+        <div className="flex flex-col gap-6 sticky top-20">
+          <CustomTitle title={title} description={description} />
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Mot clé"
+              value={searchTerm}
+              onChange={(e) => updateSearch(e.target.value)}
             />
-          )}
-          {showSort && (
-            <DropdownBtn
-              options={sortOptions}
-              selectedValue={sortOption}
-              label="Trier par :"
-              onSelect={(option) => setSortOption(option.value)}
-            />
-          )}
-          {showCreateButton && (
-            <Link
-              href="https://veevent-admin.vercel.app/"
-              className="primary-btn"
-              target="_blank"
-            >
-              <span>Créer un événement</span>
-              <Plus />
-            </Link>
-          )}
+            {showFilters && (
+              <MultiDropdownBtn
+                options={filterOptions}
+                selectedValues={selectedFilters}
+                label="Filtre par catégorie :"
+                onSelect={(option) => addFilter(option.value)}
+                onRemove={removeFilter}
+              />
+            )}
+            {showSort && (
+              <DropdownBtn
+                options={sortOptions}
+                selectedValue={sortOption}
+                label="Trier par :"
+                onSelect={(option) => setSortOption(option.value)}
+              />
+            )}
+            {showCreateButton && (
+              <Link
+                href="https://veevent-admin.vercel.app/"
+                className="primary-btn"
+                target="_blank"
+              >
+                <span>Créer un événement</span>
+                <Plus />
+              </Link>
+            )}
+          </div>
         </div>
       </div>
       <div className="cards-grid">

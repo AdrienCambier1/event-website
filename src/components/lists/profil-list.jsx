@@ -61,21 +61,23 @@ export default function ProfilList({
 
   return (
     <section className="page-grid">
-      <div className="flex flex-col gap-6">
-        <CustomTitle title={title} description={description} />
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Mot clé"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <DropdownBtn
-            options={sortOptions}
-            selectedValue={sortOption}
-            label="Trier par :"
-            onSelect={(option) => setSortOption(option.value)}
-          />
+      <div>
+        <div className="flex flex-col gap-6 sticky top-20">
+          <CustomTitle title={title} description={description} />
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Mot clé"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <DropdownBtn
+              options={sortOptions}
+              selectedValue={sortOption}
+              label="Trier par :"
+              onSelect={(option) => setSortOption(option.value)}
+            />
+          </div>
         </div>
       </div>
       <div className="cards-grid">

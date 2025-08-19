@@ -722,6 +722,10 @@ input:-moz-autofill:focus {
   @apply text-white;
 }
 
+.google-map-card {
+  @apply w-full h-64 rounded-xl overflow-hidden;
+}
+
 /*********/
 /* Grids */
 /*********/

@@ -14,12 +14,13 @@ import ThemeTags from "@/components/commons/theme-tags";
 import ProfilCard from "@/components/cards/profil-card";
 import ItemList from "@/components/lists/item-list";
 import TicketCard from "@/components/cards/ticket-card/ticket-card";
-import { useEventDetails } from "@/hooks/use-event";
+import { useEventWithPlaceDetails } from "@/hooks/use-event";
 import { formatEventDate } from "@/utils/date-formatter";
 import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import ReportBtn from "@/components/buttons/report-btn";
 import { useFavorites } from "@/contexts/favorites-context";
+import GoogleMap from "@/components/commons/google-map";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -28,9 +29,10 @@ export default function EventPage() {
 
   const {
     event,
+    place,
     loading: eventLoading,
     error: eventError,
-  } = useEventDetails(id);
+  } = useEventWithPlaceDetails(id);
 
   const eventInfos = [
     {
@@ -175,6 +177,14 @@ export default function EventPage() {
             <div className="flex flex-col gap-6">
               <h2>Lieu</h2>
               <ItemList items={placeInfos} isLoading={eventLoading} />
+              {eventLoading ? (
+                <div className="google-map-card skeleton-bg"></div>
+              ) : (
+                <GoogleMap
+                  lat={place?.location?.latitude}
+                  lng={place?.location?.longitude}
+                />
+              )}
             </div>
             {!eventLoading && (
               <ProfilCard

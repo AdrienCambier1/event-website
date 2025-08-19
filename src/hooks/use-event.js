@@ -6,6 +6,7 @@ import {
   fetchEventParticipants,
   addEventParticipants,
   createEventReport,
+  fetchEventPlace,
 } from "@/services/event-service";
 
 export function useEvents(token, page = 0, size = 10) {
@@ -190,4 +191,45 @@ export function useEventReport(token) {
   };
 
   return { sendReport, loading, error, data };
+}
+
+export function useEventWithPlaceDetails(eventId) {
+  const {
+    event,
+    loading: eventLoading,
+    error: eventError,
+    refetch: refetchEvent,
+  } = useEventDetails(eventId);
+  const [place, setPlace] = useState(null);
+  const [placeLoading, setPlaceLoading] = useState(false);
+  const [placeError, setPlaceError] = useState(null);
+
+  useEffect(() => {
+    if (!eventId) return;
+    const fetchPlaceData = async () => {
+      setPlaceLoading(true);
+      setPlaceError(null);
+      try {
+        const data = await fetchEventPlace(eventId);
+        setPlace(data);
+      } catch (err) {
+        setPlaceError(err instanceof Error ? err.message : "Erreur inconnue");
+        setPlace(null);
+      } finally {
+        setPlaceLoading(false);
+      }
+    };
+    fetchPlaceData();
+  }, [eventId]);
+
+  const loading = eventLoading || placeLoading;
+  const error = eventError || placeError;
+
+  return {
+    event,
+    place,
+    loading,
+    error,
+    refetchEvent,
+  };
 }

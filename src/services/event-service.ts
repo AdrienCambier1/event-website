@@ -125,3 +125,15 @@ export async function createEventReport(
   }
   return await res.json();
 }
+
+export async function fetchEventPlace(eventId: string | number) {
+  const res = await fetch(`${API_URL}/events/${eventId}/place`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Erreur lors du chargement du lieu de l'événement");
+  }
+  return await res.json();
+}

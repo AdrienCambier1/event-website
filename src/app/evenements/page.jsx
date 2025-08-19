@@ -1,14 +1,25 @@
 "use client";
+
 import MainTitle from "@/components/titles/main-title";
 import { useEvents } from "@/hooks/use-event";
 import EventList from "@/components/lists/event-list";
+import { useEffect, useState } from "react";
 
 export default function EventsPage() {
+  const [initialTheme, setInitialTheme] = useState(null);
+
   const {
     events,
     loading: eventsLoading,
     error: eventsError,
   } = useEvents(0, 100);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setInitialTheme(params.get("theme"));
+    }
+  }, []);
 
   return (
     <main>
@@ -25,6 +36,7 @@ export default function EventsPage() {
         showFilters={true}
         events={events}
         isLoading={eventsLoading}
+        initialTheme={initialTheme}
       />
     </main>
   );

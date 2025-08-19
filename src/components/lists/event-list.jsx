@@ -5,7 +5,6 @@ import EventCardSkeleton from "../cards/event-card/event-card-skeleton";
 import { useState, useEffect, useMemo } from "react";
 import { Erase, Plus } from "iconoir-react";
 import Link from "next/link";
-import { useUrlFilters } from "@/hooks/use-url-filters";
 import { useCategories } from "@/hooks/use-category";
 import MultiDropdownBtn from "../buttons/multi-dropdown-btn";
 import DropdownBtn from "../buttons/dropdown-btn";
@@ -20,27 +19,43 @@ export default function EventList({
   isRegistered,
   isLoading,
   events,
+  initialTheme = null,
 }) {
   const [sortOption, setSortOption] = useState("recent");
-
   const { filterOptions, isLoading: categoriesLoading } = useCategories();
-
-  const {
-    selectedFilters,
-    searchTerm,
-    isInitialized,
-    initializeFromURL,
-    addFilter,
-    removeFilter,
-    updateSearch,
-    clearAll,
-  } = useUrlFilters();
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     if (!isInitialized && filterOptions.length > 0) {
-      initializeFromURL(filterOptions);
+      if (initialTheme) {
+        const themeExists = filterOptions.some(
+          (option) => option.value === initialTheme
+        );
+        if (themeExists) {
+          setSelectedFilters([initialTheme]);
+        }
+      }
+      setIsInitialized(true);
     }
-  }, [isInitialized, filterOptions, initializeFromURL]);
+  }, [isInitialized, filterOptions, initialTheme]);
+
+  const addFilter = (filterValue) => {
+    setSelectedFilters((prev) => [...prev, filterValue]);
+  };
+  const removeFilter = (filterValue) => {
+    setSelectedFilters((prev) =>
+      prev.filter((filter) => filter !== filterValue)
+    );
+  };
+  const updateSearch = (search) => {
+    setSearchTerm(search);
+  };
+  const clearAll = () => {
+    setSelectedFilters([]);
+    setSearchTerm("");
+  };
 
   const sortOptions = [
     { label: "Plus récent", value: "recent" },

@@ -11,7 +11,7 @@ export default function EventsPage() {
     events,
     loading: eventsLoading,
     error: eventsError,
-  } = useEvents(token, 0, 10);
+  } = useEvents(token, 0, 100);
 
   return (
     <main>

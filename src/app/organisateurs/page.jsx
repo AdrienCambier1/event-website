@@ -8,7 +8,7 @@ export default function OrganisateursPage() {
     organizers,
     loading: organizersLoading,
     error: organizersError,
-  } = useOrganizers(50);
+  } = useOrganizers(100);
 
   return (
     <main>

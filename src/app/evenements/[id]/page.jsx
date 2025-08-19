@@ -2,7 +2,14 @@
 import { notFound, useParams } from "next/navigation";
 import Image from "next/image";
 import niceImage from "@/assets/images/nice.jpg";
-import { Bookmark, Calendar, Group, HomeAltSlim, MapPin } from "iconoir-react";
+import {
+  Bookmark,
+  BookmarkSolid,
+  Calendar,
+  Group,
+  HomeAltSlim,
+  MapPin,
+} from "iconoir-react";
 import ThemeTags from "@/components/commons/theme-tags";
 import ProfilCard from "@/components/cards/profil-card";
 import ItemList from "@/components/lists/item-list";
@@ -12,10 +19,12 @@ import { formatEventDate } from "@/utils/date-formatter";
 import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import ReportBtn from "@/components/buttons/report-btn";
+import { useFavorites } from "@/contexts/favorites-context";
 
 export default function EventPage() {
-  const { isAuthenticated, user, token } = useAuth();
   const { id } = useParams();
+  const { isAuthenticated, user, token } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const {
     event,
@@ -93,10 +102,23 @@ export default function EventPage() {
                     isAuthenticated={isAuthenticated}
                     token={token}
                   />
-                  <button className="blue-rounded-btn">
-                    <span>Enregistrer l'événement</span>
-                    <Bookmark />
-                  </button>
+                  {isFavorite(event?.id) ? (
+                    <button
+                      className="blue-rounded-btn"
+                      onClick={() => toggleFavorite(event?.id)}
+                    >
+                      <span>Retirer des favoris</span>
+                      <BookmarkSolid />
+                    </button>
+                  ) : (
+                    <button
+                      className="blue-rounded-btn"
+                      onClick={() => toggleFavorite(event?.id)}
+                    >
+                      <span>Ajouter aux favoris</span>
+                      <Bookmark />
+                    </button>
+                  )}
                 </>
               )}
             </div>

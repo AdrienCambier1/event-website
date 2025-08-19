@@ -24,6 +24,7 @@ export default function CompteLayout({ children }) {
     { name: "Tickets", href: "/compte/profil/tickets" },
     { name: "Evenements", href: "/compte/profil/evenements" },
     { name: "Participations", href: "/compte/profil/participations" },
+    { name: "Favoris", href: "/compte/profil/favoris" },
     { name: "Avis", href: "/compte/profil/avis" },
   ];
 

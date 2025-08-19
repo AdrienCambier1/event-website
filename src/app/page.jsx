@@ -17,9 +17,8 @@ import { useSearchModal } from "@/contexts/search-modal-context";
 import SearchBarBtn from "@/components/buttons/search-bar-btn";
 
 export default function Home() {
-  const { toggleSearchModal } = useSearchModal();
-
   const { token } = useAuth();
+  const { toggleSearchModal } = useSearchModal();
 
   const {
     cities,
@@ -108,7 +107,10 @@ export default function Home() {
           </div>
         </section>
         <section className="container">
-          <CustomTitle title="Recommandé pour vous" description="Événements" />
+          <CustomTitle
+            title="Les événements tendances"
+            description="Événements"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventsLoading && (
               <>
@@ -145,7 +147,10 @@ export default function Home() {
           </Link>
         </section>
         <section className="container">
-          <CustomTitle title="Proche de chez vous" description="Événements" />
+          <CustomTitle
+            title="Les derniers événements sortis"
+            description="Événements"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventsLoading && (
               <>

@@ -1,5 +1,5 @@
 "use client";
-import { Bookmark, MoreHoriz, UserXmark } from "iconoir-react";
+import { Bookmark, BookmarkSolid, MoreHoriz, UserXmark } from "iconoir-react";
 import profilPicture from "@/assets/images/profil-pic.jpg";
 import RatingStar from "../../commons/rating-stars";
 import ThemeTags from "../../commons/theme-tags";
@@ -10,6 +10,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import DialogModal from "../../modals/dialog-modal";
 import { formatEventDate } from "@/utils/date-formatter";
+import { useFavorites } from "@/contexts/favorites-context";
 
 export default function EventCard({
   eventId,
@@ -30,6 +31,7 @@ export default function EventCard({
   const [editDropdown, setEditDropdown] = useState(false);
   const [registeredDropdown, setRegisteredDropdown] = useState(false);
   const [unsubscribeModal, setUnsubscribeModal] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
   const editDropdownRef = useRef(null);
   const registeredDropdownRef = useRef(null);
 
@@ -61,6 +63,11 @@ export default function EventCard({
     };
   }, [editDropdown, registeredDropdown]);
 
+  const handleToggleFavorite = (e) => {
+    e.preventDefault();
+    toggleFavorite(eventId);
+  };
+
   const eventCardContent = () => {
     return (
       <>
@@ -78,7 +85,19 @@ export default function EventCard({
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <h3 className="text-[var(--secondary-blue)]">{name}</h3>
-              <Bookmark className="text-[var(--primary-blue)] h-6 w-6 flex-shrink-0" />
+              {isFavorite(eventId) ? (
+                <BookmarkSolid
+                  className="toggle-favorite-btn"
+                  onClick={handleToggleFavorite}
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Bookmark
+                  className="toggle-favorite-btn"
+                  onClick={handleToggleFavorite}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
             </div>
             <div className="flex items-center gap-4">
               <Image
@@ -206,16 +225,16 @@ export default function EventCard({
         isOpen={unsubscribeModal}
         setIsOpen={() => setUnsubscribeModal(false)}
         title="Se désinscrire de l'événement"
-        action="Se désinscrire"
         description={
           <>
-            Souhaitez vous vraiment annuler votre inscription à l'événement{" "}
-            <span className="dark-text">Atelier fresque végétal</span>, votre
-            inscription sera remboursée.
+            Cette fonctionnalité n'est actuellement pas disponible. Veuillez
+            contacter <span className="dark-text">{organizerName}</span>,
+            l'organisateur de l'événement{" "}
+            <span className="dark-text">{name}</span>, pour annuler votre
+            inscription.
           </>
         }
         onClick={() => setUnsubscribeModal(false)}
-        isDangerous={true}
       />
     </>
   );

@@ -1,29 +1,34 @@
 "use client";
 import { useAuth } from "@/hooks/use-auth";
-import { useUserParticipatingEvents } from "@/hooks/use-user";
+import { useEvents } from "@/hooks/use-event";
 import EventList from "@/components/lists/event-list";
 import { useParametres } from "@/contexts/parametres-context";
+import { useFavorites } from "@/contexts/favorites-context";
 
-export default function ParticipationsPage() {
+export default function FavorisPage() {
   const { user, token, isAuthenticated } = useAuth();
   const {
-    events: participatingEvents,
+    events,
     loading: eventsLoading,
-    error,
-  } = useUserParticipatingEvents(isAuthenticated ? user?.id : null, token);
+    error: eventsError,
+  } = useEvents(token, 0, 100);
   const { isLoading: parentLoading } = useParametres();
+  const { favorites } = useFavorites();
 
   const isLoading = eventsLoading || parentLoading;
 
+  const favoriteEvents = Array.isArray(events)
+    ? events.filter((event) => favorites.includes(event.id))
+    : [];
+
   return (
     <EventList
-      title="Mes événements participés"
+      title="Mes événements favoris"
       description="Evenements"
       showSort={true}
       showFilters={true}
-      events={participatingEvents}
+      events={favoriteEvents}
       isLoading={isLoading}
-      isRegistered={true}
     />
   );
 }

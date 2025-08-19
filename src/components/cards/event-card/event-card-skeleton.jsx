@@ -14,7 +14,7 @@ export default function EventCardSkeleton() {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h3>Nom de l'événement</h3>
-            <Bookmark className="h-6 w-6 flex-shrink-0" />
+            <Bookmark className="toggle-favorite-btn" />
           </div>
           <div className="flex items-center gap-4">
             <div className="profil-pic-md rounded-full"></div>

@@ -17,8 +17,8 @@ export default function EvenementsPage() {
 
   return (
     <EventList
-      title="Événements"
-      description="Événements organisés"
+      title="Mes événements organisés"
+      description="Événements"
       showCreateButton={true}
       canEdit={true}
       events={events}

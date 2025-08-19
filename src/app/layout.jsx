@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { SearchModalProvider } from "@/contexts/search-modal-context";
 import SearchModal from "@/components/modals/search-modal";
 import { ParametresProvider } from "@/contexts/parametres-context";
+import { FavoritesProvider } from "@/contexts/favorites-context";
 
 export const metadata = {
   title: "Veevent - Plateforme d'événements",
@@ -52,14 +53,16 @@ export default function RootLayout({ children }) {
     <html lang="fr">
       <body>
         <AuthProvider>
-          <SearchModalProvider>
-            <ParametresProvider>
-              <Header />
-              {children}
-              <Footer />
-              <SearchModal />
-            </ParametresProvider>
-          </SearchModalProvider>
+          <FavoritesProvider>
+            <SearchModalProvider>
+              <ParametresProvider>
+                <Header />
+                {children}
+                <Footer />
+                <SearchModal />
+              </ParametresProvider>
+            </SearchModalProvider>
+          </FavoritesProvider>
         </AuthProvider>
       </body>
     </html>

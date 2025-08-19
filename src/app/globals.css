@@ -498,6 +498,10 @@ p {
   @apply rounded-full p-4 bg-white/80 backdrop-blur-sm hover:bg-white transition w-full flex justify-between items-center gap-4 pointer-events-auto cursor-pointer;
 }
 
+.toggle-favorite-btn {
+  @apply text-[var(--primary-blue)] h-6 w-6 flex-shrink-0;
+}
+
 /********/
 /* Tags */
 /********/

@@ -31,12 +31,7 @@ export default function OrderedTicketCardSkeleton() {
         </div>
         <div className="border-b-2 border-dashed"></div>
         <div className="flex justify-center">
-          <Barcode
-            value="TICKET-0000-0-VEEVENT"
-            width={250}
-            height={60}
-            showText={true}
-          />
+          <Barcode value="VV-0-0-0" width={250} height={60} showText={true} />
         </div>
       </div>
       <button className="primary-form-btn">

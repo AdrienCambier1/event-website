@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+"use client";
+import { useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 
 export function useUrlFilters() {

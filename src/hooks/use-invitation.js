@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { createInvitation } from "@/services/invitation-service";
 

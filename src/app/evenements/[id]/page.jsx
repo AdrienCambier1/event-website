@@ -20,7 +20,7 @@ import TicketCardSkeleton from "@/components/cards/ticket-card/ticket-card-skele
 import { useAuth } from "@/hooks/use-auth";
 import ReportBtn from "@/components/buttons/report-btn";
 import { useFavorites } from "@/contexts/favorites-context";
-import GoogleMap from "@/components/commons/google-map";
+import GoogleMapCard from "@/components/cards/google-map-card";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -180,7 +180,7 @@ export default function EventPage() {
               {eventLoading ? (
                 <div className="google-map-card skeleton-bg"></div>
               ) : (
-                <GoogleMap
+                <GoogleMapCard
                   lat={place?.location?.latitude}
                   lng={place?.location?.longitude}
                 />

@@ -13,8 +13,6 @@ export function useCities(page = 0, size = 20) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && cities.length === 0;
-
   useEffect(() => {
     const loadCities = async () => {
       try {
@@ -49,7 +47,7 @@ export function useCities(page = 0, size = 20) {
     }
   };
 
-  return { cities, loading: shouldShowSkeleton, error, refetch };
+  return { cities, loading, error, refetch };
 }
 
 export function useCityDetails(cityId) {

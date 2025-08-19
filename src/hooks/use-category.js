@@ -6,8 +6,6 @@ export function useCategories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading || error !== null;
-
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -49,7 +47,7 @@ export function useCategories() {
     categories,
     filterOptions,
     trendingCategories,
-    loading: shouldShowSkeleton,
+    loading,
     error,
   };
 }

@@ -97,8 +97,6 @@ export function usePlaceEvents(placeId, size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && events.length === 0;
-
   useEffect(() => {
     async function loadPlaceEvents() {
       if (!placeId) {
@@ -128,7 +126,7 @@ export function usePlaceEvents(placeId, size = 10) {
 
   return {
     events,
-    loading: shouldShowSkeleton,
+    loading,
     error,
   };
 }
@@ -137,8 +135,6 @@ export function usePlaceOrganizers(placeId, token, limit = 10) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const shouldShowSkeleton = loading && !data;
 
   useEffect(() => {
     async function loadPlaceOrganizers() {
@@ -172,7 +168,7 @@ export function usePlaceOrganizers(placeId, token, limit = 10) {
   return {
     data,
     organizers: data?._embedded?.userResponses || [],
-    loading: shouldShowSkeleton,
+    loading,
     error,
   };
 }

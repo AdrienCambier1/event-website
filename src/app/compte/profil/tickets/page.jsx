@@ -2,7 +2,7 @@
 import TicketList from "@/components/lists/ticket-list";
 import { useCurrentUserOrdersWithEvents } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
-import { formatDateOnly, formatEventDate } from "@/utils/date-formatter";
+import { formatDateOnly, formatTimeOnly } from "@/utils/date-formatter";
 import { useParametres } from "@/contexts/parametres-context";
 
 export default function TicketsPage() {
@@ -14,20 +14,19 @@ export default function TicketsPage() {
   const isLoading = ordersLoading || parentLoading;
 
   const tickets = Array.isArray(orders)
-    ? orders.map(({ order, event }) => ({
-        id: order.id,
-        name: event?.name || "-",
-        price: event?.price || 0,
-        date: formatDateOnly(event?.date),
-        time: event?.date
-          ? new Date(event.date).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          : "-",
-        location: event?.placeName || "-",
-        city: event?.cityName || "-",
-      }))
+    ? orders.flatMap(({ order, event }) =>
+        (order.tickets || []).map((ticket) => ({
+          eventId: event?.id,
+          orderId: order.id,
+          ticketId: ticket.id,
+          name: event?.name,
+          price: event?.price,
+          date: formatDateOnly(event?.date),
+          time: formatTimeOnly(event?.date),
+          location: event?.placeName,
+          city: event?.cityName,
+        }))
+      )
     : [];
 
   return (

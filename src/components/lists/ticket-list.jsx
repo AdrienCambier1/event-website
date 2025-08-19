@@ -23,10 +23,12 @@ export default function TicketList({ title, description, isLoading, tickets }) {
           </>
         )}
         {!isLoading &&
-          tickets?.map((ticket) => (
+          tickets?.map((ticket, index) => (
             <OrderedTicketCard
-              key={ticket.id}
-              id={ticket.id}
+              key={index}
+              eventId={ticket.eventId}
+              orderId={ticket.orderId}
+              ticketId={ticket.ticketId}
               name={ticket.name}
               price={ticket.price}
               date={ticket.date}

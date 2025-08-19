@@ -5,7 +5,6 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { SearchModalProvider } from "@/contexts/search-modal-context";
 import SearchModal from "@/components/modals/search-modal";
 import { ParametresProvider } from "@/contexts/parametres-context";
-import ScrollToTop from "@/components/commons/scroll-to-top";
 
 export const metadata = {
   title: "Veevent - Plateforme d'événements",
@@ -55,7 +54,6 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <SearchModalProvider>
             <ParametresProvider>
-              <ScrollToTop />
               <Header />
               {children}
               <Footer />

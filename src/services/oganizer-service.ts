@@ -1,4 +1,4 @@
-import { OrganizersApiResponse } from "./fetch-organizers";
+import { OrganizersApiResponse } from "@/types/organizer";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export async function fetchOrganizers(

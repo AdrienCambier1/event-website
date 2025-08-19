@@ -1,3 +1,16 @@
+export interface OrganizersApiResponse {
+  _embedded: {
+    organizerResponses: Organizer[];
+  };
+  _links?: any;
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+  };
+}
+
 export interface Social {
   platform: string;
   url: string;

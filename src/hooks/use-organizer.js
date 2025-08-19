@@ -7,8 +7,6 @@ export function useOrganizers(size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading && organizers.length === 0;
-
   useEffect(() => {
     async function loadOrganizers() {
       try {
@@ -33,7 +31,7 @@ export function useOrganizers(size = 10) {
 
   return {
     organizers,
-    loading: shouldShowSkeleton,
+    loading,
     error,
   };
 }

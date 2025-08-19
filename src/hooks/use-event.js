@@ -15,8 +15,6 @@ export function useEvents(token, page = 0, size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const shouldShowSkeleton = loading || error !== null;
-
   useEffect(() => {
     const loadEvents = async () => {
       try {
@@ -49,7 +47,7 @@ export function useEvents(token, page = 0, size = 10) {
     }
   };
 
-  return { events, loading: shouldShowSkeleton, error, refetch };
+  return { events, loading, error, refetch };
 }
 
 export function useEventDetails(eventId) {

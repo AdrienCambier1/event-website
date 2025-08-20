@@ -19,12 +19,10 @@ export default function Home() {
   const { toggleSearchModal } = useSearchModal();
 
   const {
-    cities: trendingCities,
+    cities,
     loading: citiesLoading,
     error: citiesError,
-  } = useCities(0, 50, "events");
-
-  const cities = trendingCities.slice(0, 3);
+  } = useCities(0, 3);
 
   const {
     events: trendingEvents,
@@ -57,7 +55,7 @@ export default function Home() {
           <SearchBarBtn onClick={toggleSearchModal} />
         </section>
         <section className="container">
-          <CustomTitle title="Les villes tendances" description="Villes" />
+          <CustomTitle title="Les villes du moment" description="Villes" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {citiesLoading && (
               <>

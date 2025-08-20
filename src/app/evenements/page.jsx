@@ -12,7 +12,7 @@ export default function EventsPage() {
     events,
     loading: eventsLoading,
     error: eventsError,
-  } = useEvents(0, 100);
+  } = useEvents(0, 50);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

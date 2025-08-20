@@ -444,7 +444,7 @@ p {
 
 .dropdown-parent,
 .dropdown-parent-reverse {
-  @apply min-w-52 z-20 absolute bg-white rounded-xl darker-dark-shadow p-2 flex flex-col gap-2 transition h-fit w-full;
+  @apply min-w-52 z-10 absolute bg-white rounded-xl darker-dark-shadow p-2 flex flex-col gap-2 transition h-fit w-full;
 }
 
 .dropdown-parent {

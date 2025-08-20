@@ -8,7 +8,7 @@ export default function LieuxPage() {
     places,
     loading: placesLoading,
     error: placesError,
-  } = usePlaces(0, 100);
+  } = usePlaces(0, 50);
 
   return (
     <main>

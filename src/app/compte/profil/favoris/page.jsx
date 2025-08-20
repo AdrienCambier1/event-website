@@ -9,7 +9,7 @@ export default function FavorisPage() {
     events,
     loading: eventsLoading,
     error: eventsError,
-  } = useEvents(0, 100);
+  } = useEvents(0, 50);
   const { isLoading: parentLoading } = useParametres();
   const { favorites } = useFavorites();
 

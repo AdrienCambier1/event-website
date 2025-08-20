@@ -6,13 +6,18 @@ import { PlacesApiResponse } from "@/types/place";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function fetchCities(
-  page = 0,
-  size = 20
+  page: number = 0,
+  size: number = 20,
+  sort: string | null = null
 ): Promise<CitiesApiResponse> {
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
   });
+
+  if (sort) {
+    params.set("sort", sort);
+  }
 
   const res = await fetch(`${API_URL}/cities?${params}`, {
     method: "GET",

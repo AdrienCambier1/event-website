@@ -8,7 +8,6 @@ import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
 import { useCities } from "@/hooks/use-city";
 import { useEvents, useTrendingEvents } from "@/hooks/use-event";
-import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";
 import CityCardSkeleton from "@/components/cards/city-card/city-card-skeleton";
 import EventCardSkeleton from "@/components/cards/event-card/event-card-skeleton";
@@ -20,18 +19,21 @@ export default function Home() {
   const { toggleSearchModal } = useSearchModal();
 
   const {
-    cities,
+    cities: trendingCities,
     loading: citiesLoading,
     error: citiesError,
-  } = useCities(0, 3);
+  } = useCities(0, 50, "events");
+
+  const cities = trendingCities.slice(0, 3);
 
   const {
     events: trendingEvents,
     loading: trendingLoading,
     error: trendingError,
   } = useTrendingEvents();
+
   const {
-    events,
+    events: events,
     loading: eventsLoading,
     error: eventsError,
   } = useEvents(0, 3);

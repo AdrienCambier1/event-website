@@ -8,7 +8,7 @@ import {
   fetchCityPlaces,
 } from "@/services/city-service";
 
-export function useCities(page = 0, size = 20) {
+export function useCities(page = 0, size = 20, sort = null) {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,11 +18,9 @@ export function useCities(page = 0, size = 20) {
       try {
         setLoading(true);
         setError(null);
-        const citiesData = await fetchCities(page, size);
-        console.log("Cities API Response:", citiesData);
+        const citiesData = await fetchCities(page, size, sort);
         setCities(citiesData._embedded?.cityResponses || []);
       } catch (err) {
-        console.error("Cities API Error:", err);
         setError(err instanceof Error ? err.message : "Erreur inconnue");
         setCities([]);
       } finally {
@@ -31,13 +29,13 @@ export function useCities(page = 0, size = 20) {
     };
 
     loadCities();
-  }, [page, size]);
+  }, [page, size, sort]);
 
   const refetch = async () => {
     try {
       setLoading(true);
       setError(null);
-      const citiesData = await fetchCities(page, size);
+      const citiesData = await fetchCities(page, size, sort);
       setCities(citiesData._embedded?.cityResponses || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");
@@ -131,7 +129,7 @@ export function useCityEvents(
   };
 }
 
-export function useCityOrganizers(cityId, limit = 10) {
+export function useCityOrganizers(cityId, limit = 10, sort = null) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -146,7 +144,7 @@ export function useCityOrganizers(cityId, limit = 10) {
       try {
         setLoading(true);
         setError(null);
-        const organizersData = await fetchCityOrganizers(cityId, limit);
+        const organizersData = await fetchCityOrganizers(cityId, limit, sort);
         setData(organizersData);
       } catch (err) {
         setError(
@@ -160,7 +158,7 @@ export function useCityOrganizers(cityId, limit = 10) {
     }
 
     loadCityOrganizers();
-  }, [cityId, limit]);
+  }, [cityId, limit, sort]);
 
   return {
     data,

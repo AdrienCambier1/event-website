@@ -77,7 +77,7 @@ export default function EventCard({
             alt="Event image"
             width={400}
             height={225}
-            className="object-cover rounded-t-xl aspect-[16/9]"
+            className="object-cover rounded-t-xl aspect-[16/9] w-full"
           />
           {isTrending && <div className="trending-tag">Tendance</div>}
         </div>

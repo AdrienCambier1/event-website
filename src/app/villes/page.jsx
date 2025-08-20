@@ -8,7 +8,7 @@ export default function VillesPage() {
     cities,
     loading: citiesLoading,
     error: citiesError,
-  } = useCities(0, 100);
+  } = useCities(0, 50);
 
   return (
     <main>

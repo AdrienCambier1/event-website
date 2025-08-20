@@ -25,7 +25,7 @@ export default function ParametresLayout({ children }) {
         </div>
       </section>
       <section className="page-grid mt-8">
-        <div>
+        <div className="z-10">
           <div className="flex flex-col gap-6 col-span-1 sticky top-20">
             <NavBtn
               icon={User}

@@ -5,7 +5,7 @@ import OrderedTicketCardSkeleton from "../cards/odered-ticket-card/ordered-ticke
 export default function TicketList({ title, description, isLoading, tickets }) {
   return (
     <section className="page-grid">
-      <div>
+      <div className="z-10">
         <div className="flex flex-col gap-6 sticky top-20">
           <CustomTitle title={title} description={description} />
           <div className="flex flex-col gap-4">

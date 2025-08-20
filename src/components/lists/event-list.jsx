@@ -118,7 +118,7 @@ export default function EventList({
   return (
     <>
       <section className="page-grid">
-        <div>
+        <div className="z-10">
           <div className="flex flex-col gap-6 sticky top-20">
             <CustomTitle title={title} description={description} />
             <div className="flex flex-col gap-4">

@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import { User, Phone, Lock, Text } from "iconoir-react";
 import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import { useParametres } from "@/contexts/parametres-context";
 import PasswordInput from "../inputs/password-input";
 

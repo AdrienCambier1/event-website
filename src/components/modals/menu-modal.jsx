@@ -2,7 +2,7 @@ import { Xmark, User, Search } from "iconoir-react";
 import Link from "next/link";
 import ModalBg from "./modal-bg";
 import ReactFocusLock from "react-focus-lock";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import ProfilBtn from "../buttons/profil-btn";
 import CityBtn from "../buttons/city-btn";
 import { useSearchModal } from "@/contexts/search-modal-context";

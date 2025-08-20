@@ -40,10 +40,8 @@ export function AuthProvider({ children }) {
             handleLogout();
           } else {
             try {
-              // Récupérer le profil utilisateur avec le token
               const userProfile = await fetchCurrentUser(storedToken);
 
-              // Créer l'objet utilisateur complet
               const user = {
                 email: decodedToken.sub,
                 exp: decodedToken.exp,
@@ -89,23 +87,30 @@ export function AuthProvider({ children }) {
     };
 
     checkAuth();
+
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener("auth-change", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+    };
   }, []);
 
   const login = async (authData, redirectPath = "/") => {
     try {
       const { user, token } = authData;
 
-      // Stocker le token
       localStorage.setItem("token", token);
       setToken(token);
       setUser(user);
       setIsAuthenticated(true);
 
-      // Créer le cookie sécurisé
       const expirationTime = user.exp - Math.floor(Date.now() / 1000);
       setSecureCookie("auth_token", token, expirationTime);
 
-      // Retourner le chemin de redirection pour que le composant gère la navigation
       return { success: true, redirectPath };
     } catch (error) {
       console.error("Erreur d'authentification:", error);
@@ -133,7 +138,6 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     handleLogout();
-    // Retourner un indicateur pour que le composant gère la navigation
     return { success: true, redirectPath: "/" };
   };
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { NavArrowRight, MenuScale, LogOut, Search } from "iconoir-react";
 import MenuModal from "./modals/menu-modal";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import ProfilBtn from "./buttons/profil-btn";
 import CityBtn from "./buttons/city-btn";
 import { useSearchModal } from "@/contexts/search-modal-context";

@@ -20,16 +20,7 @@ export async function POST(request) {
       return NextResponse.json(data, { status: response.status });
     }
 
-    const nextResponse = NextResponse.json(data);
-
-    nextResponse.cookies.set("auth_token", data.token, {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    return nextResponse;
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Erreur login API:", error);
     return NextResponse.json(

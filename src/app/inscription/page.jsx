@@ -20,10 +20,9 @@ import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
 function InscriptionPageContent() {
   const searchParams = useSearchParams();
-  const { registerWithCredentials } = useAuth();
+  const { registerWithCredentials, isAuthenticating } = useAuth();
   const { categories, isLoading: categoriesLoading } = useCategories();
   const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -129,7 +128,6 @@ function InscriptionPageContent() {
       handleNextStep();
     } else {
       try {
-        setLoading(true);
         setError(null);
 
         const userData = {
@@ -148,8 +146,6 @@ function InscriptionPageContent() {
       } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
         setError(error.message || "Erreur lors de l'inscription");
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -341,11 +337,11 @@ function InscriptionPageContent() {
             <>
               <button
                 type="submit"
-                disabled={!isStepValid() || loading}
+                disabled={!isStepValid() || isAuthenticating}
                 className="primary-form-btn"
               >
                 <span>
-                  {loading
+                  {isAuthenticating
                     ? "Inscription en cours..."
                     : step < 3
                     ? "Continuer"

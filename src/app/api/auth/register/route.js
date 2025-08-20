@@ -20,18 +20,7 @@ export async function POST(request) {
       return NextResponse.json(data, { status: response.status });
     }
 
-    const nextResponse = NextResponse.json(data);
-
-    if (data.token) {
-      nextResponse.cookies.set("auth_token", data.token, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-      });
-    }
-
-    return nextResponse;
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Erreur register API:", error);
     return NextResponse.json(

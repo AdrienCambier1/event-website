@@ -14,9 +14,8 @@ import { useAuth } from "@/hooks/use-auth";
 import PasswordInput from "@/components/inputs/password-input";
 
 function ConnexionPageContent() {
-  const { loginWithCredentials } = useAuth();
+  const { loginWithCredentials, isAuthenticating } = useAuth();
   const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -34,7 +33,6 @@ function ConnexionPageContent() {
     setError("");
 
     if (formData.email && formData.password) {
-      setIsLoading(true);
       try {
         const redirectPath = searchParams.get("redirect") || "/";
         await loginWithCredentials(
@@ -45,8 +43,6 @@ function ConnexionPageContent() {
         // La redirection se fait automatiquement dans le hook
       } catch (err) {
         setError(err.message || "Erreur de connexion");
-      } finally {
-        setIsLoading(false);
       }
     }
   };
@@ -94,10 +90,10 @@ function ConnexionPageContent() {
           <div className="flex flex-col gap-2">
             <button
               type="submit"
-              disabled={!isFormValid() || isLoading}
+              disabled={!isFormValid() || isAuthenticating}
               className="primary-form-btn"
             >
-              <span>{isLoading ? "Connexion..." : "Se connecter"}</span>
+              <span>{isAuthenticating ? "Connexion..." : "Se connecter"}</span>
             </button>
             <p>
               Pas encore de compte ?{" "}

@@ -5,6 +5,7 @@ import CityCardSkeleton from "../cards/city-card/city-card-skeleton";
 import { useState, useMemo } from "react";
 import { Erase } from "iconoir-react";
 import DropdownBtn from "../buttons/dropdown-btn";
+import Pagination from "../commons/pagination";
 
 export default function CityList({
   title,
@@ -15,6 +16,8 @@ export default function CityList({
 }) {
   const [sortOption, setSortOption] = useState("events");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const sortOptions = [
     { label: "Plus d'événements", value: "events" },
@@ -50,67 +53,92 @@ export default function CityList({
     });
   }, [cities, searchKeyword, sortOption]);
 
+  const totalPages = Math.ceil(filteredAndSortedCities.length / itemsPerPage);
+  const paginatedCities = useMemo(() => {
+    const startIdx = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedCities.slice(startIdx, startIdx + itemsPerPage);
+  }, [filteredAndSortedCities, currentPage]);
+
   return (
-    <section className="page-grid">
-      <div>
-        <div className="flex flex-col gap-6 sticky top-20">
-          <CustomTitle title={title} description={description} />
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Rechercher une ville"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-            />
-            {showSort && (
-              <DropdownBtn
-                options={sortOptions}
-                selectedValue={sortOption}
-                label="Trier par :"
-                onSelect={(option) => setSortOption(option.value)}
+    <>
+      <section className="page-grid">
+        <div>
+          <div className="flex flex-col gap-6 sticky top-20">
+            <CustomTitle title={title} description={description} />
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Rechercher une ville"
+                value={searchKeyword}
+                onChange={(e) => {
+                  setSearchKeyword(e.target.value);
+                  setCurrentPage(1);
+                }}
               />
-            )}
+              {showSort && (
+                <DropdownBtn
+                  options={sortOptions}
+                  selectedValue={sortOption}
+                  label="Trier par :"
+                  onSelect={(option) => {
+                    setSortOption(option.value);
+                    setCurrentPage(1);
+                  }}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="cards-grid">
-        {isLoading && (
-          <>
-            <CityCardSkeleton />
-            <CityCardSkeleton />
-            <CityCardSkeleton />
-            <CityCardSkeleton />
-          </>
-        )}
-        {!isLoading && filteredAndSortedCities.length === 0 && (
-          <div className="flex flex-col gap-4">
-            {searchKeyword.trim() ? (
-              <>
-                <p>Aucune ville trouvée pour "{searchKeyword}"</p>
-                <button
-                  className="primary-btn"
-                  onClick={() => setSearchKeyword("")}
-                >
-                  <span>Effacer la recherche</span>
-                  <Erase />
-                </button>
-              </>
-            ) : (
-              <p>Aucune ville disponible pour le moment</p>
-            )}
-          </div>
-        )}
-        {!isLoading &&
-          filteredAndSortedCities.map((city) => (
-            <CityCard
-              cityId={city.id}
-              key={city.id}
-              name={city.name}
-              eventsCount={city.eventsCount || 0}
-              bannerUrl={city.bannerUrl}
-            />
-          ))}
-      </div>
-    </section>
+        <div className="cards-grid">
+          {isLoading && (
+            <>
+              <CityCardSkeleton />
+              <CityCardSkeleton />
+              <CityCardSkeleton />
+              <CityCardSkeleton />
+            </>
+          )}
+          {!isLoading && filteredAndSortedCities.length === 0 && (
+            <div className="flex flex-col gap-4">
+              {searchKeyword.trim() ? (
+                <>
+                  <p>Aucune ville trouvée pour "{searchKeyword}"</p>
+                  <button
+                    className="primary-btn"
+                    onClick={() => {
+                      setSearchKeyword("");
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <span>Effacer la recherche</span>
+                    <Erase />
+                  </button>
+                </>
+              ) : (
+                <p>Aucune ville disponible pour le moment</p>
+              )}
+            </div>
+          )}
+          {!isLoading &&
+            paginatedCities.map((city) => (
+              <CityCard
+                cityId={city.id}
+                key={city.id}
+                name={city.name}
+                eventsCount={city.eventsCount || 0}
+                bannerUrl={city.bannerUrl}
+              />
+            ))}
+        </div>
+      </section>
+      <section className="container items-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrev={() => setCurrentPage((p) => p - 1)}
+          onNext={() => setCurrentPage((p) => p + 1)}
+        />
+      </section>
+    </>
   );
 }

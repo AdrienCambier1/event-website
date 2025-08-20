@@ -3,11 +3,12 @@ import CustomTitle from "@/components/titles/custom-title";
 import EventCard from "@/components/cards/event-card/event-card";
 import EventCardSkeleton from "../cards/event-card/event-card-skeleton";
 import { useState, useEffect, useMemo } from "react";
-import { Erase, Plus } from "iconoir-react";
+import { Erase, NavArrowLeft, NavArrowRight, Plus } from "iconoir-react";
 import Link from "next/link";
 import { useCategories } from "@/hooks/use-category";
 import MultiDropdownBtn from "../buttons/multi-dropdown-btn";
 import DropdownBtn from "../buttons/dropdown-btn";
+import Pagination from "../commons/pagination";
 
 export default function EventList({
   title,
@@ -26,6 +27,8 @@ export default function EventList({
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     if (!isInitialized && filterOptions.length > 0) {
@@ -43,18 +46,22 @@ export default function EventList({
 
   const addFilter = (filterValue) => {
     setSelectedFilters((prev) => [...prev, filterValue]);
+    setCurrentPage(1);
   };
   const removeFilter = (filterValue) => {
     setSelectedFilters((prev) =>
       prev.filter((filter) => filter !== filterValue)
     );
+    setCurrentPage(1);
   };
   const updateSearch = (search) => {
     setSearchTerm(search);
+    setCurrentPage(1);
   };
   const clearAll = () => {
     setSelectedFilters([]);
     setSearchTerm("");
+    setCurrentPage(1);
   };
 
   const sortOptions = [
@@ -102,99 +109,117 @@ export default function EventList({
     });
   }, [events, searchTerm, selectedFilters, sortOption]);
 
+  const totalPages = Math.ceil(filteredAndSortedEvents.length / itemsPerPage);
+  const paginatedEvents = useMemo(() => {
+    const startIdx = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedEvents.slice(startIdx, startIdx + itemsPerPage);
+  }, [filteredAndSortedEvents, currentPage]);
+
   return (
-    <section className="page-grid">
-      <div>
-        <div className="flex flex-col gap-6 sticky top-20">
-          <CustomTitle title={title} description={description} />
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Mot clé"
-              value={searchTerm}
-              onChange={(e) => updateSearch(e.target.value)}
-            />
-            {showFilters && (
-              <MultiDropdownBtn
-                options={filterOptions}
-                selectedValues={selectedFilters}
-                label="Filtre par catégorie :"
-                onSelect={(option) => addFilter(option.value)}
-                onRemove={removeFilter}
+    <>
+      <section className="page-grid">
+        <div>
+          <div className="flex flex-col gap-6 sticky top-20">
+            <CustomTitle title={title} description={description} />
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Mot clé"
+                value={searchTerm}
+                onChange={(e) => updateSearch(e.target.value)}
               />
-            )}
-            {showSort && (
-              <DropdownBtn
-                options={sortOptions}
-                selectedValue={sortOption}
-                label="Trier par :"
-                onSelect={(option) => setSortOption(option.value)}
-              />
-            )}
-            {showCreateButton && (
-              <Link
-                href="https://veevent-admin.vercel.app/"
-                className="primary-btn"
-                target="_blank"
-              >
-                <span>Créer un événement</span>
-                <Plus />
-              </Link>
-            )}
+              {showFilters && (
+                <MultiDropdownBtn
+                  options={filterOptions}
+                  selectedValues={selectedFilters}
+                  label="Filtre par catégorie :"
+                  onSelect={(option) => addFilter(option.value)}
+                  onRemove={removeFilter}
+                />
+              )}
+              {showSort && (
+                <DropdownBtn
+                  options={sortOptions}
+                  selectedValue={sortOption}
+                  label="Trier par :"
+                  onSelect={(option) => setSortOption(option.value)}
+                />
+              )}
+              {showCreateButton && (
+                <Link
+                  href="https://veevent-admin.vercel.app/"
+                  className="primary-btn"
+                  target="_blank"
+                >
+                  <span>Créer un événement</span>
+                  <Plus />
+                </Link>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="cards-grid">
-        {isLoading && (
-          <>
-            <EventCardSkeleton />
-            <EventCardSkeleton />
-            <EventCardSkeleton />
-            <EventCardSkeleton />
-          </>
-        )}
-        {!isLoading && filteredAndSortedEvents.length === 0 && (
-          <div className="flex flex-col gap-4">
-            {searchTerm.trim() || selectedFilters.length > 0 ? (
-              <>
-                <p>
-                  Aucun événement trouvé pour{" "}
-                  {searchTerm.trim() && `"${searchTerm}"`}
-                  {searchTerm.trim() && selectedFilters.length > 0 && " avec "}
-                  {selectedFilters.length > 0 &&
-                    `les catégories: ${selectedFilters.join(", ")}`}
-                </p>
-                <button className="primary-btn" onClick={clearAll}>
-                  <span>Effacer les filtres</span>
-                  <Erase />
-                </button>
-              </>
-            ) : (
-              <p>Aucun événement disponible pour le moment</p>
-            )}
-          </div>
-        )}
-        {!isLoading &&
-          filteredAndSortedEvents.map((event) => (
-            <EventCard
-              eventId={event.id}
-              key={event.id}
-              date={event.date}
-              description={event.description}
-              name={event.name}
-              organizerName={event.organizer?.pseudo}
-              organizerImageUrl={event.organizer?.imageUrl}
-              organizerNote={event.organizer?.note}
-              imageUrl={event.imageUrl}
-              currentParticipants={event.currentParticipants}
-              cityName={event.cityName}
-              isTrending={event.isTrending}
-              categories={event.categories}
-              canEdit={canEdit}
-              isRegistered={isRegistered}
-            />
-          ))}
-      </div>
-    </section>
+        <div className="cards-grid w-full">
+          {isLoading && (
+            <>
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+            </>
+          )}
+          {!isLoading && filteredAndSortedEvents.length === 0 && (
+            <div className="flex flex-col gap-4">
+              {searchTerm.trim() || selectedFilters.length > 0 ? (
+                <>
+                  <p>
+                    Aucun événement trouvé pour{" "}
+                    {searchTerm.trim() && `"${searchTerm}"`}
+                    {searchTerm.trim() &&
+                      selectedFilters.length > 0 &&
+                      " avec "}
+                    {selectedFilters.length > 0 &&
+                      `les catégories: ${selectedFilters.join(", ")}`}
+                  </p>
+                  <button className="primary-btn" onClick={clearAll}>
+                    <span>Effacer les filtres</span>
+                    <Erase />
+                  </button>
+                </>
+              ) : (
+                <p>Aucun événement disponible pour le moment</p>
+              )}
+            </div>
+          )}
+          {!isLoading &&
+            paginatedEvents.map((event) => (
+              <EventCard
+                eventId={event.id}
+                key={event.id}
+                date={event.date}
+                description={event.description}
+                name={event.name}
+                organizerName={event.organizer?.pseudo}
+                organizerImageUrl={event.organizer?.imageUrl}
+                organizerNote={event.organizer?.note}
+                imageUrl={event.imageUrl}
+                currentParticipants={event.currentParticipants}
+                cityName={event.cityName}
+                isTrending={event.isTrending}
+                categories={event.categories}
+                canEdit={canEdit}
+                isRegistered={isRegistered}
+              />
+            ))}
+        </div>
+      </section>
+      <section className="container items-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrev={() => setCurrentPage((p) => p - 1)}
+          onNext={() => setCurrentPage((p) => p + 1)}
+        />
+      </section>
+    </>
   );
 }

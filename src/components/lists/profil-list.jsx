@@ -5,6 +5,7 @@ import OrganiserCardSkeleton from "@/components/cards/organizer-card/organizer-c
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Erase } from "iconoir-react";
 import DropdownBtn from "../buttons/dropdown-btn";
+import Pagination from "../commons/pagination";
 
 export default function ProfilList({
   title,
@@ -14,6 +15,8 @@ export default function ProfilList({
 }) {
   const [sortOption, setSortOption] = useState("liked");
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const sortOptions = [
     { label: "Mieux noté", value: "liked" },
@@ -59,68 +62,95 @@ export default function ProfilList({
     });
   }, [organizers, searchTerm, sortOption]);
 
+  const totalPages = Math.ceil(
+    filteredAndSortedOrganizers.length / itemsPerPage
+  );
+  const paginatedOrganizers = useMemo(() => {
+    const startIdx = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedOrganizers.slice(startIdx, startIdx + itemsPerPage);
+  }, [filteredAndSortedOrganizers, currentPage]);
+
   return (
-    <section className="page-grid">
-      <div>
-        <div className="flex flex-col gap-6 sticky top-20">
-          <CustomTitle title={title} description={description} />
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Mot clé"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <DropdownBtn
-              options={sortOptions}
-              selectedValue={sortOption}
-              label="Trier par :"
-              onSelect={(option) => setSortOption(option.value)}
-            />
+    <>
+      <section className="page-grid">
+        <div>
+          <div className="flex flex-col gap-6 sticky top-20">
+            <CustomTitle title={title} description={description} />
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Mot clé"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+              />
+              <DropdownBtn
+                options={sortOptions}
+                selectedValue={sortOption}
+                label="Trier par :"
+                onSelect={(option) => {
+                  setSortOption(option.value);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="cards-grid">
-        {isLoading && (
-          <>
-            <OrganiserCardSkeleton />
-            <OrganiserCardSkeleton />
-            <OrganiserCardSkeleton />
-            <OrganiserCardSkeleton />
-          </>
-        )}
-        {!isLoading && filteredAndSortedOrganizers.length === 0 && (
-          <div className="flex flex-col gap-4">
-            {searchTerm.trim() ? (
-              <>
-                <p>Aucun organisateur trouvé pour "{searchTerm}"</p>
-                <button
-                  className="primary-btn"
-                  onClick={() => setSearchTerm("")}
-                >
-                  <span>Effacer la recherche</span>
-                  <Erase />
-                </button>
-              </>
-            ) : (
-              <p>Aucun organisateur disponible pour le moment</p>
-            )}
-          </div>
-        )}
-        {!isLoading &&
-          filteredAndSortedOrganizers.map((organizer) => (
-            <OrganiserCard
-              organizerId={organizer.id}
-              key={organizer.id}
-              name={`${organizer.firstName} ${organizer.lastName}`}
-              pseudo={organizer.pseudo}
-              eventPastCount={organizer.eventPastCount || 0}
-              eventsCount={organizer.eventsCount || 0}
-              note={organizer.note?.toString() || "0"}
-              imageUrl={organizer.imageUrl}
-            />
-          ))}
-      </div>
-    </section>
+        <div className="cards-grid">
+          {isLoading && (
+            <>
+              <OrganiserCardSkeleton />
+              <OrganiserCardSkeleton />
+              <OrganiserCardSkeleton />
+              <OrganiserCardSkeleton />
+            </>
+          )}
+          {!isLoading && filteredAndSortedOrganizers.length === 0 && (
+            <div className="flex flex-col gap-4">
+              {searchTerm.trim() ? (
+                <>
+                  <p>Aucun organisateur trouvé pour "{searchTerm}"</p>
+                  <button
+                    className="primary-btn"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <span>Effacer la recherche</span>
+                    <Erase />
+                  </button>
+                </>
+              ) : (
+                <p>Aucun organisateur disponible pour le moment</p>
+              )}
+            </div>
+          )}
+          {!isLoading &&
+            paginatedOrganizers.map((organizer) => (
+              <OrganiserCard
+                organizerId={organizer.id}
+                key={organizer.id}
+                name={`${organizer.firstName} ${organizer.lastName}`}
+                pseudo={organizer.pseudo}
+                eventPastCount={organizer.eventPastCount || 0}
+                eventsCount={organizer.eventsCount || 0}
+                note={organizer.note?.toString() || "0"}
+                imageUrl={organizer.imageUrl}
+              />
+            ))}
+        </div>
+      </section>
+      <section className="container items-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrev={() => setCurrentPage((p) => p - 1)}
+          onNext={() => setCurrentPage((p) => p + 1)}
+        />
+      </section>
+    </>
   );
 }

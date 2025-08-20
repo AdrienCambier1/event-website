@@ -392,11 +392,11 @@ p {
 }
 
 .primary-btn {
-  @apply bg-[var(--primary-blue)] text-white hover:opacity-75 py-1.5 px-4 disabled:opacity-75;
+  @apply bg-[var(--primary-blue)] text-white py-1.5 px-4 hover:opacity-75 disabled:opacity-75;
 }
 
 .secondary-btn {
-  @apply text-[var(--primary-blue)] hover:opacity-75;
+  @apply text-[var(--primary-blue)] hover:opacity-75 disabled:opacity-75;
 }
 
 .blue-rounded-btn {

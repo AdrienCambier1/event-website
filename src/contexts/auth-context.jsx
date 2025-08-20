@@ -11,9 +11,14 @@ export function useAuth() {
 
 const setSecureCookie = (name, value, maxAge) => {
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
-  document.cookie = `${name}=${encodeURIComponent(
-    value
-  )}; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
+  if (maxAge <= 0) {
+    // Pour supprimer le cookie, utiliser expires dans le passé
+    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax${secure}`;
+  } else {
+    document.cookie = `${name}=${encodeURIComponent(
+      value
+    )}; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
+  }
 };
 
 export function AuthProvider({ children }) {

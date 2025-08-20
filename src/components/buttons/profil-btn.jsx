@@ -36,6 +36,11 @@ export default function ProfilBtn({ reverse, onClick }) {
     onClick && onClick();
   };
 
+  const handleLogout = () => {
+    logoutUser();
+    onClick && onClick();
+  };
+
   const navigation = [
     { name: "Mon compte", href: "/compte/profil/tickets" },
     { name: "Paramètres", href: "/compte/parametres" },
@@ -91,9 +96,7 @@ export default function ProfilBtn({ reverse, onClick }) {
         description="Souhaitez-vous vraiment vous déconnecter de votre compte ?"
         action="Se déconnecter"
         icon={LogOut}
-        onClick={() => {
-          logoutUser();
-        }}
+        onClick={handleLogout}
       />
     </>
   );

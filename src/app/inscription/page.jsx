@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import MainTitle from "@/components/titles/main-title";
 import Link from "next/link";
 import OrSplitter from "@/components/commons/or-splitter";
@@ -14,6 +14,7 @@ import StepIndicator from "@/components/commons/step-indicator";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";
+import { usePasswordValidation } from "@/hooks/use-password-validation";
 import PasswordInput from "@/components/inputs/password-input";
 import ThemeBtnSkeleton from "@/components/buttons/theme-btn/theme-btn-skeleton";
 import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
@@ -36,21 +37,12 @@ function InscriptionPageContent() {
     interests: [],
   });
 
-  const [passwordStrength, setPasswordStrength] = useState({
-    length: false,
-    hasUpperCase: false,
-    hasLowerCase: false,
-    hasNumber: false,
-    hasSpecial: false,
-  });
+  const { strength: passwordStrength, isValid: isPasswordValid } = usePasswordValidation(formData.password);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
-
-  const isPasswordValid =
-    Object.values(passwordStrength).filter(Boolean).length >= 4;
 
   const isStepValid = () => {
     switch (step) {
@@ -93,16 +85,6 @@ function InscriptionPageContent() {
     },
   ];
 
-  useEffect(() => {
-    const { password } = formData;
-    setPasswordStrength({
-      length: password.length >= 8,
-      hasUpperCase: /[A-Z]/.test(password),
-      hasLowerCase: /[a-z]/.test(password),
-      hasNumber: /\d/.test(password),
-      hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    });
-  }, [formData.password]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

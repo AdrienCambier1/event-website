@@ -7,6 +7,7 @@ import { User, Phone, Lock, Text } from "iconoir-react";
 import { useUpdateCurrentUser, useCurrentUser } from "@/hooks/use-user";
 import { useAuth } from "@/hooks/use-auth";
 import { useParametres } from "@/contexts/parametres-context";
+import { usePasswordValidation } from "@/hooks/use-password-validation";
 import PasswordInput from "../inputs/password-input";
 
 export default function SettingsModal({
@@ -29,7 +30,18 @@ export default function SettingsModal({
     description: "",
     currentPassword: "",
     password: "",
+    confirmPassword: "",
   });
+
+  const { isValid: isPasswordValid } = usePasswordValidation(
+    formValues.password
+  );
+
+  const passwordsMatch = formValues.password === formValues.confirmPassword;
+  const canSubmitPassword =
+    type === "password"
+      ? isPasswordValid && passwordsMatch && formValues.currentPassword
+      : true;
 
   const patchUserData = async (formValues, type) => {
     let updateData = {};
@@ -49,7 +61,7 @@ export default function SettingsModal({
       };
     } else if (type === "password") {
       if (
-        formValues.password &&
+        isPasswordValid &&
         formValues.password === formValues.confirmPassword
       ) {
         updateData = {
@@ -196,12 +208,34 @@ export default function SettingsModal({
               <div key={field.name} className="flex flex-col gap-2 w-full">
                 <label htmlFor={field.name}>{field.label}</label>
                 {type === "password" && (
-                  <PasswordInput
-                    name={`${field.name}_${Date.now()}_${index}`}
-                    placeholder={field.placeholder}
-                    value={formValues[field.name] || ""}
-                    handleChange={handleChange}
-                  />
+                  <>
+                    <PasswordInput
+                      name={`${field.name}_${Date.now()}_${index}`}
+                      placeholder={field.placeholder}
+                      value={formValues[field.name] || ""}
+                      handleChange={handleChange}
+                    />
+                    {field.name === "password" && formValues.password && (
+                      <p
+                        className={
+                          isPasswordValid
+                            ? "text-[var(--primary-green)]"
+                            : "text-[var(--primary-red)]"
+                        }
+                      >
+                        {isPasswordValid
+                          ? "Mot de passe valide"
+                          : "Votre mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial."}
+                      </p>
+                    )}
+                    {field.name === "confirmPassword" &&
+                      formValues.confirmPassword &&
+                      !passwordsMatch && (
+                        <p className="text-[var(--primary-red)]">
+                          Les mots de passe ne correspondent pas.
+                        </p>
+                      )}
+                  </>
                 )}
                 {type === "description" && (
                   <textarea
@@ -235,7 +269,7 @@ export default function SettingsModal({
             <button
               className="primary-form-btn"
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || !canSubmitPassword}
             >
               {loading ? <span>Sauvegarde...</span> : <span>Sauvegarder</span>}
             </button>

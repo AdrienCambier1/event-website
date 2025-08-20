@@ -12,7 +12,6 @@ import {
 import { ArrowLeft } from "iconoir-react";
 import StepIndicator from "@/components/commons/step-indicator";
 import { useSearchParams } from "next/navigation";
-import { useRegister } from "@/hooks/use-register";
 import { useAuth } from "@/hooks/use-auth";
 import { useCategories } from "@/hooks/use-category";
 import PasswordInput from "@/components/inputs/password-input";
@@ -21,14 +20,11 @@ import ThemeBtn from "@/components/buttons/theme-btn/theme-btn";
 
 function InscriptionPageContent() {
   const searchParams = useSearchParams();
-  const {
-    register,
-    loading: registerLoading,
-    error: registerError,
-  } = useRegister();
-  const { loginWithCredentials } = useAuth();
+  const { registerWithCredentials } = useAuth();
   const { categories, isLoading: categoriesLoading } = useCategories();
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -133,16 +129,27 @@ function InscriptionPageContent() {
       handleNextStep();
     } else {
       try {
-        const response = await register(formData);
+        setLoading(true);
+        setError(null);
+
+        const userData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          pseudo: formData.username,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.phone,
+          description: formData.description,
+          categoryKeys: formData.interests,
+        };
 
         const redirectPath = searchParams.get("redirect") || "/";
-        await loginWithCredentials(
-          formData.email,
-          formData.password,
-          redirectPath
-        );
+        await registerWithCredentials(userData, redirectPath);
       } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
+        setError(error.message || "Erreur lors de l'inscription");
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -334,19 +341,19 @@ function InscriptionPageContent() {
             <>
               <button
                 type="submit"
-                disabled={!isStepValid() || registerLoading}
+                disabled={!isStepValid() || loading}
                 className="primary-form-btn"
               >
                 <span>
-                  {registerLoading
+                  {loading
                     ? "Inscription en cours..."
                     : step < 3
                     ? "Continuer"
                     : "S'inscrire"}
                 </span>
               </button>
-              {registerError && (
-                <p className="red-text text-center">{registerError}</p>
+              {error && (
+                <p className="red-text text-center">{error}</p>
               )}
             </>
           )}

@@ -132,12 +132,18 @@ export default function CityList({
         </div>
       </section>
       <section className="container items-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPrev={() => setCurrentPage((p) => p - 1)}
-          onNext={() => setCurrentPage((p) => p + 1)}
-        />
+        {isLoading ? (
+          <button className="primary-btn skeleton-bg">
+            <span>Pagination</span>
+          </button>
+        ) : (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrev={() => setCurrentPage((p) => p - 1)}
+            onNext={() => setCurrentPage((p) => p + 1)}
+          />
+        )}
       </section>
     </>
   );

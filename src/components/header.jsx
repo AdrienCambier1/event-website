@@ -7,11 +7,16 @@ import { useAuth } from "@/hooks/use-auth";
 import ProfilBtn from "./buttons/profil-btn";
 import CityBtn from "./buttons/city-btn";
 import { useSearchModal } from "@/contexts/search-modal-context";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
   const { isAuthenticated, loading } = useAuth();
   const { toggleSearchModal } = useSearchModal();
   const [isOpen, setIsOpen] = useState(false);
+
+  const hideOnAuthPages =
+    pathname.startsWith("/connexion") || pathname.startsWith("/inscription");
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,53 +55,57 @@ export default function Header() {
           >
             v<span>ee</span>vent
           </Link>
-          <button
-            className="lg:hidden blue-rounded-btn"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span>Menu</span>
-            <MenuScale className="hamburger-menu" />
-          </button>
-          <nav>
-            <Link href="/evenements">Evenements</Link>
-            <Link href="/villes">Les villes</Link>
-            <Link href="/lieux">Les lieux</Link>
-            <Link href="/organisateurs">Organisateurs</Link>
-          </nav>
-          <div className="hidden lg:flex items-center gap-4">
-            {!loading && (
+          {!hideOnAuthPages && (
+            <>
               <button
-                onClick={toggleSearchModal}
-                className="blue-rounded-btn"
-                aria-label="Rechercher"
+                className="lg:hidden blue-rounded-btn"
+                onClick={() => setIsOpen(!isOpen)}
               >
-                <span>Rechercher</span>
-                <Search />
+                <span>Menu</span>
+                <MenuScale className="hamburger-menu" />
               </button>
-            )}
-            {loading ? (
-              <>
-                <div className="skeleton-btn">primary</div>
-                <div className="skeleton-btn">secondary</div>
-              </>
-            ) : !isAuthenticated ? (
-              <>
-                <Link href="/inscription" className="secondary-btn">
-                  <span>S'inscrire</span>
-                  <NavArrowRight />
-                </Link>
-                <Link href="/connexion" className="primary-btn">
-                  <span>Se connecter</span>
-                  <NavArrowRight />
-                </Link>
-              </>
-            ) : (
-              <>
-                <CityBtn />
-                <ProfilBtn />
-              </>
-            )}
-          </div>
+              <nav>
+                <Link href="/evenements">Evenements</Link>
+                <Link href="/villes">Les villes</Link>
+                <Link href="/lieux">Les lieux</Link>
+                <Link href="/organisateurs">Organisateurs</Link>
+              </nav>
+              <div className="hidden lg:flex items-center gap-4">
+                {!loading && (
+                  <button
+                    onClick={toggleSearchModal}
+                    className="blue-rounded-btn"
+                    aria-label="Rechercher"
+                  >
+                    <span>Rechercher</span>
+                    <Search />
+                  </button>
+                )}
+                {loading ? (
+                  <>
+                    <div className="skeleton-btn">primary</div>
+                    <div className="skeleton-btn">secondary</div>
+                  </>
+                ) : !isAuthenticated ? (
+                  <>
+                    <Link href="/inscription" className="secondary-btn">
+                      <span>S'inscrire</span>
+                      <NavArrowRight />
+                    </Link>
+                    <Link href="/connexion" className="primary-btn">
+                      <span>Se connecter</span>
+                      <NavArrowRight />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <CityBtn />
+                    <ProfilBtn />
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </header>
       <MenuModal isOpen={isOpen} setIsOpen={() => setIsOpen()} />

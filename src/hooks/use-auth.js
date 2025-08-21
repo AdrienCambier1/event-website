@@ -38,9 +38,7 @@ export function useAuth() {
       const authData = await authenticate("login", { email, password });
       const result = context.login(authData, redirectPath);
 
-      router.refresh();
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      router.push(result.redirectPath);
+      window.location.href = result.redirectPath;
     } catch (error) {
       console.error("Erreur de connexion:", error);
       throw error;
@@ -55,9 +53,7 @@ export function useAuth() {
       const authData = await authenticate("register", userData);
       const result = context.login(authData, redirectPath);
 
-      router.refresh();
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      router.push(result.redirectPath);
+      window.location.href = result.redirectPath;
     } catch (error) {
       console.error("Erreur d'inscription:", error);
       throw error;
@@ -77,9 +73,7 @@ export function useAuth() {
     }
     context.logout();
 
-    router.refresh();
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    router.push("/");
+    window.location.href = "/";
   };
 
   return {

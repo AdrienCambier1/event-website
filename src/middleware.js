@@ -4,6 +4,13 @@ const protectedRoutes = ["/compte", "/evenements/create"];
 
 export default function middleware(request) {
   const path = request.nextUrl.pathname;
+  const authCookie = request.cookies.get("auth_token");
+
+  const isAuthPage =
+    path.startsWith("/connexion") || path.startsWith("/inscription");
+  if (isAuthPage && authCookie) {
+    return NextResponse.redirect(new URL("/compte/parametres", request.url));
+  }
 
   const isProtectedRoute = protectedRoutes.some(
     (route) => path === route || path.startsWith(`${route}/`)
@@ -12,8 +19,6 @@ export default function middleware(request) {
   if (!isProtectedRoute) {
     return NextResponse.next();
   }
-
-  const authCookie = request.cookies.get("auth_token");
 
   if (!authCookie) {
     const encodedRedirectPath = encodeURIComponent(path);

@@ -41,7 +41,10 @@ export default function EventPage() {
         fallback: "samedi 24 juin 2025 • 15h30",
       }),
     },
-    { icon: HomeAltSlim, value: event?.placeName },
+    {
+      icon: HomeAltSlim,
+      value: `${event?.address}, ${event?.placeName}, ${event?.cityName}`,
+    },
     {
       icon: Group,
       value: `${event?.currentParticipants} personnes`,
@@ -58,8 +61,14 @@ export default function EventPage() {
   ];
 
   const placeInfos = [
-    { icon: MapPin, value: event?.cityName },
-    { icon: HomeAltSlim, value: event?.placeName },
+    {
+      icon: MapPin,
+      value: `${place?.location?.latitude}, ${place?.location?.longitude}`,
+    },
+    {
+      icon: HomeAltSlim,
+      value: `${event?.address}, ${event?.placeName}, ${event?.cityName}`,
+    },
   ];
 
   if (eventError) {

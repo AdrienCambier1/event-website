@@ -1,8 +1,8 @@
 "use client";
 import { Plus, Check, CloudXmark } from "iconoir-react";
 import { useRouter, usePathname } from "next/navigation";
-import { useAddEventParticipants } from "@/hooks/use-event";
 import { useInvitation } from "@/hooks/use-invitation";
+import { useCreateOrderWithTicket } from "@/hooks/use-user";
 import DialogModal from "@/components/modals/dialog-modal";
 import PaymentModal from "@/components/modals/payment-modal";
 import { useState } from "react";
@@ -26,8 +26,9 @@ export default function TicketCard({
   const router = useRouter();
   const pathname = usePathname();
 
-  const { addParticipants, loading: addLoading } = useAddEventParticipants();
   const { sendInvitation, loading: invitationLoading } = useInvitation();
+  const { createOrderWithTicket, loading: orderLoading } =
+    useCreateOrderWithTicket();
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -47,7 +48,18 @@ export default function TicketCard({
           `Demande d'invitation à l'événement ${title}`
         );
       } else {
-        await addParticipants(eventId, [user.id], token);
+        const result = await createOrderWithTicket({
+          userId: user.id,
+          eventId: eventId,
+          name: user.firstname,
+          lastName: user.lastname,
+          unitPrice: price,
+          token: token,
+        });
+
+        if (!result) {
+          throw new Error("Erreur lors de la création de la commande");
+        }
       }
       setPaymentSuccess(true);
       setPaymentModal(false);
@@ -72,7 +84,7 @@ export default function TicketCard({
             <button
               className="primary-btn"
               onClick={handleClick}
-              disabled={addLoading || isDisabled}
+              disabled={orderLoading || isDisabled}
             >
               <span>Réserver</span>
               <Plus />
@@ -86,7 +98,7 @@ export default function TicketCard({
         onClick={handleSubmit}
         ticket={title}
         price={price}
-        isLoading={isInvitationOnly ? invitationLoading : addLoading}
+        isLoading={isInvitationOnly ? invitationLoading : orderLoading}
       />
       <DialogModal
         title="Achat effectué"

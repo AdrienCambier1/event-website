@@ -29,7 +29,6 @@ export interface CurrentUserResponse extends User {}
 
 export interface UserByIdResponse extends User {}
 
-// New types for orders
 export interface Ticket {
   id: number;
   name: string;
@@ -73,4 +72,19 @@ export interface UserUpdateRequest {
   socials?: string | null;
   categoryKeys?: string[];
   note?: number | null;
+}
+
+export interface OrderData {
+  ticketToBeCreated: number;
+  totalPrice: number;
+  eventId: number;
+  userId: number;
+}
+
+export interface TicketData {
+  name: string;
+  lastName: string;
+  description: string;
+  unitPrice: number;
+  orderId: number;
 }

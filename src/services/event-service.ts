@@ -56,7 +56,6 @@ export async function addEventParticipants(
   userIds: number[],
   token?: string
 ) {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${API_URL}/events/${eventId}/participants`, {
     method: "POST",
     headers: {

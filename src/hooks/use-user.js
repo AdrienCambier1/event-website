@@ -1,13 +1,15 @@
 "use client";
-import { fetchCurrentUserOrdersWithEvents } from "@/services/user-service";
-import { useState, useEffect } from "react";
 import {
+  fetchCurrentUserOrdersWithEvents,
   fetchCurrentUser,
   fetchUserById,
   fetchUserEvents,
   fetchUserParticipatingEvents,
   updateCurrentUser,
+  postOrder,
+  postTicket,
 } from "@/services/user-service";
+import { useState, useEffect } from "react";
 
 export function useCurrentUser(token) {
   const [user, setUser] = useState(null);
@@ -162,7 +164,7 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
   useEffect(() => {
     const loadEvents = async () => {
       if (!userId) {
-        setEvents([]); // Toujours un tableau vide
+        setEvents([]);
         setLoading(false);
         setError(null);
         return;
@@ -288,4 +290,64 @@ export function useUpdateCurrentUser(token) {
   };
 
   return { updateUser, loading, error, success, data };
+}
+
+export function useCreateOrderWithTicket() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [order, setOrder] = useState(null);
+  const [ticket, setTicket] = useState(null);
+
+  const createOrderWithTicket = async ({
+    userId,
+    eventId,
+    name,
+    lastName,
+    unitPrice,
+    token,
+  }) => {
+    setLoading(true);
+    setError(null);
+    setOrder(null);
+    setTicket(null);
+    try {
+      const orderData = {
+        ticketToBeCreated: 1,
+        totalPrice: unitPrice,
+        eventId,
+        userId,
+      };
+      const createdOrder = await postOrder(orderData, token);
+      setOrder(createdOrder);
+
+      const ticketData = {
+        name,
+        lastName,
+        description: "Place standard",
+        unitPrice,
+        orderId: createdOrder.id,
+      };
+      const createdTicket = await postTicket(
+        createdOrder.id,
+        ticketData,
+        token
+      );
+      setTicket(createdTicket);
+
+      return { order: createdOrder, ticket: createdTicket };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    createOrderWithTicket,
+    loading,
+    error,
+    order,
+    ticket,
+  };
 }

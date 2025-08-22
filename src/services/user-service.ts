@@ -3,6 +3,8 @@ import {
   UserByIdResponse,
   UserOrdersResponse,
   UserUpdateRequest,
+  OrderData,
+  TicketData,
 } from "@/types/user";
 import { EventsApiResponse } from "@/types/event";
 
@@ -279,6 +281,59 @@ export async function updateCurrentUser(
     return data;
   } catch (error) {
     console.error("Error updating current user:", error);
+    throw error;
+  }
+}
+
+export async function postOrder(
+  orderData: OrderData,
+  token?: string
+): Promise<any> {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const response = await fetch(`${API_URL}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify(orderData),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(
+        error.error || `Erreur lors de la création de la commande`
+      );
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error posting order:", error);
+    throw error;
+  }
+}
+
+export async function postTicket(
+  orderId: number,
+  ticketData: TicketData,
+  token?: string
+): Promise<any> {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const response = await fetch(`${API_URL}/orders/${orderId}/tickets`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify(ticketData),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || `Erreur lors de la création du ticket`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error posting ticket:", error);
     throw error;
   }
 }

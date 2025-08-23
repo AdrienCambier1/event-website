@@ -1,4 +1,4 @@
-import { City, NavArrowRight } from "iconoir-react";
+import { Calendar, City, MapPin, NavArrowRight, User } from "iconoir-react";
 import Link from "next/link";
 
 export default function SearchElementBtn({
@@ -12,21 +12,27 @@ export default function SearchElementBtn({
   isParent,
   elementId,
 }) {
-  let redirection = "/";
-  if (type === "event") {
-    redirection = `/evenements/${elementId}`;
-  } else if (type === "city") {
-    redirection = `/villes/${elementId}/evenements`;
-  } else if (type === "place") {
-    redirection = `/lieux/${elementId}/evenements`;
-  } else if (type === "organizer") {
-    redirection = `/organisateurs/${elementId}/evenements`;
-  }
+  const typeRedirections = {
+    event: (id) => `/evenements/${id}`,
+    city: (id) => `/villes/${id}/evenements`,
+    place: (id) => `/lieux/${id}/evenements`,
+    organizer: (id) => `/organisateurs/${id}/evenements`,
+  };
+
+  const typeIcons = {
+    city: City,
+    place: MapPin,
+    organizer: User,
+    event: Calendar,
+  };
+
+  const redirection = typeRedirections[type]?.(elementId) || "/";
+  const IconComponent = typeIcons[type] || Calendar;
 
   const SearchElementContent = () => (
     <>
       <div className="flex items-center gap-2 flex-1 truncate">
-        <City />
+        <IconComponent />
         <p className="dark-text">{title}</p>
         <p className="truncate">{description}</p>
       </div>

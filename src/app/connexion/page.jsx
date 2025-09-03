@@ -48,7 +48,6 @@ function ConnexionPageContent() {
           formData.password,
           redirectPath
         );
-        // La redirection se fait automatiquement dans le hook
       } catch (err) {
         setError(err.message || "Erreur de connexion");
       }

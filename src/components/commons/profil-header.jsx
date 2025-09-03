@@ -53,7 +53,7 @@ export default function ProfilHeader({
             )}
           </div>
         </div>
-        <p>{description}</p>
+        {description && <p>{description}</p>}
         <ThemeTags themes={themes} />
       </div>
       {shouldShowNav && (

@@ -8,7 +8,7 @@ import {
   faFacebookF,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import PasswordInput from "@/components/inputs/password-input";
@@ -17,6 +17,14 @@ function ConnexionPageContent() {
   const { loginWithCredentials, isAuthenticating } = useAuth();
   const searchParams = useSearchParams();
   const [error, setError] = useState("");
+
+  const redirectUrl = searchParams.get("redirect") || "/";
+  const redirectUri = `${
+    process.env.NEXT_PUBLIC_FRONTEND_URL
+  }/auth/callback?redirect=${encodeURIComponent(redirectUrl)}`;
+  const backendGoogleLoginUrl = `${
+    process.env.NEXT_PUBLIC_BACK_URL
+  }/oauth2/authorize/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -111,9 +119,9 @@ function ConnexionPageContent() {
           </div>
           <OrSplitter />
           <div className="flex items-center justify-center gap-6">
-            <button className="rounded-form-btn">
+            <Link href={backendGoogleLoginUrl} className="rounded-form-btn">
               <FontAwesomeIcon icon={faGoogle} />
-            </button>
+            </Link>
             <button className="rounded-form-btn">
               <FontAwesomeIcon icon={faFacebookF} />
             </button>

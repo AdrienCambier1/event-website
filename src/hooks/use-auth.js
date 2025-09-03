@@ -62,6 +62,30 @@ export function useAuth() {
     }
   };
 
+  const loginWithToken = async (token, redirectPath = "/") => {
+    try {
+      setIsAuthenticating(true);
+
+      const decodedToken = jwtDecode(token);
+
+      const userProfile = await fetchCurrentUser(token);
+
+      const authData = {
+        user: { ...decodedToken, ...userProfile },
+        token,
+      };
+
+      const result = context.login(authData, redirectPath);
+
+      window.location.href = result.redirectPath;
+    } catch (error) {
+      console.error("Erreur de connexion avec token:", error);
+      throw error;
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
   const logoutUser = async () => {
     try {
       await fetch("/api/auth/logout", {
@@ -82,6 +106,7 @@ export function useAuth() {
     isAuthenticating,
     loginWithCredentials,
     registerWithCredentials,
+    loginWithToken,
     logoutUser,
   };
 }

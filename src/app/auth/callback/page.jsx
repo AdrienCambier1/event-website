@@ -1,10 +1,11 @@
 "use client";
 import { Suspense, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import Image from "next/image";
 
 function AuthCallbackContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { loginWithToken } = useAuth();
 
@@ -14,18 +15,22 @@ function AuthCallbackContent() {
     if (redirectUrl.startsWith("/auth/callback")) redirectUrl = "/";
 
     if (!token) {
-      window.location.href = `/connexion?error=auth_failed&redirect=${encodeURIComponent(
-        redirectUrl
-      )}`;
+      router.replace(
+        `/connexion?error=auth_failed&redirect=${encodeURIComponent(
+          redirectUrl
+        )}`
+      );
       return;
     }
 
     loginWithToken(token, redirectUrl).catch(() => {
-      window.location.href = `/connexion?error=auth_failed&redirect=${encodeURIComponent(
-        redirectUrl
-      )}`;
+      router.replace(
+        `/connexion?error=auth_failed&redirect=${encodeURIComponent(
+          redirectUrl
+        )}`
+      );
     });
-  }, [searchParams, loginWithToken]);
+  }, [searchParams, router, loginWithToken]);
 
   return (
     <div className="flex h-screen items-center justify-center">

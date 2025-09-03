@@ -1,11 +1,9 @@
 import "./globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { AuthProvider } from "@/contexts/auth-context";
 import { SearchModalProvider } from "@/contexts/search-modal-context";
-import SearchModal from "@/components/modals/search-modal";
 import { ParametresProvider } from "@/contexts/parametres-context";
 import { FavoritesProvider } from "@/contexts/favorites-context";
+import LayoutWrapper from "@/components/layout-wrapper";
 
 export const metadata = {
   title: "Veevent - Plateforme d'événements",
@@ -56,10 +54,7 @@ export default function RootLayout({ children }) {
           <FavoritesProvider>
             <SearchModalProvider>
               <ParametresProvider>
-                <Header />
-                {children}
-                <Footer />
-                <SearchModal />
+                <LayoutWrapper>{children}</LayoutWrapper>
               </ParametresProvider>
             </SearchModalProvider>
           </FavoritesProvider>

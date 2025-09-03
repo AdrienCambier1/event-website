@@ -43,135 +43,94 @@ export default function Home() {
   } = useCategories();
 
   return (
-    <>
-      <main>
-        <section className="container items-center">
-          <MainTitle title="Découvrez nos événements" />
-          <p className="text-center">
-            Un concert 🎸qui fait vibrer. Un atelier qui inspire.
-            <br /> Un festival 🎪 à ne pas manquer. Tout est ici. Découvrez,
-            réservez, profitez. 🗓️
-          </p>
-          <SearchBarBtn onClick={toggleSearchModal} />
-        </section>
-        <section className="container">
-          <CustomTitle title="Les villes du moment" description="Villes" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {citiesLoading && (
-              <>
-                <CityCardSkeleton />
-                <CityCardSkeleton />
-                <CityCardSkeleton />
-              </>
-            )}
-            {!citiesLoading && (cities?.length === 0 || citiesError) && (
-              <p>Aucune ville disponible pour le moment</p>
-            )}
-            {!citiesLoading &&
-              cities?.map((city) => (
-                <CityCard
-                  cityId={city.id}
-                  key={city.id}
-                  name={city.name}
-                  eventsCount={city.eventsCount || 0}
-                  bannerUrl={city.bannerUrl}
+    <main>
+      <section className="container items-center">
+        <MainTitle title="Découvrez nos événements" />
+        <p className="text-center">
+          Un concert 🎸qui fait vibrer. Un atelier qui inspire.
+          <br /> Un festival 🎪 à ne pas manquer. Tout est ici. Découvrez,
+          réservez, profitez. 🗓️
+        </p>
+        <SearchBarBtn onClick={toggleSearchModal} />
+      </section>
+      <section className="container">
+        <CustomTitle title="Les villes du moment" description="Villes" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {citiesLoading && (
+            <>
+              <CityCardSkeleton />
+              <CityCardSkeleton />
+              <CityCardSkeleton />
+            </>
+          )}
+          {!citiesLoading && (cities?.length === 0 || citiesError) && (
+            <p>Aucune ville disponible pour le moment</p>
+          )}
+          {!citiesLoading &&
+            cities?.map((city) => (
+              <CityCard
+                cityId={city.id}
+                key={city.id}
+                name={city.name}
+                eventsCount={city.eventsCount || 0}
+                bannerUrl={city.bannerUrl}
+              />
+            ))}
+        </div>
+        <Link href="/villes" className="blue-rounded-btn">
+          <span>Voir plus</span>
+          <NavArrowRight />
+        </Link>
+      </section>
+      <section className="container">
+        <CustomTitle title="Envie d'une sortie" description="Thèmes" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {categoriesLoading && (
+            <>
+              <ThemeCardSkeleton />
+              <ThemeCardSkeleton />
+              <ThemeCardSkeleton />
+              <ThemeCardSkeleton />
+            </>
+          )}
+          {!categoriesLoading &&
+            categories
+              .slice(0, 4)
+              .map((category) => (
+                <ThemeCard
+                  key={category.key}
+                  theme={category.key}
+                  title={category.name}
+                  description={category.description}
                 />
               ))}
-          </div>
-          <Link href="/villes" className="blue-rounded-btn">
-            <span>Voir plus</span>
-            <NavArrowRight />
-          </Link>
-        </section>
-        <section className="container">
-          <CustomTitle title="Envie d'une sortie" description="Thèmes" />
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {categoriesLoading && (
-              <>
-                <ThemeCardSkeleton />
-                <ThemeCardSkeleton />
-                <ThemeCardSkeleton />
-                <ThemeCardSkeleton />
-              </>
+          {!categoriesLoading &&
+            (categories?.length === 0 || categoriesError) && (
+              <p>Aucune catégorie disponible pour le moment</p>
             )}
-            {!categoriesLoading &&
-              categories
-                .slice(0, 4)
-                .map((category) => (
-                  <ThemeCard
-                    key={category.key}
-                    theme={category.key}
-                    title={category.name}
-                    description={category.description}
-                  />
-                ))}
-            {!categoriesLoading &&
-              (categories?.length === 0 || categoriesError) && (
-                <p>Aucune catégorie disponible pour le moment</p>
-              )}
-          </div>
-        </section>
-        <section className="container">
-          <CustomTitle
-            title="Les événements tendances"
-            description="Événements"
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trendingLoading && (
-              <>
-                <EventCardSkeleton />
-                <EventCardSkeleton />
-                <EventCardSkeleton />
-              </>
+        </div>
+      </section>
+      <section className="container">
+        <CustomTitle
+          title="Les événements tendances"
+          description="Événements"
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {trendingLoading && (
+            <>
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+            </>
+          )}
+          {!trendingLoading &&
+            (trendingEvents?.length === 0 || trendingError) && (
+              <p>Aucun événement tendance pour le moment</p>
             )}
-            {!trendingLoading &&
-              (trendingEvents?.length === 0 || trendingError) && (
-                <p>Aucun événement tendance pour le moment</p>
-              )}
-            {!trendingLoading &&
-              trendingEvents
-                ?.slice(0, 3)
-                .map((event) => (
-                  <EventCard
-                    eventId={event.id}
-                    key={event.id}
-                    date={event.date}
-                    description={event.description}
-                    name={event.name}
-                    organizerName={event.organizer?.pseudo}
-                    organizerImageUrl={event.organizer?.imageUrl}
-                    organizerNote={event.organizer?.note}
-                    imageUrl={event.imageUrl}
-                    currentParticipants={event.currentParticipants}
-                    cityName={event.cityName}
-                    isTrending={event.isTrending}
-                    categories={event.categories}
-                  />
-                ))}
-          </div>
-          <Link href="/evenements" className="blue-rounded-btn">
-            <span>Voir plus</span>
-            <NavArrowRight />
-          </Link>
-        </section>
-        <section className="container">
-          <CustomTitle
-            title="Les derniers événements sortis"
-            description="Événements"
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {eventsLoading && (
-              <>
-                <EventCardSkeleton />
-                <EventCardSkeleton />
-                <EventCardSkeleton />
-              </>
-            )}
-            {!eventsLoading && (events?.length === 0 || eventsError) && (
-              <p>Aucun événement disponible pour le moment</p>
-            )}
-            {!eventsLoading &&
-              events?.map((event) => (
+          {!trendingLoading &&
+            trendingEvents
+              ?.slice(0, 3)
+              .map((event) => (
                 <EventCard
                   eventId={event.id}
                   key={event.id}
@@ -188,13 +147,52 @@ export default function Home() {
                   categories={event.categories}
                 />
               ))}
-          </div>
-          <Link href="/evenements" className="blue-rounded-btn">
-            <span>Voir plus</span>
-            <NavArrowRight />
-          </Link>
-        </section>
-      </main>
-    </>
+        </div>
+        <Link href="/evenements" className="blue-rounded-btn">
+          <span>Voir plus</span>
+          <NavArrowRight />
+        </Link>
+      </section>
+      <section className="container">
+        <CustomTitle
+          title="Les derniers événements sortis"
+          description="Événements"
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {eventsLoading && (
+            <>
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+            </>
+          )}
+          {!eventsLoading && (events?.length === 0 || eventsError) && (
+            <p>Aucun événement disponible pour le moment</p>
+          )}
+          {!eventsLoading &&
+            events?.map((event) => (
+              <EventCard
+                eventId={event.id}
+                key={event.id}
+                date={event.date}
+                description={event.description}
+                name={event.name}
+                organizerName={event.organizer?.pseudo}
+                organizerImageUrl={event.organizer?.imageUrl}
+                organizerNote={event.organizer?.note}
+                imageUrl={event.imageUrl}
+                currentParticipants={event.currentParticipants}
+                cityName={event.cityName}
+                isTrending={event.isTrending}
+                categories={event.categories}
+              />
+            ))}
+        </div>
+        <Link href="/evenements" className="blue-rounded-btn">
+          <span>Voir plus</span>
+          <NavArrowRight />
+        </Link>
+      </section>
+    </main>
   );
 }

@@ -16,7 +16,9 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const hideOnAuthPages =
-    pathname.startsWith("/connexion") || pathname.startsWith("/inscription");
+    pathname.startsWith("/connexion") ||
+    pathname.startsWith("/inscription") ||
+    pathname.startsWith("/auth/callback");
 
   useEffect(() => {
     const handleResize = () => {

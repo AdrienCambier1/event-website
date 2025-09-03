@@ -2,6 +2,7 @@
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import Image from "next/image";
 
 function AuthCallbackContent() {
   const router = useRouter();
@@ -31,7 +32,16 @@ function AuthCallbackContent() {
     });
   }, [searchParams, router, loginWithToken]);
 
-  return null;
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Image
+        src="/google-logo.png"
+        width={200}
+        height={100}
+        alt="Google Logo"
+      />
+    </div>
+  );
 }
 
 export default function AuthCallbackPage() {

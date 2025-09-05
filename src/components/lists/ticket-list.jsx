@@ -24,6 +24,9 @@ export default function TicketList({ title, description, isLoading, tickets }) {
             <OrderedTicketCardSkeleton />
           </>
         )}
+        {!isLoading && tickets?.length === 0 && (
+          <p>Aucun ticket disponible pour le moment</p>
+        )}
         {!isLoading &&
           tickets?.map((ticket, index) => (
             <OrderedTicketCard
@@ -39,9 +42,6 @@ export default function TicketList({ title, description, isLoading, tickets }) {
               city={ticket.city}
             />
           ))}
-        {!isLoading && tickets?.length === 0 && (
-          <p>Aucun ticket disponible pour le moment</p>
-        )}
       </div>
     </section>
   );

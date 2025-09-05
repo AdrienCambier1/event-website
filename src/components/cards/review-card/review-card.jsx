@@ -1,8 +1,8 @@
 import profilPicture from "@/assets/images/profil-pic.jpg";
 import Image from "next/image";
-import RatingStar from "../commons/rating-stars";
-import Link from "next/link";
+import RatingStar from "../../commons/rating-stars";
 import { BadgeCheck } from "iconoir-react";
+import { formatDateOnly } from "@/utils/date-formatter";
 
 export default function ReviewCard({ name, note, date, review }) {
   return (
@@ -18,7 +18,7 @@ export default function ReviewCard({ name, note, date, review }) {
           <p className="dark-text">Note attribuée</p>
           <RatingStar note={note} />
         </div>
-        <p className="blue-text">{date}</p>
+        <p className="blue-text">{formatDateOnly(date)}</p>
         <p>{review}</p>
         <div className="green-tag">
           <BadgeCheck />

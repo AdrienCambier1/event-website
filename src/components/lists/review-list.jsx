@@ -1,5 +1,6 @@
 import CustomTitle from "@/components/titles/custom-title";
 import ReviewCard from "@/components/cards/review-card";
+import { SendDiagonal } from "iconoir-react";
 
 export default function ReviewList({ title, description, showText, showForm }) {
   return (
@@ -10,11 +11,18 @@ export default function ReviewList({ title, description, showText, showForm }) {
           <div className="flex flex-col gap-4">
             {showText && (
               <p>
-                Un avis inapproprié ? Signalez-le et notre modération s'en
-                chargera.
+                Consultez les différents avis laissés par les participants de
+                vos événements.
               </p>
             )}
-            {showForm && <input type="text" placeholder="Mot clé" />}
+            {showForm && (
+              <>
+                <input type="text" placeholder="Votre avis" />
+                <button className="primary-btn">
+                  <span>Publier votre avis</span> <SendDiagonal />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -24,28 +32,24 @@ export default function ReviewList({ title, description, showText, showForm }) {
           note={4}
           date="vendredi 13 juin 2024"
           review="J’ai bien aimé c’était cool, surtout quand il a commencé à faire de la gymnastique."
-          event="Atelier fresque végétal"
         />
         <ReviewCard
           name="Jean claude"
           note={4}
           date="vendredi 13 juin 2024"
           review="J’ai bien aimé c’était cool, surtout quand il a commencé à faire de la gymnastique."
-          event="Atelier fresque végétal"
         />
         <ReviewCard
           name="Jean claude"
           note={4}
           date="vendredi 13 juin 2024"
           review="J’ai bien aimé c’était cool, surtout quand il a commencé à faire de la gymnastique."
-          event="Atelier fresque végétal"
         />
         <ReviewCard
           name="Jean claude"
           note={4}
           date="vendredi 13 juin 2024"
           review="J’ai bien aimé c’était cool, surtout quand il a commencé à faire de la gymnastique."
-          event="Atelier fresque végétal"
         />
       </div>
     </section>

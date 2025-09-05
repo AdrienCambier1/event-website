@@ -5,7 +5,7 @@ export default function AvisPage() {
     <ReviewList
       title="Avis des participants"
       description="Avis"
-      showText={true}
+      showForm={true}
     />
   );
 }

@@ -2,9 +2,9 @@ import profilPicture from "@/assets/images/profil-pic.jpg";
 import Image from "next/image";
 import RatingStar from "../commons/rating-stars";
 import Link from "next/link";
-import { UserStar } from "iconoir-react";
+import { BadgeCheck } from "iconoir-react";
 
-export default function ReviewCard({ name, note, date, review, event }) {
+export default function ReviewCard({ name, note, date, review }) {
   return (
     <div className="white-card p-4 flex gap-4">
       <Image
@@ -20,10 +20,10 @@ export default function ReviewCard({ name, note, date, review, event }) {
         </div>
         <p className="blue-text">{date}</p>
         <p>{review}</p>
-        <Link href="" className="green-tag">
-          <UserStar />
-          <span>{event}</span>
-        </Link>
+        <div className="green-tag">
+          <BadgeCheck />
+          <span>Avis certifié</span>
+        </div>
       </div>
     </div>
   );

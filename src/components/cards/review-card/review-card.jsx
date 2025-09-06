@@ -22,7 +22,7 @@ export default function ReviewCard({
   const [deleteModal, setDeleteModal] = useState(false);
   const editDropdownRef = useRef(null);
   const { token } = useAuth();
-  const { removeReview, loading: deleteLoading } = useDeleteReview(token);
+  const { removeReview } = useDeleteReview(token);
 
   const handleDelete = async () => {
     if (reviewData?.reviewId) {
@@ -58,20 +58,22 @@ export default function ReviewCard({
 
   return (
     <>
-      <div className="white-card p-4 flex gap-4">
+      <div className="white-card p-4 flex gap-4 h-full">
         <Image
           src={profilPicture}
           alt="Profil picture"
           className="profil-pic-xl"
         />
-        <div className="flex flex-col gap-4 w-full">
-          <h3 className="text-[var(--secondary-blue)]">{name}</h3>
-          <div className="flex flex-col">
-            <p className="dark-text">Note attribuée</p>
-            <RatingStar note={note} />
+        <div className="flex flex-col gap-4 w-full justify-between">
+          <div className="flex flex-col gap-4">
+            <h3 className="text-[var(--secondary-blue)]">{name}</h3>
+            <div className="flex flex-col">
+              <p className="dark-text">Note attribuée</p>
+              <RatingStar note={note} />
+            </div>
+            <p className="blue-text">{formatDateOnly(date)}</p>
+            <p>{review}</p>
           </div>
-          <p className="blue-text">{formatDateOnly(date)}</p>
-          <p>{review}</p>
           <div className="flex justify-between items-center">
             <div className="green-tag">
               <BadgeCheck />
@@ -112,7 +114,7 @@ export default function ReviewCard({
         setIsOpen={() => setDeleteModal(false)}
         title="Supprimer votre avis"
         description="Êtes-vous sûr de vouloir supprimer cet avis ? Cette action est irréversible."
-        action={deleteLoading ? "Suppression..." : "Supprimer"}
+        action={"Supprimer"}
         onClick={handleDelete}
         isDangerous={true}
       />

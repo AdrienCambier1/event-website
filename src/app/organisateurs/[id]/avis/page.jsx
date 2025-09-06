@@ -6,12 +6,7 @@ import { useReviews } from "@/hooks/use-review";
 export default function AvisPage() {
   const { id } = useParams();
 
-  const {
-    reviews,
-    loading: reviewsLoading,
-    error: reviewsError,
-    refetch,
-  } = useReviews(0, 50);
+  const { reviews, loading: reviewsLoading, refetch } = useReviews(0, 50);
 
   return (
     <ReviewList

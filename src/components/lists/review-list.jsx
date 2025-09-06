@@ -65,6 +65,10 @@ export default function ReviewList({
   const isSubmitDisabled =
     !reviewText.trim() || reviewRating === 0 || postingReview || !user?.id;
 
+  const filteredReviews = reviews?.filter(
+    (review) => review.reviewedUserId === parseInt(reviewedUserId)
+  );
+
   return (
     <section className="page-grid">
       <div className="z-10">
@@ -86,9 +90,7 @@ export default function ReviewList({
                   onRatingChange={setReviewRating}
                 />
                 <button
-                  className={`primary-btn ${
-                    isSubmitDisabled ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className="primary-btn"
                   onClick={handleReviewSubmit}
                   disabled={isSubmitDisabled}
                 >
@@ -113,11 +115,11 @@ export default function ReviewList({
             <ReviewCardSkeleton />
           </>
         )}
-        {!isLoading && reviews?.length === 0 && (
+        {!isLoading && filteredReviews?.length === 0 && (
           <p>Aucun avis pour le moment</p>
         )}
         {!isLoading &&
-          reviews?.map((review, index) => (
+          filteredReviews?.map((review, index) => (
             <ReviewCard
               key={index}
               name="Adrien Cambier"

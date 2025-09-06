@@ -23,13 +23,16 @@ export function useReviews(page = 0, size = 10) {
 
       const enrichedReviews = rawReviews.map((review) => {
         const senderUrl = review._links?.senderUser?.href || "";
+        const reviewedUrl = review._links?.reviewedUser?.href || "";
         const selfUrl = review._links?.self?.href || "";
         const senderUserId = senderUrl.split("/").pop();
+        const reviewedUserId = reviewedUrl.split("/").pop();
         const reviewId = selfUrl.split("/").pop();
 
         return {
           ...review,
           senderUserId: parseInt(senderUserId) || null,
+          reviewedUserId: parseInt(reviewedUserId) || null,
           reviewId: parseInt(reviewId) || null,
         };
       });

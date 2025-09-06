@@ -17,7 +17,7 @@ export default function PreferencesPage() {
   const [successCategories, setSuccessCategories] = useState(false);
   const { token } = useAuth();
   const { user, isLoading: accountLoading, setUser } = useParametres();
-  const { categories, isLoading: categoriesLoading } = useCategories();
+  const { categories, loading: categoriesLoading } = useCategories();
   const { updateUser } = useUpdateCurrentUser(token);
   const { refetch } = useCurrentUser(token);
 

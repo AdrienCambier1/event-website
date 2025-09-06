@@ -16,13 +16,6 @@ export default function DialogModal({
 }) {
   const [mounted, setMounted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsOpen();
-
-    if (onClick) onClick();
-  };
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -63,7 +56,7 @@ export default function DialogModal({
                 className={`${
                   isDangerous && "!bg-[var(--primary-red)]"
                 } primary-form-btn`}
-                onClick={handleSubmit}
+                onClick={onClick}
               >
                 <span>{action}</span>
               </button>

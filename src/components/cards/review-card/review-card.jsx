@@ -58,22 +58,20 @@ export default function ReviewCard({
 
   return (
     <>
-      <div className="white-card p-4 flex gap-4 h-full">
+      <div className="white-card p-4 flex gap-4 h-fit">
         <Image
           src={profilPicture}
           alt="Profil picture"
           className="profil-pic-xl"
         />
-        <div className="flex flex-col gap-4 w-full justify-between">
-          <div className="flex flex-col gap-4">
-            <h3 className="text-[var(--secondary-blue)]">{name}</h3>
-            <div className="flex flex-col">
-              <p className="dark-text">Note attribuée</p>
-              <RatingStar note={note} />
-            </div>
-            <p className="blue-text">{formatDateOnly(date)}</p>
-            <p>{review}</p>
+        <div className="flex flex-col gap-4 w-full">
+          <h3 className="text-[var(--secondary-blue)]">{name}</h3>
+          <div className="flex flex-col">
+            <p className="dark-text">Note attribuée</p>
+            <RatingStar note={note} />
           </div>
+          <p className="blue-text">{formatDateOnly(date)}</p>
+          <p>{review}</p>
           <div className="flex justify-between items-center">
             <div className="green-tag">
               <BadgeCheck />

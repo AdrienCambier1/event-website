@@ -9,7 +9,7 @@ import DialogModal from "../modals/dialog-modal";
 export default function ProfilBtn({ reverse, onClick }) {
   const [profilDropdown, setProfilDropdown] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  const { user, logoutUser } = useAuth();
+  const { user, logoutUser, isAuthenticating } = useAuth();
   const profilDropdownRef = useRef(null);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export default function ProfilBtn({ reverse, onClick }) {
         isDangerous={true}
         title="Se déconnecter"
         description="Souhaitez-vous vraiment vous déconnecter de votre compte ?"
-        action="Se déconnecter"
+        action={isAuthenticating ? "Déconnexion..." : "Se déconnecter"}
         icon={LogOut}
         onClick={handleLogout}
       />

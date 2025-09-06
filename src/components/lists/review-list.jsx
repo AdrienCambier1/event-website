@@ -24,18 +24,10 @@ export default function ReviewList({
   const [successReview, setSuccessReview] = useState(false);
 
   const { user, token } = useAuth();
-  const { postReview, loading: postingReview } = useCreateReview(token);
+  const { postReview, loading: postingReview, error } = useCreateReview(token);
 
   const handleReviewSubmit = async () => {
-    if (
-      !reviewText.trim() ||
-      reviewRating === 0 ||
-      !user?.id ||
-      !reviewedUserId ||
-      postingReview
-    ) {
-      return;
-    }
+    if (postingReview) return;
 
     setSuccessReview(false);
 
@@ -49,17 +41,21 @@ export default function ReviewList({
     try {
       await postReview(reviewData);
 
-      setReviewText("");
-      setReviewRating(0);
-      setSuccessReview(true);
-
       if (refetch) {
         await refetch();
       }
     } catch (error) {
       console.error("Erreur lors de la publication:", error);
       setSuccessReview(false);
+    } finally {
+      setSuccessReview(true);
+      resetForm();
     }
+  };
+
+  const resetForm = () => {
+    setReviewText("");
+    setReviewRating(0);
   };
 
   const isSubmitDisabled =
@@ -99,8 +95,14 @@ export default function ReviewList({
                   </span>
                   <SendDiagonal />
                 </button>
-                {successReview && (
+                {successReview && !error && (
                   <p className="green-text">Avis publié avec succès !</p>
+                )}
+                {error && (
+                  <p className="red-text">
+                    Erreur lors de la publication de l'avis. Veuillez vérifier
+                    la longueur de votre avis.
+                  </p>
                 )}
               </>
             )}

@@ -87,17 +87,19 @@ export function useAuth() {
   };
 
   const logoutUser = async () => {
+    setIsAuthenticating(true);
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
+      context.logout();
+      window.location.href = "/";
     } catch (error) {
       console.warn("Erreur logout API:", error);
+    } finally {
+      setIsAuthenticating(false);
     }
-    context.logout();
-
-    window.location.href = "/";
   };
 
   return {

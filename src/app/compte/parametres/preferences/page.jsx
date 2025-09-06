@@ -59,7 +59,9 @@ export default function PreferencesPage() {
     }
   };
 
-  const handleBecomeOrganizer = async () => {
+  const handleBecomeOrganizer = async (e) => {
+    e.preventDefault();
+
     if (loadingRole) return;
 
     setLoadingRole(true);

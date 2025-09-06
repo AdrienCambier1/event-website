@@ -40,6 +40,7 @@ export default function ReviewList({
 
     try {
       await postReview(reviewData);
+      resetForm();
 
       if (refetch) {
         await refetch();
@@ -49,7 +50,6 @@ export default function ReviewList({
       setSuccessReview(false);
     } finally {
       setSuccessReview(true);
-      resetForm();
     }
   };
 

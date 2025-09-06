@@ -22,13 +22,14 @@ export default function ReviewCard({
   const [deleteModal, setDeleteModal] = useState(false);
   const editDropdownRef = useRef(null);
   const { token } = useAuth();
-  const { removeReview } = useDeleteReview(token);
+  const { removeReview, loading } = useDeleteReview(token);
 
   const handleDelete = async () => {
     if (reviewData?.reviewId) {
       const success = await removeReview(reviewData.reviewId);
       if (success) {
         setDeleteModal(false);
+
         if (onRefresh) {
           await onRefresh();
         }
@@ -112,7 +113,7 @@ export default function ReviewCard({
         setIsOpen={() => setDeleteModal(false)}
         title="Supprimer votre avis"
         description="Êtes-vous sûr de vouloir supprimer cet avis ? Cette action est irréversible."
-        action={"Supprimer"}
+        action={loading ? "Suppression..." : "Supprimer"}
         onClick={handleDelete}
         isDangerous={true}
       />

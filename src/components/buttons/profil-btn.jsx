@@ -36,8 +36,9 @@ export default function ProfilBtn({ reverse, onClick }) {
     onClick && onClick();
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     logoutUser();
+    setLogoutModalOpen(false);
     onClick && onClick();
   };
 
@@ -94,7 +95,7 @@ export default function ProfilBtn({ reverse, onClick }) {
         isDangerous={true}
         title="Se déconnecter"
         description="Souhaitez-vous vraiment vous déconnecter de votre compte ?"
-        action={isAuthenticating ? "Déconnexion..." : "Se déconnecter"}
+        action="Se déconnecter"
         icon={LogOut}
         onClick={handleLogout}
       />

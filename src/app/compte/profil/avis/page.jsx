@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/use-auth";
 
 export default function AvisPage() {
   const { user } = useAuth();
-
   const { reviews, loading: reviewsLoading, refetch } = useReviews(0, 50);
 
   return (

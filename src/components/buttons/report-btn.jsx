@@ -59,15 +59,20 @@ export default function ReportBtn({
 
   const handleSubmit = async () => {
     try {
-      await sendReport({
+      const result = await sendReport({
         reportType: reports[selected].type,
         description: reports[selected].description,
         senderUserId: userId,
         reportedUserId: organizerId,
       });
+
+      if (!result) {
+        throw new Error("Erreur lors de l'envoi du signalement");
+      }
+
+      setDescription("");
       setReportSuccess(true);
       setReportModal(false);
-      setDescription("");
     } catch (e) {
       setReportError(true);
       setReportModal(false);

@@ -41,12 +41,16 @@ export default function TicketCard({
   const handleSubmit = async () => {
     try {
       if (isInvitationOnly) {
-        await sendInvitation(
+        const result = await sendInvitation(
           eventId,
           user.id,
           token,
           `Demande d'invitation à l'événement ${title}`
         );
+
+        if (!result) {
+          throw new Error("Erreur lors de l'envoi de l'invitation");
+        }
       } else {
         const result = await createOrderWithTicket({
           userId: user.id,
@@ -61,6 +65,7 @@ export default function TicketCard({
           throw new Error("Erreur lors de la création de la commande");
         }
       }
+
       setPaymentSuccess(true);
       setPaymentModal(false);
     } catch (e) {

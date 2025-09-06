@@ -111,6 +111,7 @@ export default function PreferencesPage() {
         </div>
         <div className="flex flex-wrap gap-4 items-center justify-between">
           <button
+            type="button"
             className="blue-rounded-btn"
             onClick={handleUpdateCategories}
             disabled={loadingCategories}
@@ -153,6 +154,7 @@ export default function PreferencesPage() {
                 </Link>
               ) : (
                 <button
+                  type="button"
                   className="primary-btn"
                   onClick={handleBecomeOrganizer}
                   disabled={loadingRole}

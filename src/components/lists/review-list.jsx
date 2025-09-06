@@ -92,6 +92,7 @@ export default function ReviewList({
                     onRatingChange={setReviewRating}
                   />
                   <button
+                    type="button"
                     className="primary-btn"
                     onClick={handleReviewSubmit}
                     disabled={isSubmitDisabled}

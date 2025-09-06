@@ -2,13 +2,12 @@
 import { useState } from "react";
 import CustomTitle from "@/components/titles/custom-title";
 import ReviewCard from "@/components/cards/review-card/review-card";
-import { SendDiagonal } from "iconoir-react";
+import { Check, CloudXmark, SendDiagonal } from "iconoir-react";
 import ReviewCardSkeleton from "../cards/review-card/review-card-skeleton";
 import ReviewInput from "../inputs/review-input";
 import { useCreateReview } from "@/hooks/use-review";
 import { useAuth } from "@/hooks/use-auth";
 import DialogModal from "../modals/dialog-modal";
-import { UserXmark, CheckCircle } from "iconoir-react";
 
 export default function ReviewList({
   title,
@@ -134,7 +133,7 @@ export default function ReviewList({
         </div>
       </section>
       <DialogModal
-        icon={CheckCircle}
+        icon={Check}
         isOpen={successModal}
         setIsOpen={() => setSuccessModal(false)}
         title="Avis publié"
@@ -142,7 +141,7 @@ export default function ReviewList({
         onClick={() => setSuccessModal(false)}
       />
       <DialogModal
-        icon={UserXmark}
+        icon={CloudXmark}
         isOpen={errorModal}
         setIsOpen={() => setErrorModal(false)}
         isDangerous={true}

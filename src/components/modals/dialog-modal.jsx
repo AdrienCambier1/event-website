@@ -13,6 +13,7 @@ export default function DialogModal({
   description,
   icon: Icon,
   onClick,
+  isLoading,
 }) {
   const [mounted, setMounted] = useState(false);
 
@@ -57,6 +58,7 @@ export default function DialogModal({
                   isDangerous && "!bg-[var(--primary-red)]"
                 } primary-form-btn`}
                 onClick={onClick}
+                disabled={isLoading}
               >
                 <span>{action}</span>
               </button>

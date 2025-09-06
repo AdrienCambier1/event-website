@@ -56,7 +56,11 @@ export default function ReportModal({
             <button className="secondary-form-btn" onClick={setIsOpen}>
               <span>Annuler</span>
             </button>
-            <button className="primary-form-btn" onClick={onClick}>
+            <button 
+              className="primary-form-btn" 
+              onClick={onClick}
+              disabled={isLoading}
+            >
               {isLoading ? <span>Signalement...</span> : <span>Signaler</span>}
             </button>
           </div>

@@ -400,7 +400,7 @@ p {
 }
 
 .blue-rounded-btn {
-  @apply bg-[rgba(var(--primary-blue-rgb),0.1)] text-[var(--primary-blue)] py-1.5 px-4 hover:opacity-75;
+  @apply bg-[rgba(var(--primary-blue-rgb),0.1)] text-[var(--primary-blue)] py-1.5 px-4 hover:opacity-75 disabled:opacity-75;
 }
 
 .red-rounded-btn {

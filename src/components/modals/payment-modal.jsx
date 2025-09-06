@@ -82,7 +82,11 @@ export default function PaymentModal({
             <button className="secondary-form-btn" onClick={setIsOpen}>
               <span>Annuler</span>
             </button>
-            <button className="primary-form-btn" onClick={handleSubmit}>
+            <button 
+              className="primary-form-btn" 
+              onClick={handleSubmit}
+              disabled={isLoading}
+            >
               {isLoading ? <span>Paiement...</span> : <span>Payer</span>}
             </button>
           </div>

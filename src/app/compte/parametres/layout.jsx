@@ -61,6 +61,7 @@ export default function ParametresLayout({ children }) {
         action="Se déconnecter"
         icon={LogOut}
         onClick={() => {
+          setLogoutModalOpen(false);
           logoutUser();
         }}
       />

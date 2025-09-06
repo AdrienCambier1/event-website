@@ -116,6 +116,7 @@ export default function ReviewCard({
         action={loading ? "Suppression..." : "Supprimer"}
         onClick={handleDelete}
         isDangerous={true}
+        isLoading={loading}
       />
     </>
   );

@@ -37,8 +37,8 @@ export default function ProfilBtn({ reverse, onClick }) {
   };
 
   const handleLogout = async () => {
-    logoutUser();
     setLogoutModalOpen(false);
+    logoutUser();
     onClick && onClick();
   };
 

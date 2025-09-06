@@ -108,7 +108,11 @@ export default function PreferencesPage() {
           )}
         </div>
         <div className="flex flex-wrap gap-4 items-center justify-between">
-          <button className="blue-rounded-btn" onClick={handleUpdateCategories}>
+          <button
+            className="blue-rounded-btn"
+            onClick={handleUpdateCategories}
+            disabled={loadingCategories}
+          >
             <span>{loadingCategories ? "Modification..." : "Modifier"}</span>
             <EditPencil />
           </button>
@@ -146,7 +150,11 @@ export default function PreferencesPage() {
                   <span>Accéder à l'administration</span>
                 </Link>
               ) : (
-                <button className="primary-btn" onClick={handleBecomeOrganizer}>
+                <button
+                  className="primary-btn"
+                  onClick={handleBecomeOrganizer}
+                  disabled={loadingRole}
+                >
                   <span>
                     {loadingRole
                       ? "Changement en cours..."

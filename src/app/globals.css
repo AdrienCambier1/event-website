@@ -614,8 +614,17 @@ input:-moz-autofill:focus {
 }
 
 .modal-content input,
-.modal-content textarea {
+.modal-content textarea,
+.modal-content .review-input {
   @apply bg-[rgba(var(--primary-border-col-rgb),0.2)] border-[var(--primary-border-col)];
+}
+
+.review-input {
+  @apply focus-within:border-[var(--primary-blue)] bg-white border-[var(--primary-border-col)] border rounded-xl w-full flex flex-col transition;
+}
+
+.review-input textarea {
+  @apply bg-inherit border-none;
 }
 
 /***********/

@@ -10,6 +10,7 @@ export default function AvisPage() {
     reviews,
     loading: reviewsLoading,
     error: reviewsError,
+    refetch,
   } = useReviews(0, 50);
 
   return (
@@ -19,7 +20,8 @@ export default function AvisPage() {
       showForm={true}
       reviews={reviews}
       isLoading={reviewsLoading}
-      organizerId={id}
+      reviewedUserId={id}
+      refetch={refetch}
     />
   );
 }

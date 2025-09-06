@@ -31,21 +31,7 @@ export function useCities(page = 0, size = 20, sort = null) {
     loadCities();
   }, [page, size, sort]);
 
-  const refetch = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const citiesData = await fetchCities(page, size, sort);
-      setCities(citiesData._embedded?.cityResponses || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inconnue");
-      setCities([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { cities, loading, error, refetch };
+  return { cities, loading, error };
 }
 
 export function useCityDetails(cityId) {
@@ -184,10 +170,8 @@ export function useCityPlaces(cityId, limit = 10) {
         setLoading(true);
         setError(null);
         const places = await fetchCityPlaces(cityId, limit);
-        console.log("City Places API Response:", places);
         setData(places);
       } catch (err) {
-        console.error("City Places API Error:", err);
         setError(err instanceof Error ? err.message : "Erreur inconnue");
       } finally {
         setLoading(false);
@@ -197,26 +181,10 @@ export function useCityPlaces(cityId, limit = 10) {
     loadCityPlaces();
   }, [cityId, limit]);
 
-  const refetch = async () => {
-    if (!cityId) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      const places = await fetchCityPlaces(cityId, limit);
-      setData(places);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inconnue");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     data,
     places: data?._embedded?.placeResponses || [],
     loading,
     error,
-    refetch,
   };
 }

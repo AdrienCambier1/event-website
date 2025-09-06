@@ -18,10 +18,8 @@ export function usePlaces(page = 0, size = 10, sort = "name,asc") {
         setLoading(true);
         setError(null);
         const places = await fetchPlaces(page, size, sort);
-        console.log("Places API Response:", places);
         setData(places);
       } catch (err) {
-        console.error("Places API Error:", err);
         setError(err instanceof Error ? err.message : "Erreur inconnue");
       } finally {
         setLoading(false);
@@ -31,25 +29,11 @@ export function usePlaces(page = 0, size = 10, sort = "name,asc") {
     loadPlaces();
   }, [page, size, sort]);
 
-  const refetch = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const places = await fetchPlaces(page, size, sort);
-      setData(places);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inconnue");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     data,
     places: data?._embedded?.placeResponses || [],
     loading,
     error,
-    refetch,
   };
 }
 

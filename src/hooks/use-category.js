@@ -16,7 +16,6 @@ export function useCategories() {
         const response = await fetchCategories();
         setCategories(response._embedded.categories);
       } catch (err) {
-        console.error("Erreur lors du chargement des catégories:", err);
         setError(err.message);
         setCategories([
           { name: "Musique", key: "musique", description: "", trending: false },

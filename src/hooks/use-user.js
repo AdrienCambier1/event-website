@@ -29,7 +29,6 @@ export function useCurrentUser(token) {
       setUser(userData);
       return userData;
     } catch (err) {
-      console.error("Error in useCurrentUser:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
       setUser(null);
       return null;
@@ -74,7 +73,6 @@ export function useUserById(userId, token = null) {
       const userData = await fetchUserById(userId, token);
       setUser(userData);
     } catch (err) {
-      console.error("Error in useUserById:", err);
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
       setUser(null);
     } finally {
@@ -86,15 +84,10 @@ export function useUserById(userId, token = null) {
     fetchData();
   }, [userId, token]);
 
-  const refetch = async () => {
-    return await fetchData();
-  };
-
   return {
     user,
     loading,
     error,
-    refetch,
   };
 }
 
@@ -106,7 +99,7 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
   useEffect(() => {
     const loadEvents = async () => {
       if (!userId) {
-        setEvents([]); // Toujours un tableau vide
+        setEvents([]);
         setLoading(false);
         setError(null);
         return;
@@ -118,7 +111,6 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
         const eventsData = await fetchUserEvents(userId, token, page, size);
         setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
-        console.error("Error in useUserEvents:", err);
         setError(
           err instanceof Error ? err.message : "Une erreur est survenue"
         );
@@ -131,28 +123,10 @@ export function useUserEvents(userId, token, page = 0, size = 10) {
     loadEvents();
   }, [userId, token, page, size]);
 
-  const refetch = async () => {
-    if (!userId) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      const eventsData = await fetchUserEvents(userId, token, page, size);
-      setEvents(eventsData._embedded?.eventSummaryResponses || []);
-    } catch (err) {
-      console.error("Error in useUserEvents refetch:", err);
-      setError(err instanceof Error ? err.message : "Une erreur est survenue");
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     events,
     loading,
     error,
-    refetch,
   };
 }
 
@@ -181,7 +155,6 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
         );
         setEvents(eventsData._embedded?.eventSummaryResponses || []);
       } catch (err) {
-        console.error("Error in useUserParticipatingEvents:", err);
         setError(
           err instanceof Error ? err.message : "Une erreur est survenue"
         );
@@ -194,33 +167,10 @@ export function useUserParticipatingEvents(userId, token, page = 0, size = 10) {
     loadEvents();
   }, [userId, token, page, size]);
 
-  const refetch = async () => {
-    if (!userId) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      const eventsData = await fetchUserParticipatingEvents(
-        userId,
-        token,
-        page,
-        size
-      );
-      setEvents(eventsData._embedded?.eventSummaryResponses || []);
-    } catch (err) {
-      console.error("Error in useUserParticipatingEvents refetch:", err);
-      setError(err instanceof Error ? err.message : "Une erreur est survenue");
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     events,
     loading,
     error,
-    refetch,
   };
 }
 
@@ -253,15 +203,10 @@ export function useCurrentUserOrdersWithEvents(token) {
     fetchData();
   }, [token]);
 
-  const refetch = async () => {
-    return await fetchData();
-  };
-
   return {
     orders,
     loading,
     error,
-    refetch,
   };
 }
 

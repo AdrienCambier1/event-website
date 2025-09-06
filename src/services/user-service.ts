@@ -271,6 +271,7 @@ export async function updateCurrentUser(
         404: "Utilisateur non trouvé",
         500: "Erreur serveur, veuillez réessayer",
       };
+
       const errorMessage =
         statusErrors[response.status] ||
         `Erreur ${response.status}: Impossible de mettre à jour l'utilisateur`;

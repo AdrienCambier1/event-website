@@ -59,9 +59,7 @@ export default function PreferencesPage() {
     }
   };
 
-  const handleBecomeOrganizer = async (e) => {
-    e.preventDefault();
-
+  const handleBecomeOrganizer = async () => {
     if (loadingRole) return;
 
     setLoadingRole(true);
@@ -112,9 +110,10 @@ export default function PreferencesPage() {
         <div className="flex flex-wrap gap-4 items-center justify-between">
           <button
             type="button"
-            className="blue-rounded-btn"
+            className={`blue-rounded-btn ${
+              loadingCategories && "btn-disabled"
+            }`}
             onClick={handleUpdateCategories}
-            disabled={loadingCategories}
           >
             <span>{loadingCategories ? "Modification..." : "Modifier"}</span>
             <EditPencil />
@@ -155,9 +154,8 @@ export default function PreferencesPage() {
               ) : (
                 <button
                   type="button"
-                  className="primary-btn"
+                  className={`primary-btn ${loadingRole && "btn-disabled"}`}
                   onClick={handleBecomeOrganizer}
-                  disabled={loadingRole}
                 >
                   <span>
                     {loadingRole

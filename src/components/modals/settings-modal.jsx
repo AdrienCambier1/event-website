@@ -161,8 +161,7 @@ export default function SettingsModal({
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     await patchUserData(formValues, type);
     const refreshed = await refetch();
     setUser(refreshed);
@@ -203,7 +202,7 @@ export default function SettingsModal({
             <div className="img-gradient-blue">{Icon && <Icon />}</div>
             <h3 className="text-center">{config.title}</h3>
           </div>
-          <form>
+          <div className="form">
             {config.fields.map((field, index) => (
               <div key={field.name} className="flex flex-col gap-2 w-full">
                 <label htmlFor={field.name}>{field.label}</label>
@@ -258,7 +257,7 @@ export default function SettingsModal({
                 )}
               </div>
             ))}
-          </form>
+          </div>
           <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
             <button
               className="secondary-form-btn"

@@ -93,9 +93,10 @@ export default function ReviewList({
                   />
                   <button
                     type="button"
-                    className="primary-btn"
+                    className={`primary-btn ${
+                      isSubmitDisabled && "btn-disabled"
+                    }`}
                     onClick={handleReviewSubmit}
-                    disabled={isSubmitDisabled}
                   >
                     <span>
                       {postingReview ? "Publication..." : "Publier votre avis"}

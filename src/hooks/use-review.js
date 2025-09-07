@@ -102,18 +102,24 @@ export function useReviewsEnriched(page = 0, size = 10) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const fetchData = async (isRefetch = false) => {
+    if (!isRefetch) {
+      setLoading(true);
+    }
     setError(null);
 
     try {
       const enrichedData = await fetchReviewsWithUsers(page, size);
       setEnrichedReviews(enrichedData);
+      return enrichedData;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
       setEnrichedReviews([]);
+      return [];
     } finally {
-      setLoading(false);
+      if (!isRefetch) {
+        setLoading(false);
+      }
     }
   };
 
@@ -122,7 +128,7 @@ export function useReviewsEnriched(page = 0, size = 10) {
   }, [page, size]);
 
   const refetch = async () => {
-    return await fetchData();
+    return await fetchData(true);
   };
 
   return {

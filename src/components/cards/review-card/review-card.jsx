@@ -17,6 +17,7 @@ export default function ReviewCard({
   canEdit = false,
   reviewData,
   onRefresh,
+  imageUrl,
 }) {
   const [editDropdown, setEditDropdown] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -61,8 +62,10 @@ export default function ReviewCard({
     <>
       <div className="white-card p-4 flex gap-4 h-fit">
         <Image
-          src={profilPicture}
+          src={imageUrl || profilPicture}
           alt="Profil picture"
+          width={80}
+          height={80}
           className="profil-pic-xl"
         />
         <div className="flex flex-col gap-4 w-full">

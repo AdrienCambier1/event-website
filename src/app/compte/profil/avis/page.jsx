@@ -1,11 +1,16 @@
 "use client";
 import ReviewList from "@/components/lists/review-list";
-import { useReviews } from "@/hooks/use-review";
+import { useReviewsEnriched } from "@/hooks/use-review";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function AvisPage() {
   const { user } = useAuth();
-  const { reviews, loading: reviewsLoading, refetch } = useReviews(0, 50);
+
+  const {
+    reviews,
+    loading: reviewsLoading,
+    refetch,
+  } = useReviewsEnriched(0, 50);
 
   return (
     <ReviewList

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import {
   fetchReviews,
+  fetchReviewsWithUsers,
   createReview,
   deleteReview,
 } from "@/services/review-service";
@@ -19,24 +20,7 @@ export function useReviews(page = 0, size = 10) {
 
     try {
       const reviewsData = await fetchReviews(page, size);
-      const rawReviews = reviewsData._embedded?.reviews || [];
-
-      const enrichedReviews = rawReviews.map((review) => {
-        const senderUrl = review._links?.senderUser?.href || "";
-        const reviewedUrl = review._links?.reviewedUser?.href || "";
-        const selfUrl = review._links?.self?.href || "";
-        const senderUserId = senderUrl.split("/").pop();
-        const reviewedUserId = reviewedUrl.split("/").pop();
-        const reviewId = selfUrl.split("/").pop();
-
-        return {
-          ...review,
-          senderUserId: parseInt(senderUserId) || null,
-          reviewedUserId: parseInt(reviewedUserId) || null,
-          reviewId: parseInt(reviewId) || null,
-        };
-      });
-
+      const enrichedReviews = reviewsData._embedded?.reviews || [];
       setReviews(enrichedReviews);
       return enrichedReviews;
     } catch (err) {
@@ -111,4 +95,40 @@ export function useDeleteReview(token) {
   };
 
   return { removeReview, loading, error, success };
+}
+
+export function useReviewsEnriched(page = 0, size = 10) {
+  const [enrichedReviews, setEnrichedReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const enrichedData = await fetchReviewsWithUsers(page, size);
+      setEnrichedReviews(enrichedData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      setEnrichedReviews([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page, size]);
+
+  const refetch = async () => {
+    return await fetchData();
+  };
+
+  return {
+    reviews: enrichedReviews,
+    loading,
+    error,
+    refetch,
+  };
 }

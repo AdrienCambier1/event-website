@@ -2,6 +2,10 @@ export interface Review {
   content: string;
   rating: number;
   createdAt: string;
+  senderUserId?: number | null;
+  reviewedUserId?: number | null;
+  reviewId?: number | null;
+  senderUser?: any;
   _links?: any;
 }
 

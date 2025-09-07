@@ -3,6 +3,7 @@ import type {
   CreateReviewRequest,
   Review,
 } from "@/types/review";
+import { fetchUserById } from "@/services/user-service";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,7 +18,34 @@ export async function fetchReviews(
 
   const res = await fetch(`${API_URL}/reviews?${params}`);
   if (!res.ok) throw new Error("Erreur lors du chargement des avis");
-  return await res.json();
+
+  const data = await res.json();
+  const rawReviews = data._embedded?.reviews || [];
+
+  // Parse des IDs depuis les liens HATEOAS
+  const enrichedReviews = rawReviews.map((review) => {
+    const senderUrl = review._links?.senderUser?.href || "";
+    const reviewedUrl = review._links?.reviewedUser?.href || "";
+    const selfUrl = review._links?.self?.href || "";
+    const senderUserId = senderUrl.split("/").pop();
+    const reviewedUserId = reviewedUrl.split("/").pop();
+    const reviewId = selfUrl.split("/").pop();
+
+    return {
+      ...review,
+      senderUserId: parseInt(senderUserId) || null,
+      reviewedUserId: parseInt(reviewedUserId) || null,
+      reviewId: parseInt(reviewId) || null,
+    };
+  });
+
+  return {
+    ...data,
+    _embedded: {
+      ...data._embedded,
+      reviews: enrichedReviews,
+    },
+  };
 }
 
 export async function createReview(
@@ -58,7 +86,6 @@ export async function createReview(
   }
 }
 
-
 export async function deleteReview(
   reviewId: string | number,
   token: string
@@ -89,4 +116,29 @@ export async function deleteReview(
     console.error("Error deleting review:", error);
     throw error;
   }
+}
+
+export async function fetchReviewsWithUsers(page = 0, size = 10) {
+  const reviewsData = await fetchReviews(page, size);
+  const reviews = reviewsData._embedded?.reviews || [];
+
+  const enrichedWithUsers = await Promise.all(
+    reviews.map(async (review) => {
+      let senderUser = null;
+      try {
+        if (review.senderUserId) {
+          senderUser = await fetchUserById(review.senderUserId);
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch user ${review.senderUserId}:`, error);
+      }
+
+      return {
+        ...review,
+        senderUser,
+      };
+    })
+  );
+
+  return enrichedWithUsers;
 }

@@ -123,13 +123,14 @@ export default function ReviewList({
             filteredReviews?.map((review, index) => (
               <ReviewCard
                 key={index}
-                name="Adrien Cambier"
+                name={`${review.senderUser.firstName} ${review.senderUser.lastName}`}
                 note={review.rating}
                 date={review.createdAt}
                 review={review.content}
                 canEdit={review.senderUserId === user?.id}
                 reviewData={review}
                 onRefresh={refetch}
+                imageUrl={review.senderUser.imageUrl}
               />
             ))}
         </div>

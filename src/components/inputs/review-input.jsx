@@ -6,26 +6,17 @@ export default function ReviewInput({
   review = "",
   rating = 0,
 }) {
-  const handleReviewChange = (e) => {
-    const newReview = e.target.value;
-    onReviewChange(newReview);
-  };
-
-  const handleRatingChange = (newRating) => {
-    onRatingChange(newRating);
-  };
-
   return (
     <div className="review-input group">
       <textarea
         placeholder="Votre avis"
         value={review}
-        onChange={handleReviewChange}
+        onChange={onReviewChange}
       />
       <RatingStar
         note={rating}
         selectable={true}
-        onRatingChange={handleRatingChange}
+        onRatingChange={onRatingChange}
         className="p-3 pt-0"
       />
     </div>

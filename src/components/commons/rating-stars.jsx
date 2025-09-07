@@ -1,7 +1,7 @@
 "use client";
 import { Star } from "iconoir-react";
 import { StarSolid } from "iconoir-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function RatingStar({
   note = 0,
@@ -9,17 +9,11 @@ export default function RatingStar({
   onRatingChange = () => {},
   className = "",
 }) {
-  const [selectedRating, setSelectedRating] = useState(note);
-  
-  useEffect(() => {
-    setSelectedRating(note);
-  }, [note]);
   const [hoveredRating, setHoveredRating] = useState(0);
   const stars = [1, 2, 3, 4, 5];
 
   const handleStarClick = (rating) => {
     if (!selectable) return;
-    setSelectedRating(rating);
     onRatingChange(rating);
   };
 
@@ -33,7 +27,7 @@ export default function RatingStar({
     setHoveredRating(0);
   };
 
-  const displayRating = selectable ? hoveredRating || selectedRating : note;
+  const displayRating = selectable ? hoveredRating || note : note;
 
   return (
     <div

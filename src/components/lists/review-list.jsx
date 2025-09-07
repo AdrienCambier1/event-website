@@ -88,7 +88,7 @@ export default function ReviewList({
                   <ReviewInput
                     review={reviewText}
                     rating={reviewRating}
-                    onReviewChange={setReviewText}
+                    onReviewChange={(e) => setReviewText(e.target.value)}
                     onRatingChange={setReviewRating}
                   />
                   <button

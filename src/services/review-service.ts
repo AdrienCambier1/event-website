@@ -118,27 +118,37 @@ export async function deleteReview(
   }
 }
 
+const userCache = new Map<number, Promise<any>>();
+
 export async function fetchReviewsWithUsers(page = 0, size = 10) {
   const reviewsData = await fetchReviews(page, size);
   const reviews = reviewsData._embedded?.reviews || [];
 
-  const enrichedWithUsers = await Promise.all(
-    reviews.map(async (review) => {
-      let senderUser = null;
-      try {
-        if (review.senderUserId) {
-          senderUser = await fetchUserById(review.senderUserId);
-        }
-      } catch (error) {
-        console.warn(`Failed to fetch user ${review.senderUserId}:`, error);
-      }
-
-      return {
-        ...review,
-        senderUser,
-      };
-    })
+  const userIdsSet = new Set(
+    reviews.map((review) => review.senderUserId).filter(Boolean)
   );
+  const uniqueUserIds = Array.from(userIdsSet);
+
+  const userPromises = uniqueUserIds.map(async (userId) => {
+    if (!userCache.has(userId)) {
+      userCache.set(
+        userId,
+        fetchUserById(userId).catch(() => null)
+      );
+    }
+    const user = await userCache.get(userId);
+    return { userId, user };
+  });
+
+  const userResults = await Promise.all(userPromises);
+  const userMap = new Map(
+    userResults.map(({ userId, user }) => [userId, user])
+  );
+
+  const enrichedWithUsers = reviews.map((review) => ({
+    ...review,
+    senderUser: review.senderUserId ? userMap.get(review.senderUserId) : null,
+  }));
 
   return enrichedWithUsers;
 }

@@ -102,7 +102,7 @@ export default function EventList({
         case "ancien":
           return new Date(a.date || 0) - new Date(b.date || 0);
         case "populaire":
-          return (b.organizer?.note || 0) - (a.organizer?.note || 0);
+          return (b.currentParticipants || 0) - (a.currentParticipants || 0);
         default:
           return 0;
       }

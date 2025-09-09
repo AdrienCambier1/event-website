@@ -37,7 +37,8 @@ function InscriptionPageContent() {
     interests: [],
   });
 
-  const { strength: passwordStrength, isValid: isPasswordValid } = usePasswordValidation(formData.password);
+  const { strength: passwordStrength, isValid: isPasswordValid } =
+    usePasswordValidation(formData.password);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -85,7 +86,6 @@ function InscriptionPageContent() {
     },
   ];
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -127,7 +127,9 @@ function InscriptionPageContent() {
         await registerWithCredentials(userData, redirectPath);
       } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
-        setError(error.message || "Erreur lors de l'inscription");
+        setError(
+          "Erreur lors de l'inscription. Veuillez réessayer avec d'autres informations."
+        );
       }
     }
   };
@@ -330,9 +332,7 @@ function InscriptionPageContent() {
                     : "S'inscrire"}
                 </span>
               </button>
-              {error && (
-                <p className="red-text text-center">{error}</p>
-              )}
+              {error && <p className="red-text text-center">{error}</p>}
             </>
           )}
 

@@ -65,8 +65,8 @@ export default function EventList({
   };
 
   const sortOptions = [
-    { label: "Plus récent", value: "recent" },
-    { label: "Plus ancien", value: "ancien" },
+    { label: "Prochainement", value: "recent" },
+    { label: "Plus tard", value: "ancien" },
     { label: "Plus populaire", value: "populaire" },
   ];
 
@@ -98,9 +98,15 @@ export default function EventList({
     return filteredEvents.sort((a, b) => {
       switch (sortOption) {
         case "recent":
-          return new Date(b.date || 0) - new Date(a.date || 0);
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
+          return new Date(a.date) - new Date(b.date);
         case "ancien":
-          return new Date(a.date || 0) - new Date(b.date || 0);
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
+          return new Date(b.date) - new Date(a.date);
         case "populaire":
           return (b.currentParticipants || 0) - (a.currentParticipants || 0);
         default:
